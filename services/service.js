@@ -1,22 +1,19 @@
 import axios from "axios";
+import { useRouter } from "next/router"; 
 
-// export const ConstantsUrl = "";
+export const ConstantsUrl = "http://localhost:3003/api/";
 
-export const ConstantsUrl = "http://localhost:3001/api/";
-
-function Api(method, url, data, router, params) {
+function Api(method, url, data, router) {
   return new Promise(function (resolve, reject) {
     let token = "";
     if (typeof window !== "undefined") {
       token = localStorage?.getItem("token") || "";
     }
-    console.log(token);
     axios({
       method,
       url: ConstantsUrl + url,
       data,
-      headers: { Authorization: `Bearer ${token}` },
-      params,
+      headers: { Authorization: `jwt ${token}` },
     }).then(
       (res) => {
         resolve(res.data);
@@ -25,17 +22,9 @@ function Api(method, url, data, router, params) {
         console.log(err);
         if (err.response) {
           if (err?.response?.status === 401) {
-            if (
-              typeof window !== "undefined" &&
-              !router.pathname.includes("signIn")
-            ) {
-              if (router.pathname.includes("cart")) {
-                router.push("/auth/signIn?from=cart");
-              } else {
-                router.push("/auth/signIn/");
-              }
+            if (typeof window !== "undefined") {
               localStorage.removeItem("userDetail");
-              err.response.data.message = "Login required";
+            
             }
           }
           reject(err.response.data);

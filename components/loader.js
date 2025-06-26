@@ -9,13 +9,13 @@ import {
 const Loader = (props) => {
   return (
     <Backdrop
-      sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+      sx={{ color: "#2196F3", zIndex: (theme) => theme.zIndex.drawer + 1 }}
       open={props.open}
     >
       <Circles
         height="80"
         width="80"
-        color="#000000"
+        color="#2196F3"
         ariaLabel="circles-loading"
         wrapperStyle={{}}
         wrapperClass=""

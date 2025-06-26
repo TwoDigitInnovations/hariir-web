@@ -1,0 +1,480 @@
+import React, { useState, useMemo, useContext, useEffect } from "react";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { toast } from "react-toastify";
+import { User, Upload, MapPin, Mail, Phone, Linkedin } from "lucide-react";
+import dynamic from "next/dynamic";
+import Select from "react-select";
+import countryList from "react-select-country-list";
+import Compressor from "compressorjs";
+import { ApiFormData, Api } from "@/services/service";
+import { useRouter } from "next/router";
+import { userContext } from "./_app";
+
+const JoditEditor = dynamic(() => import("jodit-react"), { ssr: false });
+
+const validationSchema = Yup.object({
+  fullName: Yup.string()
+    .min(2, "Full name must be at least 2 characters")
+    .required("Full name is required"),
+  professionalTitle: Yup.string()
+    .min(2, "Professional title must be at least 2 characters")
+    .required("Professional title is required"),
+  location: Yup.string().required("Location is required"),
+  email: Yup.string()
+    .email("Invalid email address")
+    .required("Email is required"),
+  phone: Yup.string()
+    .matches(/^\+?[\d\s\-\(\)]+$/, "Invalid phone number format")
+    .required("Phone number is required"),
+  linkedinUrl: Yup.string()
+    .url("Invalid LinkedIn URL")
+    .matches(/linkedin\.com/, "Must be a LinkedIn URL"),
+  bio: Yup.string()
+    .min(50, "Bio must be at least 50 characters")
+    .max(1500, "Bio must not exceed 500 characters")
+    .required("Professional bio is required"),
+});
+
+export default function ProfileForm(props) {
+  const [profileImage, setProfileImage] = useState(null);
+  const router = useRouter();
+  const [user] = useContext(userContext);
+  const countryOptions = useMemo(() => countryList().getData(), []);
+
+  const formik = useFormik({
+    initialValues: {
+      fullName: "",
+      professionalTitle: "",
+      location: "",
+      email: "",
+      phone: "",
+      linkedinUrl: "",
+      bio: "",
+    },
+    validationSchema,
+    onSubmit: (values, { resetForm }) => {
+      if (formik.isValid) {
+        submit(values, resetForm);
+      } else {
+        console.log("Form is invalid", formik.errors);
+      }
+    },
+  });
+
+  const [token, setToken] = useState(null);
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token"); // your key
+    setToken(storedToken);
+  }, []);
+  useEffect(() => {
+    const urlUserId = router.query.userId || Object.keys(router.query)[0];
+
+    if (urlUserId) {
+      getProfile(urlUserId);
+    } else if (token) {
+      getProfile(user._id);
+    }
+  }, [router.query, token, user?._id]);
+
+  const getProfile = (userId) => {
+    props.loader(true);
+    Api("post", "auth/profile", { userId: userId }, router).then(
+      (res) => {
+        props.loader(false);
+        if (res.data) {
+          setProfileData(res.data);
+        }
+      },
+      (err) => {
+        props.loader(false);
+        toast.error(err?.data?.message || err?.message || "An error occurred");
+      }
+    );
+  };
+
+  const setProfileData = (data) => {
+    formik.setValues({
+      fullName: data.fullName || "",
+      professionalTitle: data.professionalTitle || "",
+      location: data.location || "",
+      email: data.email || "",
+      phone: data.phone || "",
+      linkedinUrl: data.linkedinUrl || "",
+      bio: data.bio || "",
+    });
+
+    if (data.profileImage) {
+      setProfileImage(data.profileImage);
+    }
+  };
+
+  const submit = (values, resetForm) => {
+    props.loader(true);
+    const urlUserId = router.query.userId || Object.keys(router.query)[0];
+    const userId = urlUserId || user._id;
+
+    const data = {
+      ...values,
+      userId: userId,
+      email: values.email.toLowerCase(),
+      profileImage: profileImage,
+    };
+
+    Api("post", "auth/updateProfile", data, router).then(
+      (res) => {
+        console.log("Response:", res);
+        props.loader(false);
+        if (res.status) {
+          toast.success("Profile updated successfully");
+          localStorage.setItem("userDetail", JSON.stringify(res.data));
+          if (!router.query.userId) {
+            resetForm();
+            setProfileImage(null);
+
+            router.push("/MyProfile");
+          }
+          // Don't reset form after successful update
+          //
+        } else {
+          toast.error(res.message || "An error occurred");
+        }
+      },
+      (err) => {
+        props.loader(false);
+        console.error("Error:", err);
+        toast.error(err?.message || "An error occurred");
+      }
+    );
+  };
+
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    console.log("Selected file:", file);
+
+    const fileSizeInMb = file.size / (1024 * 1024);
+    if (fileSizeInMb > 1) {
+      props.toaster({
+        type: "error",
+        message: "Too large file. Please upload a smaller image",
+      });
+      return;
+    }
+
+    new Compressor(file, {
+      quality: 0.6,
+      success: (compressedResult) => {
+        console.log("Compressed result:", compressedResult);
+        const data = new FormData();
+        data.append("file", compressedResult);
+        props.loader(true);
+        ApiFormData("post", "auth/fileupload", data, router).then(
+          (res) => {
+            props.loader(false);
+            console.log("File upload response:", res);
+            if (res.status) {
+              setProfileImage(res.data.file || res.data.fileUrl);
+              toast.success(res.data.message);
+            }
+          },
+          (err) => {
+            props.loader(false);
+            console.error("File upload error:", err);
+            toast.error(err?.data?.message || "File upload failed");
+          }
+        );
+      },
+    });
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50 py-8 px-4">
+      <div className="max-w-4xl mx-auto">
+        <div className="text-center mb-8">
+          <h1 className="text-xl font-semibold text-gray-900 mb-2">
+            Complete your profile to start building your network and showcase
+            your expertise.
+          </h1>
+        </div>
+
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          {/* Basic Information Section */}
+          <div className="mb-8">
+            <div className="flex items-center gap-2 mb-6">
+              <User className="w-5 h-5 text-blue-600" />
+              <h2 className="text-lg font-medium text-gray-900">
+                Basic Information
+              </h2>
+            </div>
+
+            {/* Profile Picture */}
+            <div className="mb-6">
+              <label className="block text-sm font-medium text-gray-700 mb-3">
+                Profile Picture
+              </label>
+              <div className="flex items-center gap-4">
+                <div className="w-20 h-20 rounded-full border-2 border-dashed border-gray-300 flex items-center justify-center bg-gray-50 overflow-hidden">
+                  {profileImage ? (
+                    <img
+                      src={profileImage}
+                      alt="Profile"
+                      className="w-full h-full object-cover rounded-full"
+                    />
+                  ) : (
+                    <User className="w-8 h-8 text-gray-400" />
+                  )}
+                </div>
+                <div>
+                  <label className="inline-flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 cursor-pointer">
+                    <Upload className="w-4 h-4" />
+                    Upload Photo
+                    <input
+                      type="file"
+                      accept="image/jpeg,image/png"
+                      onChange={handleImageChange}
+                      className="hidden"
+                    />
+                  </label>
+                  <p className="text-xs text-gray-500 mt-1">
+                    JPG, PNG up to 5MB. Square photos work best.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Full Name *
+                </label>
+                <input
+                  type="text"
+                  name="fullName"
+                  placeholder="e.g. John Doe"
+                  value={formik.values.fullName}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none text-black focus:border-blue-500 ${
+                    formik.errors.fullName
+                      ? "border-red-300 focus:ring-red-500 focus:border-red-500"
+                      : "border-gray-300"
+                  }`}
+                />
+                {formik.errors.fullName && (
+                  <p className="mt-1 text-sm text-red-600">
+                    {formik.errors.fullName}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Professional Title
+                </label>
+                <input
+                  type="text"
+                  name="professionalTitle"
+                  placeholder="e.g. Software Engineer"
+                  value={formik.values.professionalTitle}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  className={`w-full px-3 py-2 border text-black rounded-md shadow-sm focus:outline-none  focus:border-blue-500 ${
+                    formik.errors.professionalTitle
+                      ? "border-red-300 focus:ring-red-500 focus:border-red-500"
+                      : "border-gray-300"
+                  }`}
+                />
+                {formik.errors.professionalTitle && (
+                  <p className="mt-1 text-sm text-red-600">
+                    {formik.errors.professionalTitle}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Location
+                </label>
+                <div className="relative">
+                  <Select
+                    options={countryOptions}
+                    name="location"
+                    value={countryOptions.find(
+                      (option) => option.value === formik.values.location
+                    )}
+                    onChange={(selectedOption) => {
+                      formik.setFieldValue("location", selectedOption.value);
+                    }}
+                    onBlur={() => formik.setFieldTouched("location", true)}
+                    className="react-select-container text-black"
+                    classNamePrefix="react-select"
+                  />
+                </div>
+
+                {formik.touched.location && formik.errors.location && (
+                  <p className="mt-1 text-sm text-red-600">
+                    {formik.errors.location}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Email
+                </label>
+                <div className="relative">
+                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="john@example.com"
+                    value={formik.values.email}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    className={`w-full pl-10 pr-3 py-2 border rounded-md shadow-sm focus:outline-none text-black focus:border-blue-500 ${
+                      formik.errors.email
+                        ? "border-red-300 focus:ring-red-500 focus:border-red-500"
+                        : "border-gray-300"
+                    }`}
+                  />
+                </div>
+                {formik.errors.email && (
+                  <p className="mt-1 text-sm text-red-600">
+                    {formik.errors.email}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Phone
+                </label>
+                <div className="relative">
+                  <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  <input
+                    type="tel"
+                    name="phone"
+                    placeholder="+1234567890"
+                    value={formik.values.phone}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    className={`w-full pl-10 pr-3 py-2 border rounded-md shadow-sm focus:outline-none text-black focus:border-blue-500 ${
+                      formik.errors.phone
+                        ? "border-red-300 focus:ring-red-500 focus:border-red-500"
+                        : "border-gray-300"
+                    }`}
+                  />
+                </div>
+                {formik.errors.phone && (
+                  <p className="mt-1 text-sm text-red-600">
+                    {formik.errors.phone}
+                  </p>
+                )}
+              </div>
+
+              {/* LinkedIn URL */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  LinkedIn URL
+                </label>
+                <div className="relative">
+                  <Linkedin className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  <input
+                    type="url"
+                    name="linkedinUrl"
+                    placeholder="https://linkedin.com/in/johndoe"
+                    value={formik.values.linkedinUrl}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    className={`w-full pl-10 pr-3 py-2 border rounded-md shadow-sm focus:outline-none text-black focus:border-blue-500 ${
+                      formik.errors.linkedinUrl
+                        ? "border-red-300 focus:ring-red-500 focus:border-red-500"
+                        : "border-gray-300"
+                    }`}
+                  />
+                </div>
+                {formik.errors.linkedinUrl && (
+                  <p className="mt-1 text-sm text-red-600">
+                    {formik.errors.linkedinUrl}
+                  </p>
+                )}
+              </div>
+            </div>
+          </div>
+
+          <div className="mb-8">
+            <h3 className="text-lg font-medium text-gray-900 mb-4">
+              Professional Bio
+            </h3>
+
+            <div className="p-1 text-black">
+              <JoditEditor
+                className={`w-full px-3 py-2 border border-t-0 rounded-b-md shadow-sm focus:outline-none text-black focus:border-blue-500 resize-none ${
+                  formik.errors.bio
+                    ? "border-red-300 focus:ring-red-500 focus:border-red-500"
+                    : "border-gray-300"
+                }`}
+                value={formik.values.bio}
+                onChange={(newContent) => {
+                  formik.setFieldValue("bio", newContent);
+                }}
+                onBlur={() => formik.setFieldTouched("bio", true)}
+                config={{
+                  height: 400,
+                  toolbarAdaptive: false,
+                  buttons: [
+                    "bold",
+                    "italic",
+                    "underline",
+                    "ul",
+                    "ol",
+                    "font",
+                    "fontsize",
+                    "paragraph",
+                    "link",
+                    "table",
+                    "image",
+                    "hr",
+                    "source",
+                  ],
+                }}
+              />
+              {formik.touched.bio && formik.errors.bio && (
+                <p className="mt-1 text-sm text-red-600">{formik.errors.bio}</p>
+              )}
+            </div>
+
+            <p className="mt-2 text-xs text-gray-500">
+              Use the toolbar to format your text. Bold: **text**, Italic:
+              *text*, Large: ## text, Small: text, Bullet: • item, Number: 1.
+              item
+            </p>
+          </div>
+
+          <div className="flex justify-end gap-3">
+            <button
+              type="button"
+              onClick={() => {
+                formik.resetForm();
+                setProfileImage(null);
+              }}
+              className="px-6 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              onClick={() => formik.handleSubmit()}
+              className="px-6 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+            >
+              Save Profile
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

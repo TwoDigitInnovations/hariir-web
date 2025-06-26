@@ -17,7 +17,7 @@ const initialValue = {
   password: "",
 };
 
-const JoinNowModal = ({ isOpen, onClose }) => {
+const JoinNowModal = ({ isOpen, setIsOpen ,onClose, loader }) => {
   const router = useRouter();
   const [user, setUser] = useContext(userContext);
   const [eyeIcon, setEyeIcon] = useState(false);
@@ -50,7 +50,8 @@ const JoinNowModal = ({ isOpen, onClose }) => {
         setUser(res.data);
         resetForm();
         toast.success("You are successfully logged in");
-        router.push("/");
+        router.push("/AfterLoginBrowse");
+        setIsOpen(false)
       },
       (err) => {
         console.log(err);
@@ -62,8 +63,8 @@ const JoinNowModal = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/80 bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white w-full h-full sm:max-w-sm sm:h-auto p-6 relative rounded-md shadow-lg">
+    <div className="fixed md:p-0 p-3 inset-0 bg-black/80 bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-white w-full max-w-md md:w-[350px]  p-6 relative rounded-md shadow-lg">
         <button
           className="absolute top-4 right-4 text-gray-600 text-2xl font-bold"
           onClick={onClose}
@@ -105,13 +106,13 @@ const JoinNowModal = ({ isOpen, onClose }) => {
               onBlur={handleBlur}
             />
             <div
-              className="absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer"
+              className="absolute right-8 top-[175px] transform -translate-y-1/2 cursor-pointer"
               onClick={() => setEyeIcon(!eyeIcon)}
             >
               {!eyeIcon ? (
-                <IoEyeOffOutline className="w-[20px] h-[20px] text-custom-darksGray" />
+                <IoEyeOffOutline className="w-[20px] h-[20px] text-gray-300" />
               ) : (
-                <IoEyeOutline className="w-[20px] h-[20px] text-custom-darksGray" />
+                <IoEyeOutline className="w-[20px] h-[20px] text-gray-300" />
               )}
             </div>
             {errors.password && (
@@ -121,7 +122,7 @@ const JoinNowModal = ({ isOpen, onClose }) => {
             )}
           </div>
           <button
-            className="w-full bg-blue-500 hover:bg-blue-600 text-[14px] text-white py-2 rounded-md transition duration-200"
+            className="w-full bg-blue-500 hover:bg-blue-600 text-[14px] text-white py-2 rounded-md transition duration-200 cursor-pointer"
             type="submit"
           >
             Sign In

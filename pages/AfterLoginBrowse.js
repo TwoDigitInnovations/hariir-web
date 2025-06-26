@@ -1,6 +1,8 @@
 import { Users, Building2, Search, MapPin, User, Eye } from "lucide-react";
+import { useRouter } from "next/router";
 
 export default function EastAfricaNetwork() {
+  const router = useRouter();
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4">
       {/* Header Stats Section */}
@@ -48,7 +50,10 @@ export default function EastAfricaNetwork() {
               </div>
             </div>
 
-            <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center">
+            <button
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center cursor-pointer"
+              onClick={() => router.push("/FindProfessional")}
+            >
               <Search className="w-4 h-4 mr-2" />
               Browse Professionals
             </button>
@@ -84,7 +89,10 @@ export default function EastAfricaNetwork() {
               </div>
             </div>
 
-            <button className="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center">
+            <button
+              className="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center cursor-pointer"
+              onClick={() => router.push("/FindCompany")}
+            >
               <Search className="w-4 h-4 mr-2" />
               Browse Companies
             </button>

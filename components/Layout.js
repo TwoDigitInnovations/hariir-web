@@ -150,8 +150,17 @@ const Layout = ({ children, loader }) => {
         </div>
       )}
 
-      <SingIn isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
-      <SingUp isOpen={isSingUp} onClose={() => setIsSingUp(false)} />
+      <SingIn
+        isOpen={isModalOpen}
+        setIsOpen={setIsModalOpen}
+        loader={loader}
+        onClose={() => setIsModalOpen(false)}
+      />
+      <SingUp
+        isOpen={isSingUp}
+        loader={loader}
+        onClose={() => setIsSingUp(false)}
+      />
     </>
   );
 };

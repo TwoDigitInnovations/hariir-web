@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { FaUser} from "react-icons/fa";
+import { FaUser } from "react-icons/fa";
 import { HiOfficeBuilding } from "react-icons/hi";
 import { Api } from "@/services/service";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { ToastContainer, toast } from "react-toastify";
+import { useRouter } from "next/router";
 
 const SignupSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
@@ -23,10 +24,9 @@ const initialValue = {
   password: "",
 };
 
-const SingUp = ({ isOpen, onClose, props }) => {
-  // Move all hooks to the top, before any conditional returns
+const SingUp = ({ isOpen, onClose, loader }) => {
   const [accountType, setAccountType] = useState("professional");
-  
+  const router = useRouter();
   const { values, handleSubmit, handleChange, handleBlur, errors, touched } =
     useFormik({
       initialValues: initialValue,
@@ -41,7 +41,7 @@ const SingUp = ({ isOpen, onClose, props }) => {
   if (!isOpen) return null;
 
   const submit = (value, resetForm) => {
-    props.loader(true);
+    loader(true);
     const data = {
       email: value.email.toLowerCase(),
       password: value.password,
@@ -50,14 +50,14 @@ const SingUp = ({ isOpen, onClose, props }) => {
     Api("post", "auth/register", data, router).then(
       (res) => {
         console.log("res================>", res);
-        props.loader(false);
+        loader(false);
         toast.success("Register successfully");
-        router.push("/signIn");
+        // router.push("/signIn");
         resetForm();
         toast.error(res?.data?.message);
       },
       (err) => {
-        props.loader(false);
+        loader(false);
         console.log(err);
         toast.error(err?.message);
       }
@@ -115,13 +115,13 @@ const SingUp = ({ isOpen, onClose, props }) => {
           name="email"
           placeholder="Enter your email"
           className={`w-full border text-black border-gray-300 rounded px-3 py-2 mb-3 text-[13px] focus:outline-none bg-blue-50 ${
-            errors.email  ? "border-red-500" : ""
+            errors.email ? "border-red-500" : ""
           }`}
           onChange={handleChange}
           onBlur={handleBlur}
           value={values.email}
         />
-        {errors.email &&  (
+        {errors.email && (
           <div className="text-red-500 text-xs mb-2">{errors.email}</div>
         )}
 

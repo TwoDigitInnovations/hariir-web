@@ -1,0 +1,179 @@
+import React from "react";
+import {
+  MapPin,
+  Users,
+  Calendar,
+  ExternalLink,
+  Building2,
+  Search,
+  Filter,
+  Briefcase,
+} from "lucide-react";
+import CompanyCard from "../components/CompanyCard"
+
+
+const FindCompany = () => {
+  const companies = [
+    {
+      initial: "S",
+      name: "SafariFintech",
+      category: "Financial Technology",
+      location: "Nairobi, Kenya",
+      description: "Leading fintech company in East Africa",
+      size: "51-200 employees",
+      founded: "2018",
+      projects: [
+        "SafariPay Mobile App (2023)",
+      ],
+      color: "#3B82F6",
+    },
+    {
+      initial: "T",
+      name: "TechAfrica Solutions",
+      category: "Software Development",
+      location: "Lagos, Nigeria",
+      description: "Innovative software solutions for African businesses",
+      size: "101-500 employees",
+      founded: "2016",
+      projects: [
+        "E-commerce Platform (2023)"
+      ],
+      color: "#10B981",
+    },
+    {
+      initial: "M",
+      name: "MediCare Plus",
+      category: "Healthcare Technology",
+      location: "Cape Town, South Africa",
+      description:
+        "Digital health solutions improving patient care across Africa",
+      size: "25-50 employees",
+      founded: "2020",
+      projects: ["Telemedicine App (2023)"],
+      color: "#F59E0B",
+    },
+    {
+      initial: "A",
+      name: "AgriTech Innovations",
+      category: "Agriculture Technology",
+      location: "Kampala, Uganda",
+      description: "Smart farming solutions for sustainable agriculture",
+      size: "11-25 employees",
+      founded: "2021",
+      projects: [
+        "Smart Irrigation System (2023)",
+      ],
+      color: "#EF4444",
+    },
+  ];
+
+  return (
+    <div className="min-h-screen bg-gray-50 p-6">
+      <div className="max-w-7xl mx-auto md:px-10 px-4">
+        {/* Header */}
+        <div className="mb-8">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
+              <Building2 className="w-5 h-5 text-green-600" />
+            </div>
+            <h1 className="text-2xl font-bold text-gray-900">Find Companies</h1>
+          </div>
+          <p className="text-gray-600">
+            Discover companies and organizations across East Africa
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+          {/* Sidebar Filters */}
+          <div className="lg:col-span-1">
+            <div className="bg-white rounded-lg border border-gray-200 p-6">
+              <div className="flex items-center gap-2 mb-6">
+                <Filter className="w-5 h-5 text-green-400" />
+                <h2 className="text-lg font-semibold text-gray-900">Filters</h2>
+              </div>
+
+              {/* Search */}
+              <div className="pb-5  border-b-[1.5px] border-b-gray-300">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Search
+                </label>
+                <div className="relative">
+                  <Search className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                  <input
+                    type="text"
+                    placeholder="Search by name, description, or service"
+                    className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none text-black  text-sm"
+                  />
+                </div>
+              </div>
+
+              {/* Location */}
+              <div className="pb-5 mt-5 border-b-[1.5px] border-b-gray-300">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <MapPin className="w-4 h-4 inline mr-1" />
+                  Location
+                </label>
+                <select className="w-full p-2 border text-black border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                  <option>Select location</option>
+                  <option>Kenya</option>
+                  <option>Nigeria</option>
+                  <option>South Africa</option>
+                  <option>Uganda</option>
+                </select>
+              </div>
+
+              {/* Industry Sector */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-3 mt-4">
+                  <Briefcase className="w-4 h-4 inline mr-2 text-gray-700"/>
+                  Industry Sector
+                </label>
+                <div className="space-y-2">
+                  {[
+                    "Technology",
+                    "Finance",
+                    "Healthcare",
+                    "Education",
+                    "Engineering",
+                    "Manufacturing",
+                    "Agriculture",
+                  ].map((sector) => (
+                    <label key={sector} className="flex items-center">
+                      <input
+                        type="checkbox"
+                        className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                      />
+                      <span className="ml-2 text-sm text-gray-700">
+                        {sector}
+                      </span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Results */}
+          <div className="lg:col-span-3">
+            <div className="mb-6">
+              <h2 className="text-xl font-semibold text-gray-900 mb-2">
+                4 Companies Found
+              </h2>
+              <p className="text-gray-600">
+                Explore organizations making an impact across East Africa
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 xl:grid-cols-3 gap-3 ">
+              {companies.map((company, index) => (
+                <CompanyCard key={index} company={company} />
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default FindCompany;
