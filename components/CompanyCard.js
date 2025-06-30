@@ -1,12 +1,35 @@
-import { MapPin, Users, Calendar, ExternalLink, X, Phone, Mail, Globe } from "lucide-react";
+import {
+  MapPin,
+  Users,
+  Calendar,
+  ExternalLink,
+  X,
+  Phone,
+  Mail,
+  Globe,
+} from "lucide-react";
+import countries from "i18n-iso-countries";
+import enLocale from "i18n-iso-countries/langs/en.json";
+import { useState, useEffect } from "react";
 
-import { useState } from "react";
 const CompanyCard = ({ company }) => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [country, setCountry] = useState("");
+
 
   const toggleProfile = () => {
     setIsProfileOpen(!isProfileOpen);
   };
+
+
+  useEffect(() => {
+    const result = countries.getName(
+      company.location?.trim().toUpperCase(),
+      "en"
+    );
+    setCountry(result || "India");
+  });
+
 
   return (
     <div className="bg-white rounded-lg shadow-xl border border-gray-200 p-6 hover:shadow-2xl transition-shadow duration-200">
@@ -14,28 +37,25 @@ const CompanyCard = ({ company }) => {
         <div className="flex-1">
           <div className="flex justify-between items-center">
             {" "}
-            <div
-              className="w-14 h-14 rounded-full m-2 shadow-lg flex items-center justify-center text-white font-semibold text-2xl"
-              style={{ backgroundColor: company.color }}
-            >
-              {company.initial}
+            <div className=" rounded-full m-2 shadow-lg flex items-center justify-center text-white font-semibold text-2xl ">
+              <img className="w-24 " src={company.companyLogo} />
             </div>
             <div className="flex flex-col items-start justify-between ">
               <h3 className="text-[16px] font-semibold text-gray-900 mb-1">
-                {company.name}
+                {company.companyName}
               </h3>
               <p className="text-gray-600 mb-2 text-[14px]">
-                {company.category}
+                {company.industrySector}
               </p>
               <div className="flex items-center text-gray-500 text-[12px] mb-3">
                 <MapPin className="w-4 h-4 mr-1" />
-                {company.location}
+                {country}
               </div>
             </div>
           </div>
 
           <p className="text-gray-700 text-sm mb-4 leading-relaxed">
-            {company.description}
+            {company.companyDescription.slice(0, 60) + "..."}
           </p>
 
           <div className="grid grid-cols-1 gap-4 mb-4 text-sm">
@@ -44,7 +64,7 @@ const CompanyCard = ({ company }) => {
               <div className="flex items-center ">
                 <Users className="w-4 h-4 mr-2 text-gray-500" />
                 <span className="font-medium text-gray-500">
-                  {company.size}
+                  {company.companySize}
                 </span>
               </div>
             </div>
@@ -53,7 +73,7 @@ const CompanyCard = ({ company }) => {
               <div className="flex items-center mt-1">
                 <Calendar className="w-4 h-4 mr-1 text-gray-400" />
                 <span className="font-medium text-gray-500">
-                  {company.founded}
+                  {company.foundedYear}
                 </span>
               </div>
             </div>
@@ -64,16 +84,17 @@ const CompanyCard = ({ company }) => {
               Recent Projects
             </h4>
             <ul className="text-sm text-gray-600">
-              {company.projects.map((project, index) => (
+              {company.projects?.slice(0, 1).map((project, index) => (
                 <li key={index} className="mb-1">
-                  • {project}
+                  • {project.title} ({project.yearCompleted})
                 </li>
               ))}
             </ul>
           </div>
 
-          <button className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition-colors duration-200 flex items-center justify-center gap-2"
-          onClick={toggleProfile}
+          <button
+            className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition-colors duration-200 flex items-center justify-center gap-2"
+            onClick={toggleProfile}
           >
             View Profile
             <ExternalLink className="w-4 h-4" />
@@ -291,7 +312,6 @@ const CompanyCard = ({ company }) => {
             </div>
           </div>
         )}
-
       </div>
     </div>
   );

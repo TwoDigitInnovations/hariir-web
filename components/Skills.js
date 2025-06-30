@@ -30,7 +30,7 @@ const suggestedSkills = [
   "Consulting",
 ];
 
-export default function SkillEditor({ open, close, loader, profileData }) {
+export default function SkillEditor({ open, close, loader, profileData, getProfile }) {
   const [inputSkill, setInputSkill] = useState("");
   const [skills, setSkills] = useState([]);
   const router = useRouter();
@@ -68,6 +68,7 @@ export default function SkillEditor({ open, close, loader, profileData }) {
         if (res.status) {
           toast.success("Skills updated successfully");
           close();
+          getProfile()
         } else {
           toast.error(res.message || "An error occurred");
         }
@@ -81,80 +82,82 @@ export default function SkillEditor({ open, close, loader, profileData }) {
   };
 
   return (
-    <div className="backdrop-blur-lg h-[500px] top-40 shadow-2xl rounded-lg fixed md:p-6 p-6 max-w-xl mx-auto inset-0 bg-white bg-opacity-50 z-50">
-      <div className="flex justify-between">
-        <h2 className="text-xl font-semibold text-gray-700 mb-4">
-          Edit Skills
-        </h2>
-        <RxCross2 onClick={close} className="text-black cursor-pointer" />
-      </div>
-      {skills.length > 0 && (
+    <div className="fixed inset-0 bg-black/80 bg-opacity-50 z-50 flex items-center justify-center p-4">
+      <div className="bg-white p-6 rounded-lg shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col">
+        <div className="flex justify-between">
+          <h2 className="text-xl font-semibold text-gray-700 mb-4">
+            Edit Skills
+          </h2>
+          <RxCross2 onClick={close} className="text-black cursor-pointer" />
+        </div>
+        {skills.length > 0 && (
+          <div className="mb-4">
+            <div className="flex flex-wrap gap-2">
+              {skills.map((skill, index) => (
+                <div
+                  key={index}
+                  className="flex items-center gap-1 bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm"
+                >
+                  {skill}
+                  <button onClick={() => handleRemoveSkill(skill)}>
+                    <X size={14} />
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+        <div className="flex items-center gap-2 mb-4">
+          <input
+            type="text"
+            value={inputSkill}
+            onChange={(e) => setInputSkill(e.target.value)}
+            placeholder="Add a skill"
+            className="flex-1 border text-gray-800 rounded px-4 py-2 focus:outline-none focus:ring"
+          />
+          <button
+            onClick={() => {
+              const trimmedSkill = inputSkill.trim();
+              if (trimmedSkill) {
+                handleAddSkill(trimmedSkill);
+                setInputSkill("");
+              }
+            }}
+            className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
+          >
+            <Plus size={20} />
+          </button>
+        </div>
+
         <div className="mb-4">
+          <p className="font-medium mb-2 text-gray-800">Suggested Skills:</p>
           <div className="flex flex-wrap gap-2">
-            {skills.map((skill, index) => (
-              <div
+            {suggestedSkills.map((skill, index) => (
+              <button
                 key={index}
-                className="flex items-center gap-1 bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm"
+                onClick={() => handleAddSkill(skill)}
+                className="border px-3 py-1 text-gray-600 rounded-full text-sm hover:bg-blue-100"
               >
                 {skill}
-                <button onClick={() => handleRemoveSkill(skill)}>
-                  <X size={14} />
-                </button>
-              </div>
+              </button>
             ))}
           </div>
         </div>
-      )}
-      <div className="flex items-center gap-2 mb-4">
-        <input
-          type="text"
-          value={inputSkill}
-          onChange={(e) => setInputSkill(e.target.value)}
-          placeholder="Add a skill"
-          className="flex-1 border text-gray-800 rounded px-4 py-2 focus:outline-none focus:ring"
-        />
-        <button
-          onClick={() => {
-            const trimmedSkill = inputSkill.trim();
-            if (trimmedSkill) {
-              handleAddSkill(trimmedSkill);
-              setInputSkill("");
-            }
-          }}
-          className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
-        >
-          <Plus size={20} />
-        </button>
-      </div>
 
-      <div className="mb-4">
-        <p className="font-medium mb-2 text-gray-800">Suggested Skills:</p>
-        <div className="flex flex-wrap gap-2">
-          {suggestedSkills.map((skill, index) => (
-            <button
-              key={index}
-              onClick={() => handleAddSkill(skill)}
-              className="border px-3 py-1 text-gray-600 rounded-full text-sm hover:bg-blue-100"
-            >
-              {skill}
-            </button>
-          ))}
+        <div className="flex justify-end gap-4 mt-6">
+          <button
+            className="px-4 py-2 rounded border border-gray-800 text-gray-800"
+            onClick={close}
+          >
+            Cancel
+          </button>
+          <button
+            onClick={submit}
+            className="px-4 py-2 rounded bg-blue-500 text-white hover:bg-blue-600"
+          >
+            Save Changes
+          </button>
         </div>
-      </div>
-
-      <div className="flex justify-end gap-4 mt-6">
-        <button
-          className="px-4 py-2 rounded border border-gray-800 text-gray-800"
-          onClick={close}
-        >
-          Cancel
-        </button>
-        <button
-          onClick={submit}
-          className="px-4 py-2 rounded bg-blue-500 text-white hover:bg-blue-600"
-        >
-          Save Changes
-        </button>
       </div>
     </div>
   );

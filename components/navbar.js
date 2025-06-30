@@ -27,7 +27,7 @@ export const Navbar = ({ onSignInClick, onSingUpClick }) => {
   const isActive =
     path === "/FindProfessional" ||
     path === "/FindCompany" ||
-    path === "/AfterLoginBrowse";
+    path === "/dashboard";
 
   const isActiveHome = path === "/";
 
@@ -75,18 +75,15 @@ export const Navbar = ({ onSignInClick, onSingUpClick }) => {
           </div>
 
           {!isLoggedIn ? (
-            // Before Login Navbar
             <div className="flex items-center space-x-8">
               <div className="flex items-center space-x-4">
                 <button
-                  // onClick={() => setIsSignInModalOpen(true)}
                   className="text-blue-500 border-blue-500 border-2 hover:text-blue-600 font-medium px-4 py-2 rounded-[7px] cursor-pointer"
                   onClick={onSignInClick}
                 >
                   Sign In
                 </button>
                 <button
-                  // onClick={() => setIsJoinModalOpen(true)}
                   className="bg-blue-500 text-white px-4 py-2 rounded-[7px] hover:bg-blue-600 transition-colors"
                   onClick={onSingUpClick}
                 >
@@ -99,7 +96,7 @@ export const Navbar = ({ onSignInClick, onSingUpClick }) => {
               <div className="flex items-center ">
                 <div className="hidden md:flex items-center space-x-8">
                   <a
-                    href="/"
+                    onClick={() => router.push("/")}
                     className={`flex items-center gap-4 ${
                       isActiveHome
                         ? "text-blue-500"
@@ -111,8 +108,8 @@ export const Navbar = ({ onSignInClick, onSingUpClick }) => {
                   </a>
 
                   <a
-                    href="/AfterLoginBrowse"
-                    className={`flex items-center gap-4 ${
+                    onClick={() => router.push("/dashboard")}
+                    className={`flex cursor-pointer items-center gap-4 ${
                       isActive
                         ? "text-blue-500"
                         : "text-gray-700 hover:text-blue-500"
@@ -135,8 +132,8 @@ export const Navbar = ({ onSignInClick, onSingUpClick }) => {
                   className="flex cursor-pointer items-center bg-blue-500 text-white rounded-full md:px-4 ps-3 pr-1 md:py-2 py-3"
                   onClick={() => router.push("/MyProfile")}
                 >
-                  <div className="bg-white  text-blue-500 rounded-full w-8 h-8 flex items-center justify-center font-bold mr-2">
-                    {user?.fullName?.slice(0,1)}
+                  <div className="bg-white uppercase text-blue-500 rounded-full w-8 h-8 flex items-center justify-center font-bold mr-2">
+                    {user?.fullName?.slice(0, 1) || user?.email?.slice(0, 1)}
                   </div>
                   {!user?.fullName && (
                     <span className="hidden md:block">{user.email}</span>

@@ -45,12 +45,12 @@ const JoinNowModal = ({ isOpen, setIsOpen ,onClose, loader }) => {
     };
     Api("post", "auth/login", data, router).then(
       (res) => {
-        localStorage.setItem("userDetail", JSON.stringify(res.data));
+        localStorage.setItem("userDetail", JSON.stringify(res?.data?.user));
         localStorage.setItem("token", res?.data?.token);
-        setUser(res.data);
+        setUser(res.data.user);
         resetForm();
         toast.success("You are successfully logged in");
-        router.push("/AfterLoginBrowse");
+        router.push("/");
         setIsOpen(false)
       },
       (err) => {

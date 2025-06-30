@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   MapPin,
   Users,
@@ -9,64 +9,98 @@ import {
   Filter,
   Briefcase,
 } from "lucide-react";
-import CompanyCard from "../components/CompanyCard"
+import CompanyCard from "../components/CompanyCard";
+import { useRouter } from "next/router";
+import { toast } from "react-toastify";
+import { Api } from "@/services/service";
 
+const FindCompany = (props) => {
+  // const companies = [
+  //   {
+  //     initial: "S",
+  //     name: "SafariFintech",
+  //     category: "Financial Technology",
+  //     location: "Nairobi, Kenya",
+  //     description: "Leading fintech company in East Africa",
+  //     size: "51-200 employees",
+  //     founded: "2018",
+  //     projects: [
+  //       "SafariPay Mobile App (2023)",
+  //     ],
+  //     color: "#3B82F6",
+  //   },
+  //   {
+  //     initial: "T",
+  //     name: "TechAfrica Solutions",
+  //     category: "Software Development",
+  //     location: "Lagos, Nigeria",
+  //     description: "Innovative software solutions for African businesses",
+  //     size: "101-500 employees",
+  //     founded: "2016",
+  //     projects: [
+  //       "E-commerce Platform (2023)"
+  //     ],
+  //     color: "#10B981",
+  //   },
+  //   {
+  //     initial: "M",
+  //     name: "MediCare Plus",
+  //     category: "Healthcare Technology",
+  //     location: "Cape Town, South Africa",
+  //     description:
+  //       "Digital health solutions improving patient care across Africa",
+  //     size: "25-50 employees",
+  //     founded: "2020",
+  //     projects: ["Telemedicine App (2023)"],
+  //     color: "#F59E0B",
+  //   },
+  //   {
+  //     initial: "A",
+  //     name: "AgriTech Innovations",
+  //     category: "Agriculture Technology",
+  //     location: "Kampala, Uganda",
+  //     description: "Smart farming solutions for sustainable agriculture",
+  //     size: "11-25 employees",
+  //     founded: "2021",
+  //     projects: [
+  //       "Smart Irrigation System (2023)",
+  //     ],
+  //     color: "#EF4444",
+  //   },
+  // ];
 
-const FindCompany = () => {
-  const companies = [
-    {
-      initial: "S",
-      name: "SafariFintech",
-      category: "Financial Technology",
-      location: "Nairobi, Kenya",
-      description: "Leading fintech company in East Africa",
-      size: "51-200 employees",
-      founded: "2018",
-      projects: [
-        "SafariPay Mobile App (2023)",
-      ],
-      color: "#3B82F6",
-    },
-    {
-      initial: "T",
-      name: "TechAfrica Solutions",
-      category: "Software Development",
-      location: "Lagos, Nigeria",
-      description: "Innovative software solutions for African businesses",
-      size: "101-500 employees",
-      founded: "2016",
-      projects: [
-        "E-commerce Platform (2023)"
-      ],
-      color: "#10B981",
-    },
-    {
-      initial: "M",
-      name: "MediCare Plus",
-      category: "Healthcare Technology",
-      location: "Cape Town, South Africa",
-      description:
-        "Digital health solutions improving patient care across Africa",
-      size: "25-50 employees",
-      founded: "2020",
-      projects: ["Telemedicine App (2023)"],
-      color: "#F59E0B",
-    },
-    {
-      initial: "A",
-      name: "AgriTech Innovations",
-      category: "Agriculture Technology",
-      location: "Kampala, Uganda",
-      description: "Smart farming solutions for sustainable agriculture",
-      size: "11-25 employees",
-      founded: "2021",
-      projects: [
-        "Smart Irrigation System (2023)",
-      ],
-      color: "#EF4444",
-    },
-  ];
+  const [companies, setCompaniesData] = useState([]);
+  const router = useRouter();
+  const [token, setToken] = useState(null);
+  const [SearchTearm, setSearchTearm] = useState("");
 
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    setToken(storedToken);
+  }, []);
+
+  useEffect(() => {
+    if (token) {
+      getAllCompany();
+    }
+  }, [token]);
+
+  const getAllCompany = () => {
+    props.loader(true);
+
+    Api("get", "auth/getAllProfileBaseOnRole?role=company", null, router).then(
+      (res) => {
+        props.loader(false);
+        setCompaniesData(
+          (res.data || []).filter((item) => item.role === "company")
+        );
+      },
+      (err) => {
+        props.loader(false);
+        toast.error(err?.data?.message || err?.message || "An error occurred");
+      }
+    );
+  };
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-7xl mx-auto md:px-10 px-4">
@@ -103,6 +137,7 @@ const FindCompany = () => {
                     type="text"
                     placeholder="Search by name, description, or service"
                     className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none text-black  text-sm"
+                    onChange={(e)=> setSearchTearm(e.target.value)}
                   />
                 </div>
               </div>
@@ -125,7 +160,7 @@ const FindCompany = () => {
               {/* Industry Sector */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-3 mt-4">
-                  <Briefcase className="w-4 h-4 inline mr-2 text-gray-700"/>
+                  <Briefcase className="w-4 h-4 inline mr-2 text-gray-700" />
                   Industry Sector
                 </label>
                 <div className="space-y-2">
@@ -155,14 +190,16 @@ const FindCompany = () => {
 
           {/* Results */}
           <div className="lg:col-span-3">
-            <div className="mb-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-2">
-                4 Companies Found
-              </h2>
-              <p className="text-gray-600">
-                Explore organizations making an impact across East Africa
-              </p>
-            </div>
+            {SearchTearm && (
+              <div className="mb-6">
+                <h2 className="text-xl font-semibold text-gray-900 mb-2">
+                  4 Companies Found
+                </h2>
+                <p className="text-gray-600">
+                  Explore organizations making an impact across East Africa
+                </p>
+              </div>
+            )}
 
             <div className="grid grid-cols-1 xl:grid-cols-3 gap-3 ">
               {companies.map((company, index) => (

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   X,
   ExternalLink,
@@ -10,63 +10,28 @@ import {
   GraduationCap,
   Briefcase,
   MessageCircle,
-  Globe,
 } from "lucide-react";
+import enLocale from "i18n-iso-countries/langs/en.json";
+import { useState, useEffect } from "react";
+import countries from "i18n-iso-countries";
 
 const ProfileCard = ({ profile }) => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-
+  const [country, setCountry] = useState("");
+  const profileData = profile;
   const toggleProfile = () => {
     setIsProfileOpen(!isProfileOpen);
   };
 
-  const profileData = {
-    name: "Samuel Kiprotich",
-    title: "Senior Software Engineer",
-    location: "Nairobi, Kenya",
-    initials: "SK",
-    about:
-      "Experienced software engineer with a passion for building scalable web applications.",
-    contact: {
-      email: "samuel.k@email.com",
-      phone: "+254 712 345 678",
-      linkedin: "linkedin.com/in/samuelk",
-    },
-    skills: [
-      { name: "React", color: "bg-blue-500" },
-      { name: "Node.js", color: "bg-blue-500" },
-      { name: "Python", color: "bg-blue-500" },
-      { name: "MongoDB", color: "bg-blue-500" },
-      { name: "AWS", color: "bg-blue-500" },
-    ],
-    languages: [
-      { name: "English", level: "Native" },
-      { name: "Swahili", level: "Fluent" },
-    ],
-    experience: [
-      {
-        position: "Senior Software Engineer",
-        company: "TechFlow Kenya",
-        duration: "2021 - Present",
-        location: "Nairobi, Kenya",
-        description: "Leading development of mobile payment solutions.",
-        icon: "💼",
-      },
-    ],
-    education: [
-      {
-        degree: "Bachelor of Science in Computer Science",
-        institution: "University of Nairobi",
-        duration: "2016 - 2020",
-        achievement: "Graduated with First Class Honors",
-        icon: "🎓",
-      },
-    ],
-  };
-
+  useEffect(() => {
+    const result = countries.getName(
+      profile.location?.trim().toUpperCase(),
+      "en"
+    );
+    setCountry(result || "India");
+  });
   return (
     <div className="bg-white rounded-lg border border-gray-200 p-6 max-w-sm mx-auto shadow-sm hover:shadow-lg transition-shadow duration-300">
-      {/* Profile Avatar */}
       <div className="flex justify-center mb-4">
         <div
           className="w-16 h-16 rounded-full flex items-center justify-center text-white font-bold text-xl"
@@ -74,29 +39,29 @@ const ProfileCard = ({ profile }) => {
             background: profile.avatarColor || "#3B82F6",
           }}
         >
-          {profile.initials}
+          {profile.initials || "AB"}
         </div>
       </div>
 
       {/* Name and Title */}
       <div className="text-center mb-1">
         <h3 className="text-[18px] font-bold text-gray-900 mb-1">
-          {profile.name}
+          {profile.fullName}
         </h3>
-        <p className="text-gray-600 text-[14px]">{profile.title}</p>
+        <p className="text-gray-600 text-[14px]">{profile.professionalTitle}</p>
       </div>
 
       {/* Location */}
       <div className="flex items-center justify-center text-gray-500 text-sm mb-4">
         <MapPin className="w-4 h-4 mr-1" />
-        {profile.location}
+        {country}
       </div>
 
       {/* Skills Section */}
       <div className="mb-4">
         <h4 className="text-sm font-semibold text-gray-800 mb-3">Skills</h4>
         <div className="flex flex-wrap gap-2">
-          {profile.skills.slice(0, 3).map((skill, index) => (
+          {profile.skills?.slice(0, 3).map((skill, index) => (
             <span
               key={index}
               className="bg-blue-500 text-white text-xs px-3 py-1 rounded-full font-medium"
@@ -104,9 +69,9 @@ const ProfileCard = ({ profile }) => {
               {skill}
             </span>
           ))}
-          {profile.skills.length > 3 && (
+          {profile.skills?.length > 3 && (
             <span className="bg-gray-200 text-gray-600 text-xs px-3 py-1 rounded-full font-medium">
-              +{profile.skills.length - 3} more
+              +{profile.skills?.length - 3} more
             </span>
           )}
         </div>
@@ -118,7 +83,7 @@ const ProfileCard = ({ profile }) => {
           Current Role
         </h4>
         <p className="text-gray-600 text-sm leading-relaxed">
-          {profile.currentRole}
+          {profile?.experience[0].jobTitle} at {profile?.experience[0].company}
         </p>
       </div>
 
@@ -133,25 +98,25 @@ const ProfileCard = ({ profile }) => {
 
       {isProfileOpen && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col">
+          <div className="bg-white rounded-xl shadow-2xl w-full max-w-6xl max-h-[90vh] overflow-hidden flex flex-col">
             {/* Header */}
             <div className="bg-gradient-to-r from-blue-50 to-blue-50 p-6 border-b border-gray-200">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                {/* Left section: Profile Picture and Info */}
+             
                 <div className="flex items-center space-x-4">
                   <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-blue-500 rounded-full flex items-center justify-center text-white text-2xl font-bold shadow-lg">
-                    {profileData.initials}
+                    {profileData.fullName.slice(0,2)}
                   </div>
                   <div>
                     <h1 className="text-xl sm:text-2xl font-bold text-gray-800">
-                      {profileData.name}
+                      {profileData.fullName}
                     </h1>
                     <p className="text-blue-600 font-medium text-base sm:text-lg">
                       {profileData.title}
                     </p>
                     <p className="text-gray-600 flex items-center mt-1 text-sm sm:text-base">
                       <MapPin className="w-4 h-4 mr-1" />
-                      {profileData.location}
+                      {country}
                     </p>
                   </div>
                 </div>
@@ -172,18 +137,15 @@ const ProfileCard = ({ profile }) => {
               </div>
             </div>
 
-            {/* Content */}
             <div className="flex-1 overflow-y-auto p-6">
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                {/* Left Column */}
                 <div className="lg:col-span-2 space-y-6">
-                  {/* About Section */}
                   <div>
                     <h2 className="text-xl font-semibold text-gray-800 mb-3 flex items-center">
                       About
                     </h2>
                     <p className="text-gray-600 leading-relaxed">
-                      {profileData.about}
+                      {profileData.bio}
                     </p>
                   </div>
 
@@ -193,10 +155,10 @@ const ProfileCard = ({ profile }) => {
                       <Briefcase className="w-5 h-5 mr-2 text-blue-500" />
                       Experience
                     </h2>
-                    {profileData.experience.map((exp, index) => (
+                    {profileData.experience?.map((exp, index) => (
                       <div
                         key={index}
-                        className="bg-gray-50 rounded-lg p-4 border-l-4 border-blue-500"
+                        className="bg-gray-50 mb-4 rounded-lg p-4 border-l-4 border-blue-500"
                       >
                         <div className="flex items-start space-x-3">
                           <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center text-white font-bold">
@@ -242,9 +204,9 @@ const ProfileCard = ({ profile }) => {
                               {edu.institution}
                             </p>
                             <p className="text-gray-500 text-sm mb-2">
-                              {edu.duration}
+                              {edu.year}
                             </p>
-                            <p className="text-gray-700">{edu.achievement}</p>
+                            <p className="text-gray-700">{edu.description}</p>
                           </div>
                         </div>
                       </div>
@@ -263,9 +225,9 @@ const ProfileCard = ({ profile }) => {
                       {profileData.skills.map((skill, index) => (
                         <span
                           key={index}
-                          className={`px-3 py-1 rounded-full text-white text-sm font-medium ${skill.color}`}
+                          className={`px-3 py-1 rounded-full text-white text-sm font-medium bg-blue-400`}
                         >
-                          {skill.name}
+                          {skill}
                         </span>
                       ))}
                     </div>
@@ -304,10 +266,10 @@ const ProfileCard = ({ profile }) => {
                         <div>
                           <p className="text-sm text-gray-500">Email</p>
                           <a
-                            href={`mailto:${profileData.contact.email}`}
+                            href={`mailto:${profileData?.email}`}
                             className="text-blue-600 hover:text-blue-700 font-medium"
                           >
-                            {profileData.contact.email}
+                            {profileData?.email}
                           </a>
                         </div>
                       </div>
@@ -317,10 +279,10 @@ const ProfileCard = ({ profile }) => {
                         <div>
                           <p className="text-sm text-gray-500">Phone</p>
                           <a
-                            href={`tel:${profileData.contact.phone}`}
+                            href={`tel:${profileData?.phone}`}
                             className="text-blue-600 hover:text-blue-700 font-medium"
                           >
-                            {profileData.contact.phone}
+                            {profileData?.phone}
                           </a>
                         </div>
                       </div>
@@ -330,12 +292,12 @@ const ProfileCard = ({ profile }) => {
                         <div>
                           <p className="text-sm text-gray-500">LinkedIn</p>
                           <a
-                            href={`https://${profileData.contact.linkedin}`}
+                            href={`https://${profileData.linkedinUrl}`}
                             className="text-blue-600 hover:text-blue-700 font-medium"
                             target="_blank"
                             rel="noopener noreferrer"
                           >
-                            {profileData.contact.linkedin}
+                            {profileData.linkedinUrl}
                           </a>
                         </div>
                       </div>

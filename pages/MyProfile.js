@@ -11,11 +11,17 @@ import {
   GraduationCap,
   Languages,
   Users,
+  Building2,
 } from "lucide-react";
 import { Api } from "@/services/service";
 import { toast } from "react-toastify";
 import Skills from "../components/Skills";
 import Experience from "../components/experience";
+import Education from "../components/educaation";
+import Referee from "../components/referee";
+import Language from "../components/language";
+import Resume from "../components/Resume";
+import CompanyProfile from "@/components/CompanyProfile";
 
 export default function ProfileCompletion(props) {
   const router = useRouter();
@@ -23,7 +29,13 @@ export default function ProfileCompletion(props) {
   const [profileData, setProfileData] = useState({});
   const [skillOpen, setSkillOpen] = useState(false);
   const [experienceOpen, setExperienceOpen] = useState(false);
+  const [educationOpen, setEducationOpen] = useState(false);
+  const [refereeOpen, setRefereeOpen] = useState(false);
+  const [languageOpen, setLanguageOpen] = useState(false);
   const [token, setToken] = useState(null);
+  const [showFull, setShowFull] = useState(false);
+
+  const role = user?.role === "professional" ? "Professional" : "Company";
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token"); // your key
@@ -68,21 +80,27 @@ export default function ProfileCompletion(props) {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {!profileData?.fullName && (
+        {!profileData?.fullName && !profileData?.companyName && (
           <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
             <div className="flex md:flex-row flex-col items-center justify-between">
               <div>
-                <h1 className="text-2xl font-bold text-gray-900 mb-2">
+                <h1 className="md:text-2xl text-xl font-bold text-gray-900 mb-2">
                   Complete Your Profile
                 </h1>
-                <p className="text-gray-600">
-                  Set up your professional profile to start connecting with
-                  others and showcase your expertise.
+                <p className="text-gray-600 md:text-[16px] text-[14px]">
+                  Set up your {role} profile to start connecting with others and
+                  showcase your expertise.
                 </p>
               </div>
               <button
-                className="flex mt-4 items-center bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors"
-                onClick={() => router.push("/ProfileComplete")}
+                className="flex md:w-[180px] w-full justify-center mt-4 items-center bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors"
+                onClick={() => {
+                  if (user?.role === "professional") {
+                    router.push("/ProfileComplete");
+                  } else if (user?.role === "company") {
+                    router.push("/CompanyProfile");
+                  }
+                }}
               >
                 <Plus className="w-4 h-4 mr-2" />
                 Set Up Profile
@@ -99,7 +117,12 @@ export default function ProfileCompletion(props) {
               <div className="border-b border-gray-200 md:p-6 p-5">
                 <div className="flex md:flex-row flex-col items-center justify-between">
                   <div className="flex justify-start mb-2">
-                    <User className="w-6 h-6 text-blue-500 mr-3" />
+                    {user?.role === "company" ? (
+                      <Building2 className="w-6 h-6 text-blue-500 mr-3" />
+                    ) : (
+                      <User className="w-6 h-6 text-blue-500 mr-3" />
+                    )}
+
                     <h2 className="text-xl font-semibold text-gray-800">
                       My Profile
                     </h2>
@@ -107,22 +130,26 @@ export default function ProfileCompletion(props) {
                   <div className="flex grid-cols-2 items-start space-x-3">
                     <button
                       className="flex items-start text-gray-600 hover:text-gray-900 px-3 py-2 rounded-lg hover:bg-gray-50"
-                      onClick={() =>
-                        router.push(`/ProfileComplete?${user._id}`)
-                      }
+                      onClick={() => {
+                        router.push({
+                          pathname:
+                            user?.role === "professional"
+                              ? "/ProfileComplete"
+                              : "/CompanyProfile",
+                          query: { id: user._id },
+                        });
+                      }}
                     >
                       <Edit className="w-6 h-6 mr-2" />
                       Edit Profile
                     </button>
-                    <button className="flex items-start text-gray-600 hover:text-gray-900 px-3 py-2 rounded-lg hover:bg-gray-50">
-                      <Download className="w-5 h-5 mr-2" />
-                      PDF
-                    </button>
+
+                    {/* <Resume profile={profileData} /> */}
                   </div>
                 </div>
               </div>
 
-              {profileData.fullName ? (
+              {profileData.role === "professional" ? (
                 <div>
                   <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
                     {/* Header Section */}
@@ -185,10 +212,6 @@ export default function ProfileCompletion(props) {
                             Skills
                           </h2>
                           <div className="flex gap-4">
-                            <Plus
-                              size={20}
-                              className="text-gray-400 hover:bg-gray-200 cursor-pointer"
-                            />
                             <Edit3
                               size={20}
                               className="text-gray-400  hover:bg-gray-200 cursor-pointer"
@@ -203,20 +226,27 @@ export default function ProfileCompletion(props) {
                                 close={() => setSkillOpen(false)}
                                 loader={props.loader}
                                 profileData={profileData}
+                                getProfile={() => getProfile()}
                               />
                             </div>
                           )}
                         </div>
-                        <div className="flex flex-wrap gap-2">
-                          {profileData?.skills?.map((skill, index) => (
-                            <span
-                              key={index}
-                              className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium"
-                            >
-                              {skill}
-                            </span>
-                          ))}
-                        </div>
+                        {profileData?.skills?.length > 0 ? (
+                          <div className="flex flex-wrap gap-2">
+                            {profileData.skills.map((skill, index) => (
+                              <span
+                                key={index}
+                                className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium"
+                              >
+                                {skill}
+                              </span>
+                            ))}
+                          </div>
+                        ) : (
+                          <p className="text-gray-500 text-sm">
+                            Add skills to showcase your expertise.
+                          </p>
+                        )}
                       </section>
 
                       {/* Experience Section */}
@@ -226,11 +256,10 @@ export default function ProfileCompletion(props) {
                             <Briefcase size={24} />
                             Experience
                           </h2>
-                          <div className="flex gap-4">
-                            <Plus size={20} className="text-gray-400" />
+                          <div className="flex gap-4 ">
                             <Edit3
                               size={20}
-                              className="text-gray-400"
+                              className="text-gray-400  hover:bg-gray-200 cursor-pointer"
                               onClick={() => setExperienceOpen(true)}
                             />
                           </div>
@@ -242,34 +271,59 @@ export default function ProfileCompletion(props) {
                                 close={() => setExperienceOpen(false)}
                                 loader={props.loader}
                                 profileData={profileData}
+                                getProfile={() => getProfile()}
                               />
                             </div>
                           )}
                         </div>
-                        {profileData?.experience?.map((experience, key) => (
-                          <div
-                            className="border-l-4 border-blue-500 md:pl-6 pl-4 ml-2"
-                            key={key}
-                          >
-                            <div className="mb-6">
-                              <h3 className="text-[16px] font-semibold text-gray-800">
-                                {experience.jobTitle}
-                              </h3>
-                              <p className="text-blue-600 text-[16px] font-medium">
-                                {experience.company}
-                              </p>
-                              <p className="text-gray-500 text-[14px] mb-2">
-                                {experience.location} - {experience.duration}
-                              </p>
-                              <p className="text-gray-600 text-[14px]">
-                               
-                              </p>
-                              <p className="text-gray-600 text-[14px]">
-                                {experience.description}
-                              </p>
-                            </div>
-                          </div>
-                        ))}
+
+                        {profileData?.experience?.length > 0 ? (
+                          profileData.experience.map((experience, key) => {
+                            const isLong =
+                              experience?.description?.length > 200;
+                            const shortDesc = experience?.description?.slice(
+                              0,
+                              200
+                            );
+
+                            return (
+                              <div
+                                className="border-l-4 border-blue-500 md:pl-6 pl-4 ml-2"
+                                key={key}
+                              >
+                                <div className="mb-6">
+                                  <h3 className="text-[16px] font-semibold text-gray-800">
+                                    {experience.jobTitle}
+                                  </h3>
+                                  <p className="text-blue-600 text-[16px] font-medium">
+                                    {experience.company}
+                                  </p>
+                                  <p className="text-gray-500 text-[14px] mb-2">
+                                    {experience.location} -{" "}
+                                    {experience.duration}
+                                  </p>
+                                  <p className="text-gray-600 text-[14px]">
+                                    {showFull || !isLong
+                                      ? experience.description
+                                      : shortDesc + "..."}
+                                    {isLong && (
+                                      <button
+                                        className="text-blue-600 text-sm ml-1"
+                                        onClick={() => setShowFull(!showFull)}
+                                      >
+                                        {showFull ? "See less" : "See more"}
+                                      </button>
+                                    )}
+                                  </p>
+                                </div>
+                              </div>
+                            );
+                          })
+                        ) : (
+                          <p className="text-gray-500 text-sm">
+                            Add experience to showcase your work history.
+                          </p>
+                        )}
                       </section>
 
                       <section className="mb-8">
@@ -279,19 +333,48 @@ export default function ProfileCompletion(props) {
                             Education
                           </h2>
                           <div className="flex gap-2">
-                            <Plus size={20} className="text-gray-400" />
-                            <Edit3 size={20} className="text-gray-400" />
+                            <Edit3
+                              size={20}
+                              className="text-gray-400  hover:bg-gray-200 cursor-pointer"
+                              onClick={() => {
+                                setEducationOpen(true);
+                              }}
+                            />
                           </div>
+
+                          {educationOpen && (
+                            <div className="flex flex-col justify-center items-center">
+                              <Education
+                                open={educationOpen}
+                                close={() => setEducationOpen(false)}
+                                loader={props.loader}
+                                profileData={profileData}
+                                getProfile={() => getProfile()}
+                              />
+                            </div>
+                          )}
                         </div>
-                        <div className="bg-gray-50 p-4 rounded-lg">
-                          <h3 className="text-[16px]  font-semibold text-gray-800">
-                            MCA
-                          </h3>
-                          <p className="text-blue-600 text-[16px]  font-medium">
-                            BBD University Lucknow
-                          </p>
-                          <p className="text-gray-500 text-[14px] ">2024</p>
-                        </div>
+                        {profileData?.education?.map((education, key) => (
+                          <div
+                            className="bg-gray-50 p-4 rounded-lg mb-4"
+                            key={key}
+                          >
+                            <h3 className="text-[16px] font-semibold text-gray-800">
+                              {education.degree || "N/A"}
+                            </h3>
+                            <p className="text-blue-600 text-[16px] font-medium">
+                              {education.institution || "N/A"}
+                            </p>
+                            <p className="text-gray-500 text-[14px]">
+                              {education.year || "N/A"}
+                            </p>
+                            {education.description && (
+                              <p className="text-gray-600 text-[14px] mt-1">
+                                {education.description}
+                              </p>
+                            )}
+                          </div>
+                        ))}
                       </section>
 
                       {/* Languages Section */}
@@ -302,17 +385,43 @@ export default function ProfileCompletion(props) {
                             Languages
                           </h2>
                           <div className="flex gap-4">
-                            <Plus size={20} className="text-gray-400" />
-                            <Edit3 size={20} className="text-gray-400" />
+                            <Edit3
+                              size={20}
+                              className="text-gray-400  hover:bg-gray-200 cursor-pointer"
+                              onClick={() => {
+                                setLanguageOpen(true);
+                              }}
+                            />
                           </div>
+                          {languageOpen && (
+                            <div className="flex flex-col justify-center items-center">
+                              <Language
+                                open={languageOpen}
+                                close={() => setLanguageOpen(false)}
+                                loader={props.loader}
+                                profileData={profileData}
+                                getProfile={() => getProfile()}
+                              />
+                            </div>
+                          )}
                         </div>
-                        <div className="flex gap-4">
-                          <span className="px-3 py-1 border border-blue-300 text-blue-700 rounded-full md:text-sm text-[12px]">
-                            English (Beginner)
-                          </span>
-                          <span className="px-3 py-1 border border-blue-300 text-blue-700 rounded-full md:text-sm text-[12px]">
-                            French (Intermediate)
-                          </span>
+
+                        <div className="flex flex-wrap gap-4">
+                          {profileData?.languages?.length > 0 ? (
+                            profileData.languages.map((lang, key) => (
+                              <span
+                                key={key}
+                                className="px-3 py-1 border border-blue-300 text-blue-700 rounded-full md:text-sm text-[12px]"
+                              >
+                                {lang.language} ({lang.level})
+                              </span>
+                            ))
+                          ) : (
+                            <p className="text-gray-500 text-sm">
+                              Add languages to showcase your multilingual
+                              abilities.
+                            </p>
+                          )}
                         </div>
                       </section>
 
@@ -324,46 +433,91 @@ export default function ProfileCompletion(props) {
                             References
                           </h2>
                           <div className="flex gap-4">
-                            <Plus size={20} className="text-gray-400" />
-                            <Edit3 size={20} className="text-gray-400" />
+                            <Edit3
+                              size={20}
+                              className="text-gray-400  hover:bg-gray-200 cursor-pointer"
+                              onClick={() => setRefereeOpen(true)}
+                            />
                           </div>
+                          {refereeOpen && (
+                            <div className="flex flex-col justify-center items-center">
+                              <Referee
+                                open={refereeOpen}
+                                close={() => setRefereeOpen(false)}
+                                loader={props.loader}
+                                profileData={profileData}
+                                getProfile={() => getProfile()}
+                              />
+                            </div>
+                          )}
                         </div>
-                        <div className="border-l-4 border-green-500 pl-6 ml-2 bg-green-50 p-4 rounded-lg">
-                          <h3 className="text-[16px] font-semibold text-gray-800">
-                            Rishabh Tiwari
-                          </h3>
-                          <p className="text-green-600 font-medium">
-                            Senior Manager
+                        {profileData?.referees?.length > 0 ? (
+                          profileData.referees.map((referee, key) => (
+                            <div
+                              key={key}
+                              className="border-l-4 border-green-500 pl-4 pr-4 py-3 ml-2 bg-green-50 rounded-lg mb-4 shadow-sm"
+                            >
+                              <h3 className="text-[16px] font-semibold text-gray-800">
+                                {referee?.fullName || "N/A"}
+                              </h3>
+                              <p className="text-green-600 font-medium">
+                                {referee?.title || "N/A"}
+                              </p>
+                              <p className="text-gray-600 text-[14px] mb-2">
+                                {referee?.organization || "N/A"}
+                              </p>
+                              <div className="flex flex-wrap gap-x-6 gap-y-1 text-[14px] text-gray-500">
+                                {referee?.email && <span>{referee.email}</span>}
+                                {referee?.contact && (
+                                  <span>{referee.contact}</span>
+                                )}
+                              </div>
+                            </div>
+                          ))
+                        ) : (
+                          <p className="text-gray-500 text-sm">
+                            Add professional referees to strengthen your
+                            profile.
                           </p>
-                          <p className="text-gray-600 text-[14px] mb-2">
-                            FlipCart
-                          </p>
-                          <div className="flex gap-4 text-[14px] text-gray-500">
-                            <span>RishabhTiwari@gmail.com</span>
-                            <span>7302569774</span>
-                          </div>
-                        </div>
+                        )}
                       </section>
                     </div>
                   </div>
                 </div>
               ) : (
-                <div className="p-6 text-center">
+                <CompanyProfile
+                  companyData={profileData}
+                  getProfile={() => getProfile()}
+                  loader={props.loader}
+                />
+              )}
+              {!profileData?.fullName && !profileData?.companyName && (
+                <div className="p-6 text-center min-h-[400px] flex justify-center items-center flex-col">
                   <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-8">
-                    <User className="w-10 h-10 text-blue-500" />
+                    {user?.role === "company" ? (
+                      <Building2 className="w-10 h-10 text-blue-500" />
+                    ) : (
+                      <User className="w-10 h-10 text-blue-500 " />
+                    )}
                   </div>
 
-                  <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                    Complete Your Professional Profile
+                  <h3 className="md:text-xl text-[18px] font-semibold text-gray-900 mb-4">
+                    Complete Your {role} Profile
                   </h3>
-                  <p className="text-gray-600 mb-8 max-w-md mx-auto">
+                  <p className="text-gray-600  text-[16px] mb-4 max-w-xl mx-auto">
                     Add your information to start building your network and
                     showcase your expertise.
                   </p>
 
                   <button
-                    className="bg-blue-500 cursor-pointer text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium"
-                    onClick={() => router.push("/ProfileComplete")}
+                    className="bg-blue-500 cursor-pointer text-white text-sm md:text-[16px] px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium"
+                    onClick={() => {
+                      if (user?.role === "professional") {
+                        router.push("/ProfileComplete");
+                      } else if (user?.role === "company") {
+                        router.push("/CompanyProfile");
+                      }
+                    }}
                   >
                     Get Started
                   </button>
@@ -416,18 +570,29 @@ export default function ProfileCompletion(props) {
               </p>
             </div>
 
-            {!profileData?.fullName && (
+            {!profileData?.fullName && !profileData?.companyName && (
               <div className="bg-blue-50 rounded-lg p-6 mt-6">
                 <h4 className="font-semibold text-blue-900 mb-3">
                   Profile Tips
                 </h4>
-                <ul className="space-y-2 text-sm text-blue-800">
-                  <li>• Add a professional photo</li>
-                  <li>• Write a compelling headline</li>
-                  <li>• Include your work experience</li>
-                  <li>• List your key skills</li>
-                  <li>• Add education details</li>
-                </ul>
+
+                {user?.role === "company" ? (
+                  <ul className="space-y-2 text-sm text-blue-800">
+                    <li>• Add your company logo</li>
+                    <li>• Provide a clear company description</li>
+                    <li>• Mention your services or products</li>
+                    <li>• Add business contact details</li>
+                    <li>• Showcase completed projects or case studies</li>
+                  </ul>
+                ) : (
+                  <ul className="space-y-2 text-sm text-blue-800">
+                    <li>• Add a professional photo</li>
+                    <li>• Write a compelling headline</li>
+                    <li>• Include your work experience</li>
+                    <li>• List your key skills</li>
+                    <li>• Add education details</li>
+                  </ul>
+                )}
               </div>
             )}
           </div>

@@ -68,8 +68,10 @@ export default function ProfileForm(props) {
     const storedToken = localStorage.getItem("token"); // your key
     setToken(storedToken);
   }, []);
+
+  
   useEffect(() => {
-    const urlUserId = router.query.userId || Object.keys(router.query)[0];
+    const urlUserId = router.query.id || Object.keys(router.query)[0];
 
     if (urlUserId) {
       getProfile(urlUserId);
@@ -135,8 +137,8 @@ export default function ProfileForm(props) {
 
             router.push("/MyProfile");
           }
-          // Don't reset form after successful update
-          //
+        
+          
         } else {
           toast.error(res.message || "An error occurred");
         }
