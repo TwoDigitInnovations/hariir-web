@@ -160,11 +160,12 @@ function CompanyProfileForm(props) {
 
   useEffect(() => {
     const urlUserId = router.query.id;
-
-    if (urlUserId) {
-      getProfile(urlUserId);
-    } else if (token) {
-      getProfile(user._id);
+    if (token) {
+      if (urlUserId) {
+        getProfile(urlUserId);
+      } else {
+        getProfile(user._id);
+      }
     }
   }, [router.query, token, user?._id]);
 
@@ -946,9 +947,9 @@ function CompanyProfileForm(props) {
                   type="button"
                   onClick={() => {
                     formik.resetForm();
-                    setCompanyLogo("")
-                    setProjects([])
-                    setTeamMembers([])
+                    setCompanyLogo("");
+                    setProjects([]);
+                    setTeamMembers([]);
                   }}
                   className="px-6 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                 >

@@ -74,7 +74,7 @@ const JoinNowModal = ({ isOpen, setIsOpen ,onClose, loader }) => {
         <h2 className="text-xl font-semibold mb-1 text-center text-black">
           Welcome Back
         </h2>
-        <p className="mb-6 text-center text-[16px] text-gray-500">
+        <p className="mb-6 text-center text-[16px] text-gray-400">
           Sign in to your account
         </p>
 
@@ -83,7 +83,7 @@ const JoinNowModal = ({ isOpen, setIsOpen ,onClose, loader }) => {
             <input
               type="email"
               placeholder="Email"
-              className="w-full text-black px-4 py-2 border text-[13px] border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-blue-50"
+              className="w-full text-black px-4 py-2 border text-[13px] border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 bg-blue-50"
               value={values.email}
               name="email"
               onChange={handleChange}
@@ -99,7 +99,7 @@ const JoinNowModal = ({ isOpen, setIsOpen ,onClose, loader }) => {
             <input
               type={!eyeIcon ? "password" : "text"}
               placeholder="Password"
-              className="w-full text-black px-4 py-2 border bg-blue-50 text-[13px] border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full text-black px-4 py-2 border bg-blue-50 text-[13px] border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
               value={values.password}
               name="password"
               onChange={handleChange}
@@ -122,7 +122,7 @@ const JoinNowModal = ({ isOpen, setIsOpen ,onClose, loader }) => {
             )}
           </div>
           <button
-            className="w-full bg-blue-500 hover:bg-blue-600 text-[14px] text-white py-2 rounded-md transition duration-200 cursor-pointer"
+            className="w-full bg-blue-400 hover:bg-blue-600 text-[14px] text-white py-2 rounded-md transition duration-200 cursor-pointer"
             type="submit"
           >
             Sign In
@@ -131,7 +131,7 @@ const JoinNowModal = ({ isOpen, setIsOpen ,onClose, loader }) => {
 
         <p className="text-black py-3 text-center">
           Don't have an account?{" "}
-          <a href="/signUp" className="text-blue-500">
+          <a href="/signUp" className="text-blue-400">
             Join Now
           </a>
         </p>

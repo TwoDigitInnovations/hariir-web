@@ -69,14 +69,14 @@ export default function ProfileForm(props) {
     setToken(storedToken);
   }, []);
 
-  
   useEffect(() => {
-    const urlUserId = router.query.id || Object.keys(router.query)[0];
-
-    if (urlUserId) {
-      getProfile(urlUserId);
-    } else if (token) {
-      getProfile(user._id);
+    const urlUserId = router.query.id;
+    if (token) {
+      if (urlUserId) {
+        getProfile(urlUserId);
+      } else {
+        getProfile(user._id);
+      }
     }
   }, [router.query, token, user?._id]);
 
@@ -114,7 +114,7 @@ export default function ProfileForm(props) {
 
   const submit = (values, resetForm) => {
     props.loader(true);
-    const urlUserId = router.query.userId || Object.keys(router.query)[0];
+    const urlUserId = router.query.userId 
     const userId = urlUserId || user._id;
 
     const data = {
@@ -137,8 +137,6 @@ export default function ProfileForm(props) {
 
             router.push("/MyProfile");
           }
-        
-          
         } else {
           toast.error(res.message || "An error occurred");
         }

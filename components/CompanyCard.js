@@ -16,11 +16,9 @@ const CompanyCard = ({ company }) => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [country, setCountry] = useState("");
 
-
   const toggleProfile = () => {
     setIsProfileOpen(!isProfileOpen);
   };
-
 
   useEffect(() => {
     const result = countries.getName(
@@ -29,7 +27,6 @@ const CompanyCard = ({ company }) => {
     );
     setCountry(result || "India");
   });
-
 
   return (
     <div className="bg-white rounded-lg shadow-xl border border-gray-200 p-6 hover:shadow-2xl transition-shadow duration-200">
@@ -47,7 +44,7 @@ const CompanyCard = ({ company }) => {
               <p className="text-gray-600 mb-2 text-[14px]">
                 {company.industrySector}
               </p>
-              <div className="flex items-center text-gray-500 text-[12px] mb-3">
+              <div className="flex items-center text-gray-400 text-[12px] mb-3">
                 <MapPin className="w-4 h-4 mr-1" />
                 {country}
               </div>
@@ -60,19 +57,19 @@ const CompanyCard = ({ company }) => {
 
           <div className="grid grid-cols-1 gap-4 mb-4 text-sm">
             <div className="flex justify-between">
-              <span className="text-gray-500">Size:</span>
+              <span className="text-gray-400">Size:</span>
               <div className="flex items-center ">
-                <Users className="w-4 h-4 mr-2 text-gray-500" />
-                <span className="font-medium text-gray-500">
+                <Users className="w-4 h-4 mr-2 text-gray-400" />
+                <span className="font-medium text-gray-400">
                   {company.companySize}
                 </span>
               </div>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-500">Founded:</span>
+              <span className="text-gray-400">Founded:</span>
               <div className="flex items-center mt-1">
                 <Calendar className="w-4 h-4 mr-1 text-gray-400" />
-                <span className="font-medium text-gray-500">
+                <span className="font-medium text-gray-400">
                   {company.foundedYear}
                 </span>
               </div>
@@ -93,7 +90,7 @@ const CompanyCard = ({ company }) => {
           </div>
 
           <button
-            className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition-colors duration-200 flex items-center justify-center gap-2"
+            className="w-full bg-blue-400 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition-colors duration-200 flex items-center justify-center gap-2"
             onClick={toggleProfile}
           >
             View Profile
@@ -104,21 +101,21 @@ const CompanyCard = ({ company }) => {
         {isProfileOpen && (
           <div className="fixed inset-0 bg-black/80 bg-opacity-50 flex items-center justify-center z-50 md:p-4 p-0">
             {/* Modal Content */}
-            <div className="bg-white rounded-lg shadow-2xl w-[95%] md:w-[85%] md:h-[95%] h-[95%] max-w-5xl overflow-hidden flex flex-col">
+            <div className="bg-white rounded-lg shadow-2xl w-[95%] md:w-[85%] md:h-[95%] h-[95%] max-w-6xl overflow-hidden flex flex-col">
               {/* Header */}
               <div className="flex items-center justify-between p-6 border-b border-gray-200">
                 <div className="flex items-center space-x-4">
-                  <div className="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center text-white text-2xl font-bold">
+                  <div className="w-16 h-16 bg-blue-400 rounded-full flex items-center justify-center text-white text-2xl font-bold">
                     S
                   </div>
                   <div>
                     <h1 className="text-2xl font-bold text-blue-600">
-                      SafariFintech
+                      {company.companyName}
                     </h1>
-                    <p className="text-gray-600">Financial Technology</p>
-                    <p className="text-gray-500 text-sm flex items-center mt-1">
+                    <p className="text-gray-600">{company.industrySector}</p>
+                    <p className="text-gray-400 text-sm flex items-center mt-1">
                       <MapPin className="w-4 h-4 mr-1" />
-                      Nairobi, Kenya
+                      {company.location}
                     </p>
                   </div>
                 </div>
@@ -126,56 +123,54 @@ const CompanyCard = ({ company }) => {
                   onClick={toggleProfile}
                   className="p-2 hover:bg-gray-100 rounded-full transition-colors cursor-pointer"
                 >
-                  <X className="w-6 h-6 text-gray-500" />
+                  <X className="w-6 h-6 text-gray-400" />
                 </button>
               </div>
 
               {/* Content */}
               <div className="flex-1 overflow-y-auto p-6">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                  {/* Left Column */}
                   <div className="lg:col-span-2 space-y-8">
-                    {/* Company Information */}
                     <div>
                       <h2 className="text-xl font-semibold text-gray-800 mb-4">
                         Company Information
                       </h2>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                          <h3 className="text-sm font-medium text-gray-500 mb-1">
+                          <h3 className="text-sm font-medium text-gray-400 mb-1">
                             Founded
                           </h3>
                           <p className="text-gray-800 font-medium flex items-center">
                             <Calendar className="w-4 h-4 mr-2 text-gray-400" />
-                            2018
+                            {company.foundedYear}
                           </p>
                         </div>
                         <div>
-                          <h3 className="text-sm font-medium text-gray-500 mb-1">
+                          <h3 className="text-sm font-medium text-gray-400 mb-1">
                             Company Size
                           </h3>
                           <p className="text-gray-800 font-medium flex items-center">
                             <Users className="w-4 h-4 mr-2 text-gray-400" />
-                            51-200 employees
+                            {company.companySize} employees
                           </p>
                         </div>
                         <div>
-                          <h3 className="text-sm font-medium text-gray-500 mb-1">
+                          <h3 className="text-sm font-medium text-gray-400 mb-1">
                             Sector
                           </h3>
                           <p className="text-gray-800 font-medium">
-                            Financial Technology
+                            {company.industrySector}
                           </p>
                         </div>
                         <div>
-                          <h3 className="text-sm font-medium text-gray-500 mb-1">
+                          <h3 className="text-sm font-medium text-gray-400 mb-1">
                             Website
                           </h3>
                           <a
-                            href="https://safarifintech.co.ke"
-                            className="text-blue-500 hover:text-blue-600 font-medium"
+                            href={company.website}
+                            className="text-blue-400 hover:text-blue-600 font-medium"
                           >
-                            https://safarifintech.co.ke
+                            {company.website}
                           </a>
                         </div>
                       </div>
@@ -186,13 +181,7 @@ const CompanyCard = ({ company }) => {
                       <h2 className="text-xl font-semibold text-gray-800 mb-4">
                         About Us
                       </h2>
-                      <p className="text-gray-600 mb-1">
-                        Leading fintech company in East Africa
-                      </p>
-                      <p className="text-gray-600">
-                        We are revolutionizing financial services across East
-                        Africa
-                      </p>
+                      <p className="text-gray-600 mb-1">{company.aboutUs}</p>
                     </div>
 
                     {/* Mission & Vision */}
@@ -200,24 +189,23 @@ const CompanyCard = ({ company }) => {
                       <h2 className="text-xl font-semibold text-gray-800 mb-4">
                         Mission & Vision
                       </h2>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                          <h3 className="text-sm font-medium text-gray-500 mb-2">
-                            Mission Statement
-                          </h3>
-                          <p className="text-gray-700">
-                            To provide accessible financial solutions for
-                            everyone
-                          </p>
-                        </div>
-                        <div>
-                          <h3 className="text-sm font-medium text-gray-500 mb-2">
-                            Vision Statement
-                          </h3>
-                          <p className="text-gray-700">
-                            A financially inclusive East Africa
-                          </p>
-                        </div>
+
+                      <div className="mb-4">
+                        <h3 className="text-sm font-bold text-gray-800 mb-2">
+                          Our Mission
+                        </h3>
+                        <p className="text-gray-700">
+                          {company.missionStatement}
+                        </p>
+                      </div>
+
+                      <div>
+                        <h3 className="text-sm font-bold text-gray-800 mb-2">
+                          Our Vision
+                        </h3>
+                        <p className="text-gray-700">
+                          {company.visionStatement}
+                        </p>
                       </div>
                     </div>
 
@@ -226,26 +214,21 @@ const CompanyCard = ({ company }) => {
                       <h2 className="text-xl font-semibold text-gray-800 mb-4">
                         Past Experience
                       </h2>
-                      <div className="bg-gray-50 rounded-lg p-4 border-l-4 border-blue-500">
-                        <h3 className="font-semibold text-gray-800 mb-2">
-                          SafariPay Mobile App (2023)
-                        </h3>
-                        <p className="text-sm text-gray-600 mb-2">
-                          <span className="font-medium">Client:</span> General
-                          Public
-                        </p>
-                        <p className="text-gray-700">
-                          Revolutionary mobile payment platform
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* Key Personnel */}
-                    <div>
-                      <h2 className="text-xl font-semibold text-gray-800 mb-4">
-                        Key Personnel
-                      </h2>
-                      <p className="text-gray-500">Information not available</p>
+                      {company.projects.map((project, key) => (
+                        <div
+                          key={key}
+                          className="bg-gray-50 rounded-lg p-4 border-l-4 border-blue-400 mb-4"
+                        >
+                          <h3 className="font-semibold text-gray-800 mb-2">
+                            {project.title} ({project.yearCompleted})
+                          </h3>
+                          <p className="text-sm text-gray-600 mb-2">
+                            <span className="font-medium">Client:</span>{" "}
+                            {project.client}
+                          </p>
+                          <p className="text-gray-700">{project.description}</p>
+                        </div>
+                      ))}
                     </div>
                   </div>
 
@@ -257,50 +240,50 @@ const CompanyCard = ({ company }) => {
                       </h2>
                       <div className="space-y-4">
                         <div className="flex items-center space-x-3">
-                          <Mail className="w-5 h-5 text-blue-500" />
+                          <Mail className="w-5 h-5 text-blue-400" />
                           <div>
-                            <p className="text-sm text-gray-500">Email</p>
+                            <p className="text-sm text-gray-400">Email</p>
                             <a
                               href="mailto:contact@safarifintech.co.ke"
                               className="text-blue-600 hover:text-blue-700 font-medium"
                             >
-                              contact@safarifintech.co.ke
+                              {company.email}
                             </a>
                           </div>
                         </div>
 
                         <div className="flex items-center space-x-3">
-                          <Phone className="w-5 h-5 text-blue-500" />
+                          <Phone className="w-5 h-5 text-blue-400" />
                           <div>
-                            <p className="text-sm text-gray-500">Phone</p>
+                            <p className="text-sm text-gray-400">Phone</p>
                             <a
                               href="tel:+254201234567"
                               className="text-blue-600 hover:text-blue-700 font-medium"
                             >
-                              +254 20 123 4567
+                              {company.phone}
                             </a>
                           </div>
                         </div>
 
                         <div className="flex items-center space-x-3">
-                          <Globe className="w-5 h-5 text-blue-500" />
+                          <Globe className="w-5 h-5 text-blue-400" />
                           <div>
-                            <p className="text-sm text-gray-500">Website</p>
+                            <p className="text-sm text-gray-400">Website</p>
                             <a
-                              href="https://safarifintech.co.ke"
+                              href={company.website}
                               className="text-blue-600 hover:text-blue-700 font-medium"
                             >
-                              https://safarifintech.co.ke
+                              {company.website}
                             </a>
                           </div>
                         </div>
 
                         <div className="flex items-center space-x-3">
-                          <MapPin className="w-5 h-5 text-blue-500" />
+                          <MapPin className="w-5 h-5 text-blue-400" />
                           <div>
-                            <p className="text-sm text-gray-500">Location</p>
+                            <p className="text-sm text-gray-400">Location</p>
                             <p className="text-gray-700 font-medium">
-                              Nairobi, Kenya
+                              {company.location}
                             </p>
                           </div>
                         </div>

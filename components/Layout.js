@@ -144,7 +144,7 @@ const Layout = ({ children, loader }) => {
               onSingUpClick={handleSignUpClick}
             />
           </div>
-          <div className="z-0 md:pt-24 pt-16 max-w-screen min-h-screen overflow-x-hidden">
+          <div className="z-0 md:pt-18 pt-14 max-w-screen min-h-screen overflow-x-hidden">
             <main className="flex-1">{children}</main>
           </div>
         </div>

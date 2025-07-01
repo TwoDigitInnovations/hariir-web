@@ -168,7 +168,7 @@ const CompanyProfile = ({ companyData, getProfile, loader }) => {
       {/* Header Section */}
       <div className="bg-gradient-to-r bg-white text-white  md:px-6 pt-6  p-2">
         <div className="flex md:flex-row flex-col pb-8 border-b-2 border-b-gray-200 items-center gap-6 ">
-          <div className="w-32 h-32 bg-blue-500 rounded-full flex items-center justify-center text-white text-4xl font-bold uppercase">
+          <div className="w-32 h-32 bg-blue-400 rounded-full flex items-center justify-center text-white text-4xl font-bold uppercase">
             {companyData?.companyName?.slice(1, 2)}
           </div>
           <div className="flex-1 px-4 ">
@@ -185,11 +185,11 @@ const CompanyProfile = ({ companyData, getProfile, loader }) => {
               </div>
             </div>
             <div className="flex flex-col md:flex-row justify-between md:w-lg gap-2">
-              <div className="flex flex-row text-gray-500 items-center gap-2">
+              <div className="flex flex-row text-gray-400 items-center gap-2">
                 <Mail size={16} />
                 <span>{companyData.email}</span>
               </div>
-              <div className="flex flex-row text-gray-500 items-center gap-2">
+              <div className="flex flex-row text-gray-400 items-center gap-2">
                 <Phone size={16} />
                 <span>{companyData.phone}</span>
               </div>
@@ -263,8 +263,8 @@ const CompanyProfile = ({ companyData, getProfile, loader }) => {
 
           {!companyData?.services || companyData.services.length === 0 ? (
             <div className="text-center py-12 border-2 border-dashed border-gray-200 rounded-lg">
-              <p className="text-gray-500 mb-2">No Services added yet</p>
-              <p className="text-gray-500 mb-4">
+              <p className="text-gray-400 mb-2">No Services added yet</p>
+              <p className="text-gray-400 mb-4">
                 Click the edit icon to add Services
               </p>
             </div>
@@ -294,7 +294,7 @@ const CompanyProfile = ({ companyData, getProfile, loader }) => {
                     className="p-1 hover:bg-gray-100 rounded-full transition-colors"
                   >
                     <X
-                      className="text-gray-500 hover:text-gray-700"
+                      className="text-gray-400 hover:text-gray-700"
                       size={20}
                     />
                   </button>
@@ -303,7 +303,7 @@ const CompanyProfile = ({ companyData, getProfile, loader }) => {
                 {/* Content Area with Scroll */}
                 <div className="flex-1 overflow-y-auto p-6">
                   <p className="text-sm text-gray-600 mb-6">
-                    <span className="text-red-500">*</span> Indicates required
+                    <span className="text-red-400">*</span> Indicates required
                   </p>
 
                   <div className="space-y-4">
@@ -314,11 +314,11 @@ const CompanyProfile = ({ companyData, getProfile, loader }) => {
                           value={service}
                           onChange={(e) => handleChange(index, e.target.value)}
                           placeholder="Enter service name"
-                          className="flex-1 border border-gray-200 rounded-lg px-4 py-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          className="flex-1 border border-gray-200 rounded-lg px-4 py-3 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
                         />
                         <button
                           onClick={() => removeService(index)}
-                          className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                          className="p-2 text-red-400 hover:bg-red-50 rounded-lg transition-colors"
                           disabled={services.length === 1}
                         >
                           <Trash2 size={18} />
@@ -341,7 +341,7 @@ const CompanyProfile = ({ companyData, getProfile, loader }) => {
                 <div className="p-6 border-t border-gray-100">
                   <button
                     onClick={submit}
-                    className="w-full bg-blue-500 text-white rounded-xl px-6 py-3 font-medium hover:bg-blue-600 transition-colors"
+                    className="w-full bg-blue-400 text-white rounded-xl px-6 py-3 font-medium hover:bg-blue-600 transition-colors"
                   >
                     Save
                   </button>
@@ -367,8 +367,8 @@ const CompanyProfile = ({ companyData, getProfile, loader }) => {
           {!companyData?.specializations ||
           companyData.specializations.length === 0 ? (
             <div className="text-center py-12 border-2 border-dashed border-gray-200 rounded-lg">
-              <p className="text-gray-500 mb-2">No specializations added yet</p>
-              <p className="text-gray-500 mb-4">
+              <p className="text-gray-400 mb-2">No specializations added yet</p>
+              <p className="text-gray-400 mb-4">
                 Click the edit icon to add specializations
               </p>
             </div>
@@ -377,7 +377,7 @@ const CompanyProfile = ({ companyData, getProfile, loader }) => {
               {companyData.specializations.map((spec, index) => (
                 <div
                   key={index}
-                  className="border-l-4 border-purple-500 pl-4 pr-4 py-3 ml-2 bg-purple-50 rounded-lg mb-4 shadow-sm"
+                  className="border-l-4 border-purple-400 pl-4 pr-4 py-3 ml-2 bg-purple-50 rounded-lg mb-4 shadow-sm"
                 >
                   <h3 className="text-[16px] font-semibold text-gray-800 mb-2">
                     {spec.title}
@@ -442,7 +442,7 @@ const CompanyProfile = ({ companyData, getProfile, loader }) => {
                         <div>
                           <label className="block text-sm font-semibold text-gray-800 mb-2">
                             Specialization Title{" "}
-                            <span className="text-red-500">*</span>
+                            <span className="text-red-400">*</span>
                           </label>
                           <input
                             type="text"
@@ -451,13 +451,13 @@ const CompanyProfile = ({ companyData, getProfile, loader }) => {
                               handleChange1(index, "title", e.target.value)
                             }
                             placeholder="Ex: Mobile Payment Solutions"
-                            className="border border-gray-300 rounded-lg px-4 py-3 w-full text-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="border border-gray-300 rounded-lg px-4 py-3 w-full text-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
                           />
                         </div>
 
                         <div>
                           <label className="block text-sm font-semibold text-gray-700 mb-2">
-                            Description <span className="text-red-500">*</span>
+                            Description <span className="text-red-400">*</span>
                           </label>
                           <textarea
                             rows={4}
@@ -470,7 +470,7 @@ const CompanyProfile = ({ companyData, getProfile, loader }) => {
                               )
                             }
                             placeholder="Describe this field of specialization..."
-                            className="border text-sm border-gray-300 rounded-lg px-4 py-3 w-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                            className="border text-sm border-gray-300 rounded-lg px-4 py-3 w-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent resize-none"
                           />
                         </div>
                       </div>
@@ -492,7 +492,7 @@ const CompanyProfile = ({ companyData, getProfile, loader }) => {
                 <div className="flex w-full items-center p-2 pb-4  border-gray-200 bg-gray-50">
                   <button
                     onClick={submitspecializations}
-                    className="px-8 py-2 bg-blue-500 text-white rounded-2xl hover:bg-blue-600 transition-colors w-full "
+                    className="px-8 py-2 bg-blue-400 text-white rounded-2xl hover:bg-blue-600 transition-colors w-full "
                   >
                     Save
                   </button>
@@ -576,7 +576,7 @@ const CompanyProfile = ({ companyData, getProfile, loader }) => {
           {companyData.teamMembers?.map((member, index) => (
             <div
               key={index}
-              className="border-l-4 border-blue-500 md:pl-6 pl-4 ml-2 mb-6"
+              className="border-l-4 border-blue-400 md:pl-6 pl-4 ml-2 mb-6"
             >
               <div className="flex items-start gap-3">
                 <div className="mt-2 w-2 h-2 bg-blue-400 rounded-full flex items-center justify-center text-white text-sm font-bold"></div>
@@ -613,7 +613,7 @@ const CompanyProfile = ({ companyData, getProfile, loader }) => {
                 <h3 className="text-[16px] font-semibold text-gray-800">
                   {project.title}
                 </h3>
-                <span className="text-gray-500 text-[14px]">
+                <span className="text-gray-400 text-[14px]">
                   {project.yearCompleted}
                 </span>
               </div>

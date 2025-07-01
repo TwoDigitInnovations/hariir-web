@@ -14,6 +14,8 @@ import {
 import enLocale from "i18n-iso-countries/langs/en.json";
 import { useState, useEffect } from "react";
 import countries from "i18n-iso-countries";
+import { FaLinkedinIn } from "react-icons/fa6";
+
 
 const ProfileCard = ({ profile }) => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -52,7 +54,7 @@ const ProfileCard = ({ profile }) => {
       </div>
 
       {/* Location */}
-      <div className="flex items-center justify-center text-gray-500 text-sm mb-4">
+      <div className="flex items-center justify-center text-gray-400 text-sm mb-4">
         <MapPin className="w-4 h-4 mr-1" />
         {country}
       </div>
@@ -64,7 +66,7 @@ const ProfileCard = ({ profile }) => {
           {profile.skills?.slice(0, 3).map((skill, index) => (
             <span
               key={index}
-              className="bg-blue-500 text-white text-xs px-3 py-1 rounded-full font-medium"
+              className="bg-blue-400 text-white text-xs px-3 py-1 rounded-full font-medium"
             >
               {skill}
             </span>
@@ -83,13 +85,13 @@ const ProfileCard = ({ profile }) => {
           Current Role
         </h4>
         <p className="text-gray-600 text-sm leading-relaxed">
-          {profile?.experience[0].jobTitle} at {profile?.experience[0].company}
+          {profile?.experience[0]?.jobTitle} at {profile?.experience[0]?.company}
         </p>
       </div>
 
       {/* View Profile Button */}
       <button
-        className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-xl font-medium transition-colors duration-200 flex items-center justify-center gap-2"
+        className="w-full bg-blue-400 hover:bg-blue-600 text-white py-2 px-4 rounded-xl font-medium transition-colors duration-200 flex items-center justify-center gap-2"
         onClick={toggleProfile}
       >
         View Profile
@@ -98,14 +100,13 @@ const ProfileCard = ({ profile }) => {
 
       {isProfileOpen && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl shadow-2xl w-full max-w-6xl max-h-[90vh] overflow-hidden flex flex-col">
+          <div className="bg-white rounded-xl shadow-2xl w-full max-w-7xl max-h-[90vh] overflow-hidden flex flex-col">
             {/* Header */}
             <div className="bg-gradient-to-r from-blue-50 to-blue-50 p-6 border-b border-gray-200">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-             
                 <div className="flex items-center space-x-4">
-                  <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-blue-500 rounded-full flex items-center justify-center text-white text-2xl font-bold shadow-lg">
-                    {profileData.fullName.slice(0,2)}
+                  <div className="w-16 h-16 bg-gradient-to-r from-blue-400 to-blue-400 rounded-full flex items-center justify-center text-white text-2xl font-bold shadow-lg">
+                    {profileData.fullName.slice(0, 2)}
                   </div>
                   <div>
                     <h1 className="text-xl sm:text-2xl font-bold text-gray-800">
@@ -123,7 +124,7 @@ const ProfileCard = ({ profile }) => {
 
                 {/* Right section: Buttons */}
                 <div className="flex flex-row items-center sm:items-center gap-2 sm:space-x-2">
-                  <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg flex justify-center items-center space-x-2 transition-colors w-full sm:w-auto">
+                  <button className="bg-blue-400 hover:bg-blue-600 text-white px-4 py-2 rounded-lg flex justify-center items-center space-x-2 transition-colors w-full sm:w-auto">
                     <MessageCircle className="w-4 h-4" />
                     <span>Message</span>
                   </button>
@@ -131,7 +132,7 @@ const ProfileCard = ({ profile }) => {
                     onClick={toggleProfile}
                     className="p-2 w-[100px] flex justify-end hover:bg-gray-100 rounded-full transition-colors"
                   >
-                    <X className="w-6 h-6 text-gray-500" />
+                    <X className="w-6 h-6 text-gray-400" />
                   </button>
                 </div>
               </div>
@@ -144,24 +145,25 @@ const ProfileCard = ({ profile }) => {
                     <h2 className="text-xl font-semibold text-gray-800 mb-3 flex items-center">
                       About
                     </h2>
-                    <p className="text-gray-600 leading-relaxed">
-                      {profileData.bio}
-                    </p>
+                    <div
+                      className="text-gray-600 leading-relaxed"
+                      dangerouslySetInnerHTML={{ __html: profileData.bio }}
+                    ></div>
                   </div>
 
                   {/* Experience Section */}
                   <div>
                     <h2 className="text-xl font-semibold text-gray-800 mb-4 flex items-center">
-                      <Briefcase className="w-5 h-5 mr-2 text-blue-500" />
+                      <Briefcase className="w-5 h-5 mr-2 text-blue-400" />
                       Experience
                     </h2>
                     {profileData.experience?.map((exp, index) => (
                       <div
                         key={index}
-                        className="bg-gray-50 mb-4 rounded-lg p-4 border-l-4 border-blue-500"
+                        className="bg-gray-50 mb-4 rounded-lg p-4 border-l-4 border-blue-400"
                       >
                         <div className="flex items-start space-x-3">
-                          <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center text-white font-bold">
+                          <div className="w-10 h-10 bg-blue-400 rounded-lg flex items-center justify-center text-white font-bold">
                             <Briefcase className="w-5 h-5" />
                           </div>
                           <div className="flex-1">
@@ -171,7 +173,7 @@ const ProfileCard = ({ profile }) => {
                             <p className="text-blue-600 font-medium">
                               {exp.company}
                             </p>
-                            <p className="text-gray-500 text-sm mb-2">
+                            <p className="text-gray-400 text-sm mb-2">
                               {exp.duration} | {exp.location}
                             </p>
                             <p className="text-gray-700">{exp.description}</p>
@@ -184,16 +186,16 @@ const ProfileCard = ({ profile }) => {
                   {/* Education Section */}
                   <div>
                     <h2 className="text-xl font-semibold text-gray-800 mb-4 flex items-center">
-                      <GraduationCap className="w-5 h-5 mr-2 text-blue-500" />
+                      <GraduationCap className="w-5 h-5 mr-2 text-blue-400" />
                       Education
                     </h2>
                     {profileData.education.map((edu, index) => (
                       <div
                         key={index}
-                        className="bg-gray-50 rounded-lg p-4 border-l-4 border-blue-500"
+                        className="bg-gray-50 rounded-lg p-4 border-l-4 border-blue-400"
                       >
                         <div className="flex items-start space-x-3">
-                          <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center text-white">
+                          <div className="w-10 h-10 bg-blue-400 rounded-lg flex items-center justify-center text-white">
                             <GraduationCap className="w-5 h-5" />
                           </div>
                           <div className="flex-1">
@@ -203,7 +205,7 @@ const ProfileCard = ({ profile }) => {
                             <p className="text-blue-600 font-medium">
                               {edu.institution}
                             </p>
-                            <p className="text-gray-500 text-sm mb-2">
+                            <p className="text-gray-400 text-sm mb-2">
                               {edu.year}
                             </p>
                             <p className="text-gray-700">{edu.description}</p>
@@ -245,9 +247,9 @@ const ProfileCard = ({ profile }) => {
                           className="flex justify-between items-center"
                         >
                           <span className="text-gray-700 font-medium">
-                            {lang.name}
+                            {lang.language}
                           </span>
-                          <span className="text-gray-500 text-sm">
+                          <span className="text-gray-400 text-sm">
                             {lang.level}
                           </span>
                         </div>
@@ -262,9 +264,9 @@ const ProfileCard = ({ profile }) => {
                     </h2>
                     <div className="space-y-4">
                       <div className="flex items-center space-x-3">
-                        <Mail className="w-5 h-5 text-blue-500" />
+                        <Mail className="w-5 h-5 text-blue-400" />
                         <div>
-                          <p className="text-sm text-gray-500">Email</p>
+                          <p className="text-sm text-gray-400">Email</p>
                           <a
                             href={`mailto:${profileData?.email}`}
                             className="text-blue-600 hover:text-blue-700 font-medium"
@@ -275,9 +277,9 @@ const ProfileCard = ({ profile }) => {
                       </div>
 
                       <div className="flex items-center space-x-3">
-                        <Phone className="w-5 h-5 text-blue-500" />
+                        <Phone className="w-5 h-5 text-blue-400" />
                         <div>
-                          <p className="text-sm text-gray-500">Phone</p>
+                          <p className="text-sm text-gray-400">Phone</p>
                           <a
                             href={`tel:${profileData?.phone}`}
                             className="text-blue-600 hover:text-blue-700 font-medium"
@@ -288,9 +290,9 @@ const ProfileCard = ({ profile }) => {
                       </div>
 
                       <div className="flex items-center space-x-3">
-                        <Linkedin className="w-5 h-5 text-blue-500" />
+                        <FaLinkedinIn className="w-5 h-5 text-blue-400" />
                         <div>
-                          <p className="text-sm text-gray-500">LinkedIn</p>
+                          <p className="text-sm text-gray-400">LinkedIn</p>
                           <a
                             href={`https://${profileData.linkedinUrl}`}
                             className="text-blue-600 hover:text-blue-700 font-medium"

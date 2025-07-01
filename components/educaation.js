@@ -117,40 +117,40 @@ import { userContext } from "@/pages/_app";
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Degree <span className="text-red-500">*</span>
+                    Degree <span className="text-red-400">*</span>
                   </label>
                   <input
                     type="text"
                     value={edu.degree}
                     onChange={(e) => handleChange(index, "degree", e.target.value)}
                     placeholder="e.g. Bachelor of Computer Science"
-                    className="border border-gray-300 rounded-lg px-4 py-3 w-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="border border-gray-300 rounded-lg px-4 py-3 w-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
                   />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Institution <span className="text-red-500">*</span>
+                    Institution <span className="text-red-400">*</span>
                   </label>
                   <input
                     type="text"
                     value={edu.institution}
                     onChange={(e) => handleChange(index, "institution", e.target.value)}
                     placeholder="e.g. University of Nairobi"
-                    className="border border-gray-300 rounded-lg px-4 py-3 w-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="border border-gray-300 rounded-lg px-4 py-3 w-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
                   />
                 </div>
               </div>
 
               <div className="mb-4">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Year <span className="text-red-500">*</span>
+                  Year <span className="text-red-400">*</span>
                 </label>
                 <input
                   type="text"
                   value={edu.year}
                   onChange={(e) => handleChange(index, "year", e.target.value)}
                   placeholder="e.g. 2020"
-                  className="border border-gray-300 rounded-lg px-4 py-3 w-full md:w-1/2 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="border border-gray-300 rounded-lg px-4 py-3 w-full md:w-1/2 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
                 />
               </div>
 
@@ -163,7 +163,7 @@ import { userContext } from "@/pages/_app";
                   value={edu.description}
                   onChange={(e) => handleChange(index, "description", e.target.value)}
                   placeholder="Additional details about your education..."
-                  className="border border-gray-300 rounded-lg px-4 py-3 w-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                  className="border border-gray-300 rounded-lg px-4 py-3 w-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent resize-none"
                 />
               </div>
             </div>
@@ -181,7 +181,7 @@ import { userContext } from "@/pages/_app";
             </button>
             <button
               onClick={submit}
-              className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors flex items-center gap-2"
+              className="px-6 py-2 bg-blue-400 text-white rounded-lg hover:bg-blue-600 transition-colors flex items-center gap-2"
             >
               <span>💾</span> Save Changes
             </button>

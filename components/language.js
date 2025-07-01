@@ -131,7 +131,7 @@ export default function LanguageEditor({ open, close, loader, profileData, getPr
                 <select
                   value={lang.language}
                   onChange={(e) => handleChange(index, "language", e.target.value)}
-                  className="border border-gray-300 rounded-lg px-4 py-3 w-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-white"
+                  className="border border-gray-300 rounded-lg px-4 py-3 w-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent appearance-none bg-white"
                 >
                   <option value="">Select language</option>
                   {languageOptions.map((language) => (
@@ -147,7 +147,7 @@ export default function LanguageEditor({ open, close, loader, profileData, getPr
                 <select
                   value={lang.level}
                   onChange={(e) => handleChange(index, "level", e.target.value)}
-                  className="border border-gray-300 rounded-lg px-4 py-3 w-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-white"
+                  className="border border-gray-300 rounded-lg px-4 py-3 w-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent appearance-none bg-white"
                 >
                   <option value="">Select level</option>
                   {levelOptions.map((level) => (
@@ -182,7 +182,7 @@ export default function LanguageEditor({ open, close, loader, profileData, getPr
             </button>
             <button
               onClick={submit}
-              className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors flex items-center gap-2"
+              className="px-6 py-2 bg-blue-400 text-white rounded-lg hover:bg-blue-600 transition-colors flex items-center gap-2"
             >
               <span>💾</span> Save Changes
             </button>

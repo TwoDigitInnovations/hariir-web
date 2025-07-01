@@ -15,59 +15,6 @@ import { toast } from "react-toastify";
 import { Api } from "@/services/service";
 
 const FindCompany = (props) => {
-  // const companies = [
-  //   {
-  //     initial: "S",
-  //     name: "SafariFintech",
-  //     category: "Financial Technology",
-  //     location: "Nairobi, Kenya",
-  //     description: "Leading fintech company in East Africa",
-  //     size: "51-200 employees",
-  //     founded: "2018",
-  //     projects: [
-  //       "SafariPay Mobile App (2023)",
-  //     ],
-  //     color: "#3B82F6",
-  //   },
-  //   {
-  //     initial: "T",
-  //     name: "TechAfrica Solutions",
-  //     category: "Software Development",
-  //     location: "Lagos, Nigeria",
-  //     description: "Innovative software solutions for African businesses",
-  //     size: "101-500 employees",
-  //     founded: "2016",
-  //     projects: [
-  //       "E-commerce Platform (2023)"
-  //     ],
-  //     color: "#10B981",
-  //   },
-  //   {
-  //     initial: "M",
-  //     name: "MediCare Plus",
-  //     category: "Healthcare Technology",
-  //     location: "Cape Town, South Africa",
-  //     description:
-  //       "Digital health solutions improving patient care across Africa",
-  //     size: "25-50 employees",
-  //     founded: "2020",
-  //     projects: ["Telemedicine App (2023)"],
-  //     color: "#F59E0B",
-  //   },
-  //   {
-  //     initial: "A",
-  //     name: "AgriTech Innovations",
-  //     category: "Agriculture Technology",
-  //     location: "Kampala, Uganda",
-  //     description: "Smart farming solutions for sustainable agriculture",
-  //     size: "11-25 employees",
-  //     founded: "2021",
-  //     projects: [
-  //       "Smart Irrigation System (2023)",
-  //     ],
-  //     color: "#EF4444",
-  //   },
-  // ];
 
   const [companies, setCompaniesData] = useState([]);
   const router = useRouter();
@@ -101,6 +48,8 @@ const FindCompany = (props) => {
       }
     );
   };
+
+  
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-7xl mx-auto md:px-10 px-4">

@@ -72,7 +72,7 @@ const SingUp = ({ isOpen, onClose, loader }) => {
             Join Hariir
           </h2>
           <button
-            className="text-gray-500 text-2xl cursor-pointer hover:text-black"
+            className="text-gray-400 text-2xl cursor-pointer hover:text-black"
             onClick={onClose}
           >
             &times;
@@ -88,25 +88,25 @@ const SingUp = ({ isOpen, onClose, loader }) => {
             onClick={() => setAccountType("professional")}
             className={`flex flex-col items-center p-4 border rounded-lg w-1/2 cursor-pointer ${
               accountType === "professional"
-                ? "border-blue-500"
+                ? "border-blue-400"
                 : "border-gray-300"
             }`}
           >
-            <FaUser className="text-2xl text-blue-500 mb-2" />
+            <FaUser className="text-2xl text-blue-400 mb-2" />
             <p className="font-medium text-sm text-black">Professional</p>
-            <span className="text-xs text-gray-500">Individual profile</span>
+            <span className="text-xs text-gray-400">Individual profile</span>
           </div>
 
           {/* Company Option */}
           <div
             onClick={() => setAccountType("company")}
             className={`flex flex-col items-center p-4 border rounded-lg w-1/2 cursor-pointer ${
-              accountType === "company" ? "border-blue-500" : "border-gray-300"
+              accountType === "company" ? "border-blue-400" : "border-gray-300"
             }`}
           >
-            <HiOfficeBuilding className="text-2xl text-blue-500 mb-2" />
+            <HiOfficeBuilding className="text-2xl text-blue-400 mb-2" />
             <p className="font-medium text-sm text-black">Company</p>
-            <span className="text-xs text-gray-500">Business profile</span>
+            <span className="text-xs text-gray-400">Business profile</span>
           </div>
         </div>
 
@@ -115,14 +115,14 @@ const SingUp = ({ isOpen, onClose, loader }) => {
           name="email"
           placeholder="Enter your email"
           className={`w-full border text-black border-gray-300 rounded px-3 py-2 mb-3 text-[13px] focus:outline-none bg-blue-50 ${
-            errors.email ? "border-red-500" : ""
+            errors.email ? "border-red-400" : ""
           }`}
           onChange={handleChange}
           onBlur={handleBlur}
           value={values.email}
         />
         {errors.email && (
-          <div className="text-red-500 text-xs mb-2">{errors.email}</div>
+          <div className="text-red-400 text-xs mb-2">{errors.email}</div>
         )}
 
         <input
@@ -130,26 +130,26 @@ const SingUp = ({ isOpen, onClose, loader }) => {
           name="password"
           placeholder="Enter your password"
           className={`w-full border text-black border-gray-300 rounded px-3 py-2 mb-4 text-[13px] focus:outline-none bg-blue-50 ${
-            errors.password ? "border-red-500" : ""
+            errors.password ? "border-red-400" : ""
           }`}
           onChange={handleChange}
           onBlur={handleBlur}
           value={values.password}
         />
         {errors.password && (
-          <div className="text-red-500 text-xs mb-2">{errors.password}</div>
+          <div className="text-red-400 text-xs mb-2">{errors.password}</div>
         )}
 
         <button
           onClick={handleSubmit}
-          className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded text-sm font-medium"
+          className="w-full bg-blue-400 hover:bg-blue-600 text-white py-2 rounded text-sm font-medium"
         >
           Create Account
         </button>
 
         <p className="text-center text-sm text-gray-600 mt-4">
           Already have an account?{" "}
-          <span className="text-blue-500 cursor-pointer hover:underline">
+          <span className="text-blue-400 cursor-pointer hover:underline">
             Sign In
           </span>
         </p>

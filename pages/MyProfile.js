@@ -22,6 +22,9 @@ import Referee from "../components/referee";
 import Language from "../components/language";
 import Resume from "../components/Resume";
 import CompanyProfile from "@/components/CompanyProfile";
+import ResumeForCompany from "@/components/ResumeForCompany";
+
+
 
 export default function ProfileCompletion(props) {
   const router = useRouter();
@@ -68,7 +71,7 @@ export default function ProfileCompletion(props) {
       <div className=" ">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div
-            className="flex items-center h-16"
+            className="flex items-center h-16 md:mt-0 mt-8"
             onClick={() => window.history.back()}
           >
             <button className="flex items-center text-gray-600 hover:text-gray-900">
@@ -79,7 +82,7 @@ export default function ProfileCompletion(props) {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         {!profileData?.fullName && !profileData?.companyName && (
           <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
             <div className="flex md:flex-row flex-col items-center justify-between">
@@ -144,7 +147,11 @@ export default function ProfileCompletion(props) {
                       Edit Profile
                     </button>
 
-                    {/* <Resume profile={profileData} /> */}
+                    {user?.role === "professional" ? (
+                      <Resume profile={profileData} />
+                    ) : (
+                      <ResumeForCompany profile={profileData} />
+                    )}
                   </div>
                 </div>
               </div>
@@ -152,7 +159,7 @@ export default function ProfileCompletion(props) {
               {profileData.role === "professional" ? (
                 <div>
                   <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
-                    {/* Header Section */}
+                 
                     <div className="bg-gradient-to-r bg-white text-white md:p-8 p-2">
                       <div className="flex md:flex-row flex-col items-center gap-6">
                         <div className="w-32 h-32 bg-blue-400 rounded-full flex items-center justify-center text-white text-4xl font-bold uppercase">
@@ -189,9 +196,9 @@ export default function ProfileCompletion(props) {
                       </div>
                     </div>
 
-                    {/* Main Content */}
+                  
                     <div className="md:p-8 p-4">
-                      {/* About Section */}
+                   
                       <section className="mb-8">
                         <div className="flex items-center justify-between mb-4">
                           <h2 className="text-[18px] font-semibold text-gray-800 flex items-center gap-2">

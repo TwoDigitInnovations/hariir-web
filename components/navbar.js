@@ -10,12 +10,9 @@ import { LuMessageCircle } from "react-icons/lu";
 import { userContext } from "@/pages/_app";
 import { IoSearchSharp } from "react-icons/io5";
 import { AiOutlineHome } from "react-icons/ai";
-import SingIn from "./SingIn";
-import { MdOutlineLogout } from "react-icons/md";
 import { useRouter } from "next/router";
-import { Link, useLocation } from "react-router-dom";
-
 import Swal from "sweetalert2";
+import { UserRound,LogOut } from "lucide-react";
 
 export const Navbar = ({ onSignInClick, onSingUpClick }) => {
   const [user, setUser] = useContext(userContext);
@@ -23,6 +20,8 @@ export const Navbar = ({ onSignInClick, onSingUpClick }) => {
   const router = useRouter();
   const isLoggedIn = user && Object.keys(user).length > 0;
   const path = router.pathname;
+  const [showDropdown, setShowDropdown] = useState(false);
+  const dropdownRef = useRef();
 
   const isActive =
     path === "/FindProfessional" ||
@@ -59,32 +58,42 @@ export const Navbar = ({ onSignInClick, onSingUpClick }) => {
     });
   }, [router, setUser]);
 
+  const handleClickOutside = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setShowDropdown(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
   return (
     <>
-      <nav className="flex justify-center md:h-24 min-h-max h-auto drop-shadow-md bg-white w-full z-50 md:p-0 p-3">
+      <nav className="flex justify-center md:h-18 min-h-max h-auto drop-shadow-md bg-white w-full z-50 md:p-0 p-3">
         <div className="flex items-center justify-between w-full max-w-7xl px-4">
           {/* Logo */}
           <div
             className="flex items-center cursor-pointer"
             onClick={() => router.push("/")}
           >
-            <div className="bg-blue-500 text-white rounded-lg px-2.5 py-1 font-bold text-xl">
+            <div className="bg-blue-400 text-white rounded-lg px-2.5 py-1 font-bold text-xl">
               H
             </div>
-            <span className="ml-2 text-blue-500 font-bold text-xl">Hariir</span>
+            <span className="ml-2 text-blue-400 font-bold text-xl">Hariir</span>
           </div>
 
           {!isLoggedIn ? (
             <div className="flex items-center space-x-8">
               <div className="flex items-center space-x-4">
                 <button
-                  className="text-blue-500 border-blue-500 border-2 hover:text-blue-600 font-medium px-4 py-2 rounded-[7px] cursor-pointer"
+                  className="text-blue-400 border-blue-400 border-2 hover:text-blue-600 font-medium px-4 py-2 rounded-[7px] cursor-pointer"
                   onClick={onSignInClick}
                 >
                   Sign In
                 </button>
                 <button
-                  className="bg-blue-500 text-white px-4 py-2 rounded-[7px] hover:bg-blue-600 transition-colors"
+                  className="bg-blue-400 text-white px-4 py-2 rounded-[7px] hover:bg-blue-600 transition-colors"
                   onClick={onSingUpClick}
                 >
                   Join Now
@@ -94,13 +103,13 @@ export const Navbar = ({ onSignInClick, onSingUpClick }) => {
           ) : (
             <>
               <div className="flex items-center ">
-                <div className="hidden md:flex items-center space-x-8">
+                <div className="hidden cursor-pointer md:flex items-center space-x-8">
                   <a
                     onClick={() => router.push("/")}
                     className={`flex items-center gap-4 ${
                       isActiveHome
-                        ? "text-blue-500"
-                        : "text-gray-700 hover:text-blue-500"
+                        ? "text-blue-400"
+                        : "text-gray-700 hover:text-blue-400"
                     }`}
                   >
                     <AiOutlineHome className="text-xl" />
@@ -111,8 +120,8 @@ export const Navbar = ({ onSignInClick, onSingUpClick }) => {
                     onClick={() => router.push("/dashboard")}
                     className={`flex cursor-pointer items-center gap-4 ${
                       isActive
-                        ? "text-blue-500"
-                        : "text-gray-700 hover:text-blue-500"
+                        ? "text-blue-400"
+                        : "text-gray-700 hover:text-blue-400"
                     }`}
                   >
                     <IoSearchSharp className="text-xl" />
@@ -120,7 +129,7 @@ export const Navbar = ({ onSignInClick, onSingUpClick }) => {
                   </a>
                   <a
                     href="#"
-                    className="flex items-center text-gray-700 gap-4 hover:text-blue-500"
+                    className="flex items-center text-gray-700 gap-4 hover:text-blue-400"
                   >
                     <LuMessageCircle className="text-xl" />
                     Messages
@@ -128,27 +137,47 @@ export const Navbar = ({ onSignInClick, onSingUpClick }) => {
                 </div>
               </div>
               <div className="flex items-center space-x-4">
-                <div
-                  className="flex cursor-pointer items-center bg-blue-500 text-white rounded-full md:px-4 ps-3 pr-1 md:py-2 py-3"
-                  onClick={() => router.push("/MyProfile")}
-                >
-                  <div className="bg-white uppercase text-blue-500 rounded-full w-8 h-8 flex items-center justify-center font-bold mr-2">
-                    {user?.fullName?.slice(0, 1) || user?.email?.slice(0, 1)}
+                <div className="relative" ref={dropdownRef}>
+             
+                  <div
+                    className="flex cursor-pointer items-center  text-black rounded-full md:px-4 ps-3 pr-3 md:py-2 py-3"
+                    onClick={() => setShowDropdown((prev) => !prev)}
+                  >
+                    <div className="uppercase text-white bg-blue-400 rounded-full w-8 h-8 flex items-center justify-center font-bold mr-2">
+                      {user?.fullName?.slice(0, 1) || user?.email?.slice(0, 1)}
+                    </div>
+                    <span className="hidden md:block ms-2 font-medium">
+                      {user?.fullName || user?.email}
+                    </span>
                   </div>
-                  {!user?.fullName && (
-                    <span className="hidden md:block">{user.email}</span>
-                  )}
 
-                  {user?.fullName && (
-                    <span className="hidden md:block">{user.fullName}</span>
+                
+                  {showDropdown && (
+                    <div className="transition-all duration-500 absolute right-0 mt-2 w-44 bg-white rounded-md shadow-lg z-50">
+                      <button
+                        onClick={() => {
+                          setShowDropdown(false);
+                          router.push("/MyProfile");
+                        }}
+                        className="w-full flex gap-4 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      >
+                        <UserRound className="w-4 h-4"/>
+                        My Profile
+                      </button>
+                      <button
+                        onClick={() => {
+                          setShowDropdown(false);
+                          handleLogout(); // custom signout logic
+                        }}
+                        className="w-full flex gap-4 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      >
+                     
+                        <LogOut className="w-4 h-4"/>
+                        Sign Out
+                      </button>
+                    </div>
                   )}
                 </div>
-                <button
-                  onClick={handleLogout}
-                  className="text-gray-700 text-3xl cursor-pointer"
-                >
-                  <MdOutlineLogout />
-                </button>
               </div>
             </>
           )}
