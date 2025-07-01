@@ -503,7 +503,7 @@ const CompanyProfile = ({ companyData, getProfile, loader }) => {
         </section>
 
         <section className="mb-8">
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid md:grid-cols-1 gap-6">
             <div>
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-[18px] font-semibold text-gray-800 flex items-center gap-2">
@@ -516,12 +516,12 @@ const CompanyProfile = ({ companyData, getProfile, loader }) => {
                 /> */}
               </div>
               <div className="bg-blue-50 p-4 rounded-lg">
-                <p className="text-gray-700 text-[14px] leading-relaxed">
+                <p className="text-gray-700 text-[16px] leading-relaxed">
                   {showFullMission ||
-                  companyData.missionStatement?.length <= 150
+                  companyData.missionStatement?.length <= 250
                     ? companyData.missionStatement
-                    : companyData.missionStatement?.slice(0, 150) + "..."}
-                  {companyData.missionStatement?.length > 150 && (
+                    : companyData.missionStatement?.slice(0, 250) + "..."}
+                  {companyData.missionStatement?.length > 250 && (
                     <button
                       className="text-blue-600 text-sm ml-1"
                       onClick={() => setShowFullMission(!showFullMission)}
@@ -544,11 +544,11 @@ const CompanyProfile = ({ companyData, getProfile, loader }) => {
                 /> */}
               </div>
               <div className="bg-green-50 p-4 rounded-lg">
-                <p className="text-gray-700 text-[14px] leading-relaxed">
-                  {showFullVision || companyData.visionStatement?.length <= 150
+                <p className="text-gray-700 text-[16px] leading-relaxed">
+                  {showFullVision || companyData.visionStatement?.length <= 250
                     ? companyData.visionStatement
-                    : companyData.visionStatement?.slice(0, 150) + "..."}
-                  {companyData.visionStatement?.length > 150 && (
+                    : companyData.visionStatement?.slice(0, 250) + "..."}
+                  {companyData.visionStatement?.length > 250 && (
                     <button
                       className="text-green-600 text-sm ml-1"
                       onClick={() => setShowFullVision(!showFullVision)}

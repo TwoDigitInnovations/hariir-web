@@ -434,11 +434,13 @@ function CompanyProfileForm(props) {
                   }`}
                 >
                   <option value="">Select country</option>
+
                   {countryOptions.map((option) => (
                     <option key={option.value} value={option.value}>
                       {option.label}
                     </option>
                   ))}
+                  
                 </select>
                 {formik.touched.location && formik.errors.location && (
                   <p className="mt-1 text-sm text-red-600">

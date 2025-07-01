@@ -24,8 +24,6 @@ import Resume from "../components/Resume";
 import CompanyProfile from "@/components/CompanyProfile";
 import ResumeForCompany from "@/components/ResumeForCompany";
 
-
-
 export default function ProfileCompletion(props) {
   const router = useRouter();
   const [user] = useContext(userContext);
@@ -64,6 +62,7 @@ export default function ProfileCompletion(props) {
       }
     );
   };
+
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -159,7 +158,6 @@ export default function ProfileCompletion(props) {
               {profileData.role === "professional" ? (
                 <div>
                   <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
-                 
                     <div className="bg-gradient-to-r bg-white text-white md:p-8 p-2">
                       <div className="flex md:flex-row flex-col items-center gap-6">
                         <div className="w-32 h-32 bg-blue-400 rounded-full flex items-center justify-center text-white text-4xl font-bold uppercase">
@@ -179,7 +177,7 @@ export default function ProfileCompletion(props) {
                           <div className="flex flex-wrap gap-4 text-gray-700 mb-2">
                             <div className="flex items-center gap-2">
                               <MapPin size={16} />
-                              <span>Borama, Awdal, Somalia</span>
+                              <span>{profileData.location}</span>
                             </div>
                           </div>
                           <div className="flex flex-col md:flex-row justify-between md:w-lg">
@@ -196,9 +194,7 @@ export default function ProfileCompletion(props) {
                       </div>
                     </div>
 
-                  
                     <div className="md:p-8 p-4">
-                   
                       <section className="mb-8">
                         <div className="flex items-center justify-between mb-4">
                           <h2 className="text-[18px] font-semibold text-gray-800 flex items-center gap-2">
@@ -562,12 +558,21 @@ export default function ProfileCompletion(props) {
                   <span className="text-sm font-medium text-gray-700">
                     Profile Strength
                   </span>
-                  <span className="text-sm font-bold text-gray-900">25%</span>
+                  <span className="text-sm font-bold text-gray-900">
+                    {!profileData?.fullName && !profileData?.companyName
+                      ? "25%"
+                      : "85%"}
+                  </span>
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-2">
                   <div
                     className="bg-blue-600 h-2 rounded-full"
-                    style={{ width: "25%" }}
+                    style={{
+                      width:
+                        !profileData?.fullName && !profileData?.companyName
+                          ? "25%"
+                          : "85%",
+                    }}
                   ></div>
                 </div>
               </div>

@@ -24,7 +24,7 @@ const initialValue = {
   password: "",
 };
 
-const SingUp = ({ isOpen, onClose, loader }) => {
+const SingUp = ({ isOpen, onClose, loader, onSignInClick }) => {
   const [accountType, setAccountType] = useState("professional");
   const router = useRouter();
   const { values, handleSubmit, handleChange, handleBlur, errors, touched } =
@@ -67,17 +67,19 @@ const SingUp = ({ isOpen, onClose, loader }) => {
   return (
     <div className=" md:m-0 p-3 fixed inset-0 bg-black/80 bg-opacity-40 flex items-center justify-center z-50">
       <div className="bg-white w-full max-w-md rounded-lg shadow-lg p-6">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl text-black text-center font-semibold">
+        <div className="relative">
+          <h2 className="text-xl text-black text-center font-semibold mb-2">
             Join Hariir
           </h2>
+
           <button
-            className="text-gray-400 text-2xl cursor-pointer hover:text-black"
+            className="text-gray-400 absolute right-0 top-0 text-2xl cursor-pointer hover:text-black"
             onClick={onClose}
           >
             &times;
           </button>
         </div>
+
         <p className="text-sm text-gray-600 text-center mb-4">
           Create your professional profile today
         </p>
@@ -149,7 +151,10 @@ const SingUp = ({ isOpen, onClose, loader }) => {
 
         <p className="text-center text-sm text-gray-600 mt-4">
           Already have an account?{" "}
-          <span className="text-blue-400 cursor-pointer hover:underline">
+          <span
+            className="text-blue-400 cursor-pointer hover:underline"
+            onClick={onSignInClick}
+          >
             Sign In
           </span>
         </p>

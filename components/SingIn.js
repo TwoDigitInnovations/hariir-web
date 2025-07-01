@@ -17,7 +17,7 @@ const initialValue = {
   password: "",
 };
 
-const JoinNowModal = ({ isOpen, setIsOpen ,onClose, loader }) => {
+const JoinNowModal = ({ isOpen, setIsOpen ,onClose, loader ,onSignInClick }) => {
   const router = useRouter();
   const [user, setUser] = useContext(userContext);
   const [eyeIcon, setEyeIcon] = useState(false);
@@ -131,9 +131,9 @@ const JoinNowModal = ({ isOpen, setIsOpen ,onClose, loader }) => {
 
         <p className="text-black py-3 text-center">
           Don't have an account?{" "}
-          <a href="/signUp" className="text-blue-400">
+          <span className="text-blue-400 cursor-pointer" onClick={onSignInClick}>
             Join Now
-          </a>
+          </span>
         </p>
       </div>
     </div>

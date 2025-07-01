@@ -1,20 +1,22 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useMemo } from "react";
 import { FiSearch, FiStar, FiGlobe } from "react-icons/fi";
 import { useRouter } from "next/router";
 import { FaUser, FaBuilding, FaSearchLocation } from "react-icons/fa";
 import { MdOutlineShowChart } from "react-icons/md";
 import { userContext } from "./_app";
 import { Users, Building2, Search, MapPin, User, Eye } from "lucide-react";
+import countryList from "react-select-country-list";
 
 export default function Home(props) {
   const router = useRouter();
   const [user] = useContext(userContext);
+  const countryOptions = useMemo(() => countryList().getData(), []);
 
   const HeroSection = () => {
     return (
       <div className="bg-white text-center pt-6 ">
         <div className="py-8 flex flex-col justify-center items-center">
-          <MdOutlineShowChart className="text-8xl mb-6 text-blue-500" />
+          <MdOutlineShowChart className="text-8xl mb-6 text-blue-400" />
           <h1 className="text-3xl text-black font-bold mb-4">
             Ready to advance your career?
           </h1>
@@ -23,10 +25,10 @@ export default function Home(props) {
             network on Hariir.
           </p>
           <div className="flex justify-center gap-4 mb-10">
-            <button className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600">
+            <button className="bg-blue-400 text-white px-6 py-2 rounded-md hover:bg-blue-600">
               Browse Directory
             </button>
-            <button className="border border-blue-500 text-blue-500 px-6 py-2 rounded-md hover:bg-blue-50">
+            <button className="border border-blue-400 text-blue-400 px-6 py-2 rounded-md hover:bg-blue-50">
               Learn More
             </button>
           </div>
@@ -50,7 +52,7 @@ export default function Home(props) {
                 key={i}
                 className="bg-white px-4 py-2 rounded-full shadow-sm text-sm text-gray-700 flex items-center gap-2 "
               >
-                <FaSearchLocation className="text-blue-500" />
+                <FaSearchLocation className="text-blue-400" />
                 {location}
               </span>
             ))}
@@ -98,7 +100,7 @@ export default function Home(props) {
               key={i}
               className="bg-white rounded-lg shadow-md p-8 py-8 text-left"
             >
-              <div className="bg-blue-500 p-2 w-[36px] rounded-[5px] text-center">
+              <div className="bg-blue-400 p-2 w-[36px] rounded-[5px] text-center">
                 {feature.icon}
               </div>
               <h3 className="font-semibold text-black text-lg mt-4 mb-2">
@@ -109,7 +111,7 @@ export default function Home(props) {
               </p>
               <a
                 href="#"
-                className="text-blue-500 mt-3 inline-block text-sm hover:underline"
+                className="text-blue-400 mt-3 inline-block text-sm hover:underline"
               >
                 Learn More →
               </a>
@@ -125,20 +127,20 @@ export default function Home(props) {
       <div className="py-12 min-h-[250px]">
         <div className="max-w-7xl mx-auto h-[200px] px-4 grid grid-cols-2 md:grid-cols-4 flex-wrap justify-evenly items-center gap-8 md:gap-20 text-center">
           <div>
-            <h2 className="text-3xl font-bold text-blue-500">10K+</h2>
-            <p className="text-lg text-blue-500">Professionals</p>
+            <h2 className="text-3xl font-bold text-blue-400">10K+</h2>
+            <p className="text-lg text-blue-400">Professionals</p>
           </div>
           <div>
-            <h2 className="text-3xl font-bold text-blue-500">500+</h2>
-            <p className="text-lg text-blue-500">Companies</p>
+            <h2 className="text-3xl font-bold text-blue-400">400+</h2>
+            <p className="text-lg text-blue-400">Companies</p>
           </div>
           <div>
-            <h2 className="text-3xl font-bold text-blue-500">5</h2>
-            <p className="text-lg text-blue-500">Countries</p>
+            <h2 className="text-3xl font-bold text-blue-400">5</h2>
+            <p className="text-lg text-blue-400">Countries</p>
           </div>
           <div>
-            <h2 className="text-3xl font-bold text-blue-500">50+</h2>
-            <p className="text-lg text-blue-500">Industries</p>
+            <h2 className="text-3xl font-bold text-blue-400">50+</h2>
+            <p className="text-lg text-blue-400">Industries</p>
           </div>
         </div>
       </div>
@@ -193,7 +195,7 @@ export default function Home(props) {
                 </div>
 
                 <button
-                  className="w-full bg-blue-400 hover:bg-blue-500 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center justify-center cursor-pointer"
+                  className="w-full bg-blue-400 hover:bg-blue-400 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center justify-center cursor-pointer"
                   onClick={() => router.push("/FindProfessional")}
                 >
                   <Search className="w-4 h-4 mr-2" />
@@ -255,7 +257,7 @@ export default function Home(props) {
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                 <div className="text-center">
                   <div className="text-4xl font-bold text-blue-600 mb-2">
-                    500+
+                    400+
                   </div>
                   <div className="text-gray-600">Professionals</div>
                 </div>
@@ -287,7 +289,7 @@ export default function Home(props) {
             <div className="md:py-6 md:pt-20 pt-12 px-4 md:px-8 relative max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-12">
               <div className="flex-1 space-y-6 relative z-10">
                 <h1 className="text-3xl md:text-4xl lg:text-6xl font-bold leading-tight max-w-3xl">
-                  <span className="text-blue-500">
+                  <span className="text-blue-400">
                     Welcome to the professional community for{" "}
                   </span>
                   <span className="text-yellow-400">East Africa</span>
@@ -304,21 +306,21 @@ export default function Home(props) {
                     <div className="flex-1">
                       <input
                         type="text"
-                        placeholder="Search professionals by"
-                        className="w-full text-black px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        placeholder="Search professionals or Company"
+                        className="w-full md:w-[290px] text-black px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
                       />
                     </div>
 
                     <div className="">
-                      <select className="appearance-none bg-white border border-gray-300 rounded-lg px-4 py-3 pr-10 focus:outline-none focus:ring-2 w-full focus:ring-blue-500 focus:border-transparent text-black">
+                      <select className="appearance-none bg-white border border-gray-300 rounded-lg px-4 py-3 pr-10 focus:outline-none focus:ring-2 w-full focus:ring-blue-400 focus:border-transparent text-black">
                         <option>Select Location</option>
-                        <option>Kenya</option>
-                        <option>Uganda</option>
-                        <option>Tanzania</option>
-                        <option>Rwanda</option>
-                        <option>All East Africa</option>
+                        {countryOptions.map((option) => (
+                          <option key={option.value} value={option.value}>
+                            {option.label}
+                          </option>
+                        ))}
                       </select>
-                      <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                      <div className="absolute inset-y-0 right-0 md:right-36 flex items-center px-2 pointer-events-none">
                         <svg
                           className="w-4 h-4 fill-current text-gray-400"
                           viewBox="0 0 20 20"
@@ -332,12 +334,14 @@ export default function Home(props) {
                       </div>
                     </div>
 
-                    <button className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200 flex items-center justify-center gap-2">
+                    <button className="bg-blue-400 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200 flex items-center justify-center gap-2"
+                    onClick={()=> router.push("/dashboard")}
+                    >
                       <FiSearch className="w-5 h-5" />
                       Search
                     </button>
                     <div className="hidden md:flex flex-shrink-0 absolute -top-5 -right-32">
-                      <div className="bg-blue-500 p-6 md:p-4 rounded-full shadow-2xl hidden lg:block">
+                      <div className="bg-blue-400 p-6 md:p-4 rounded-full shadow-2xl hidden lg:block">
                         <FiGlobe className="w-12 h-12 md:w-10 md:h-10 text-white" />
                       </div>
                     </div>

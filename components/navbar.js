@@ -87,13 +87,13 @@ export const Navbar = ({ onSignInClick, onSingUpClick }) => {
             <div className="flex items-center space-x-8">
               <div className="flex items-center space-x-4">
                 <button
-                  className="text-blue-400 border-blue-400 border-2 hover:text-blue-600 font-medium px-4 py-2 rounded-[7px] cursor-pointer"
+                  className="text-blue-400 border-blue-400 border-2 hover:text-blue-600 font-medium px-4 py-2 md:text-[16px] text-[14px] rounded-[7px] cursor-pointer"
                   onClick={onSignInClick}
                 >
                   Sign In
                 </button>
                 <button
-                  className="bg-blue-400 text-white px-4 py-2 rounded-[7px] hover:bg-blue-600 transition-colors"
+                  className="bg-blue-400 md:text-[16px] text-[14px] text-white px-4 py-2 rounded-[7px] hover:bg-blue-600 transition-colors"
                   onClick={onSingUpClick}
                 >
                   Join Now

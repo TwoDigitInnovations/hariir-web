@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import {
   MapPin,
   Search,
@@ -11,69 +11,15 @@ import { Api } from "@/services/service";
 import ProfessionalCard from "../components/ProfessionalCard";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
+import countryList from "react-select-country-list";
 
 const FindProfessional = (props) => {
-  // const profilesData = [
-  //   {
-  //     initials: "SK",
-  //     avatarColor: "#3B82F6",
-  //     name: "Samuel Kiprotich",
-  //     title: "Senior Software Engineer",
-  //     location: "Nairobi, Kenya",
-  //     skills: ["React", "Node.js", "Python", "MongoDB", "AWS"],
-  //     currentRole: "Senior Software Engineer at TechFlow Kenya",
-  //   },
-  //   {
-  //     initials: "AM",
-  //     avatarColor: "#10B981",
-  //     name: "Asha Mwangi",
-  //     title: "Full Stack Developer",
-  //     location: "Lagos, Nigeria",
-  //     skills: ["Vue.js", "Laravel", "PostgreSQL", "Docker"],
-  //     currentRole: "Full Stack Developer at InnovateTech Solutions",
-  //   },
-  //   {
-  //     initials: "RK",
-  //     avatarColor: "#8B5CF6",
-  //     name: "Rajesh Kumar",
-  //     title: "DevOps Engineer",
-  //     location: "Mumbai, India",
-  //     skills: ["Kubernetes", "Terraform", "Jenkins", "AWS", "Python"],
-  //     currentRole: "DevOps Engineer at CloudScale Technologies",
-  //   },
-  //   {
-  //     initials: "LS",
-  //     avatarColor: "#F59E0B",
-  //     name: "Lisa Smith",
-  //     title: "Product Manager",
-  //     location: "San Francisco, USA",
-  //     skills: ["Product Strategy", "Agile", "Analytics", "UX Research"],
-  //     currentRole: "Senior Product Manager at StartupFlow Inc",
-  //   },
-  //   {
-  //     initials: "MO",
-  //     avatarColor: "#EF4444",
-  //     name: "Mohammed Omar",
-  //     title: "Mobile App Developer",
-  //     location: "Dubai, UAE",
-  //     skills: ["Flutter", "React Native", "iOS", "Android", "Firebase"],
-  //     currentRole: "Mobile Developer at DigitalCraft Solutions",
-  //   },
-  //   {
-  //     initials: "JD",
-  //     avatarColor: "#06B6D4",
-  //     name: "Jane Doe",
-  //     title: "Data Scientist",
-  //     location: "Toronto, Canada",
-  //     skills: ["Python", "Machine Learning", "TensorFlow", "SQL", "R"],
-  //     currentRole: "Data Scientist at AI Innovations Lab",
-  //   },
-  // ];
-
   const [profilesData, setProfileData] = useState([]);
   const router = useRouter();
   const [token, setToken] = useState(null);
-  const [SearchTearm, setSearchTearm] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedLocation, setSelectedLocation] = useState("");
+  const countryOptions = useMemo(() => countryList().getData(), []);
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
@@ -99,7 +45,7 @@ const FindProfessional = (props) => {
         props.loader(false);
         setProfileData(
           (res.data || []).filter((item) => item.role === "professional")
-        ); // Optional filter safety
+        );
       },
       (err) => {
         props.loader(false);
@@ -107,6 +53,42 @@ const FindProfessional = (props) => {
       }
     );
   };
+
+  const getProfileOnSearch = () => {
+    if (!searchQuery && !selectedLocation) {
+      getAllProfessional();
+      return;
+    }
+    const data = {
+      selectedLocation,
+    };
+    props.loader(true);
+    Api(
+      "post",
+      `auth/getAllSearchResult?searchTerm=${searchQuery}&role=professional`,
+      data,
+      router
+    ).then(
+      (res) => {
+        props.loader(false);
+        setProfileData(
+          (res.data || []).filter((item) => item.role === "professional")
+        );
+      },
+      (err) => {
+        props.loader(false);
+        toast.error(err?.data?.message || err?.message || "An error occurred");
+      }
+    );
+  };
+
+  useEffect(() => {
+    const delayDebounce = setTimeout(() => {
+      getProfileOnSearch();
+    }, 400);
+
+    return () => clearTimeout(delayDebounce);
+  }, [searchQuery ,selectedLocation]);
 
   return (
     <div className="min-h-screen bg-gray-50 md:p-6">
@@ -155,7 +137,9 @@ const FindProfessional = (props) => {
                   <Search className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                   <input
                     type="text"
-                    placeholder="Search by name, description, or service"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Search by name, skills"
                     className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none text-black text-sm"
                   />
                 </div>
@@ -167,12 +151,17 @@ const FindProfessional = (props) => {
                   <MapPin className="w-4 h-4 inline mr-1" />
                   Location
                 </label>
-                <select className="w-full p-2 border border-gray-300 rounded-md focus:outline-none text-black text-sm">
+                <select
+                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none text-black text-sm"
+                  value={selectedLocation}
+                  onChange={(e) => setSelectedLocation(e.target.value)}
+                >
                   <option>Select location</option>
-                  <option>Kenya</option>
-                  <option>Nigeria</option>
-                  <option>South Africa</option>
-                  <option>Uganda</option>
+                  {countryOptions.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
                 </select>
               </div>
 
@@ -211,10 +200,10 @@ const FindProfessional = (props) => {
 
           {/* Results */}
           <div className="lg:col-span-3">
-            {SearchTearm && (
+            {profilesData.length === 1 && searchQuery && (
               <div className="mb-4">
                 <h2 className="text-xl font-semibold text-gray-900 ">
-                  4 Professional Found
+                  {profilesData.length} Professional Found
                 </h2>
                 <p className="text-gray-600">
                   Discover talented Professional ready to Connect
@@ -227,6 +216,20 @@ const FindProfessional = (props) => {
                 <ProfessionalCard key={index} profile={profile} />
               ))}
             </div>
+
+            {profilesData.length === 0 && (
+              <div className="text-center py-12 mt-20">
+                <div className="text-gray-400 mb-4">
+                  <Users className="w-16 h-16 mx-auto" />
+                </div>
+                <h3 className="text-lg font-medium text-gray-900 mb-2">
+                  No Professional found
+                </h3>
+                <p className="text-gray-600">
+                  Try adjusting your search or check back later.
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </div>

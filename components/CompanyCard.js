@@ -25,8 +25,9 @@ const CompanyCard = ({ company }) => {
       company.location?.trim().toUpperCase(),
       "en"
     );
-    setCountry(result || "India");
+    setCountry(result || "Not Found");
   });
+
 
   return (
     <div className="bg-white rounded-lg shadow-xl border border-gray-200 p-6 hover:shadow-2xl transition-shadow duration-200">

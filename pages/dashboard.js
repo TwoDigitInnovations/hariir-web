@@ -8,13 +8,11 @@ import { Api } from "@/services/service";
 
 const ProfessionalDirectory = (props) => {
   const [activeTab, setActiveTab] = useState("professionals");
-  const [searchQuery, setSearchQuery] = useState("");
-
   const [Professional, setProfessional] = useState([]);
   const [companies, setCompaniesData] = useState([]);
   const router = useRouter();
   const [token, setToken] = useState(null);
-  const [SearchTearm, setSearchTearm] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
@@ -37,7 +35,6 @@ const ProfessionalDirectory = (props) => {
       (res) => {
         props.loader(false);
         const allData = res.data || [];
-
         setCompaniesData(allData.filter((item) => item.role === "company"));
         setProfessional(allData.filter((item) => item.role === "professional"));
       },
@@ -47,6 +44,40 @@ const ProfessionalDirectory = (props) => {
       }
     );
   };
+
+  const getProfileOnSearch = () => {
+    if (!searchQuery) {
+      getAllData(); 
+      return;
+    }
+
+    props.loader(true);
+    Api(
+      "post",
+      `auth/getAllSearchResult?searchTerm=${searchQuery}`,
+      null,
+      router
+    ).then(
+      (res) => {
+        props.loader(false);
+        const allData = res.data || [];
+        setCompaniesData(allData.filter((item) => item.role === "company"));
+        setProfessional(allData.filter((item) => item.role === "professional"));
+      },
+      (err) => {
+        props.loader(false);
+        toast.error(err?.data?.message || err?.message || "An error occurred");
+      }
+    );
+  };
+
+  useEffect(() => {
+    const delayDebounce = setTimeout(() => {
+      getProfileOnSearch();
+    }, 400); // debounce delay
+
+    return () => clearTimeout(delayDebounce);
+  }, [searchQuery]);
 
   return (
     <div className="min-h-screen bg-gray-50 p-4">
@@ -73,6 +104,7 @@ const ProfessionalDirectory = (props) => {
                 className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-black focus:border-transparent outline-none"
               />
             </div>
+
             <button className="flex items-center gap-2 text-black px-4 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
               <Filter className="w-5 h-5" />
               Filters
@@ -113,7 +145,7 @@ const ProfessionalDirectory = (props) => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 xl:grid-cols-4 gap-6">
           {activeTab === "professionals" &&
             Professional.map((profile, index) => (
               <ProfileCard key={index} profile={profile} />

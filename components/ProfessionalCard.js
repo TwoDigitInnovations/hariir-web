@@ -30,7 +30,7 @@ const ProfileCard = ({ profile }) => {
       profile.location?.trim().toUpperCase(),
       "en"
     );
-    setCountry(result || "India");
+    setCountry(result || "not found");
   });
   return (
     <div className="bg-white rounded-lg border border-gray-200 p-6 max-w-sm mx-auto shadow-sm hover:shadow-lg transition-shadow duration-300">
