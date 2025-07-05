@@ -1,7 +1,8 @@
 import axios from "axios";
-import { useRouter } from "next/router"; 
+import { useRouter } from "next/router";
 
 export const ConstantsUrl = "http://localhost:3003/api/";
+// export const ConstantsUrl = "https://api.guuldoon.com/api/";
 
 function Api(method, url, data, router) {
   return new Promise(function (resolve, reject) {
@@ -24,7 +25,7 @@ function Api(method, url, data, router) {
           if (err?.response?.status === 401) {
             if (typeof window !== "undefined") {
               localStorage.removeItem("userDetail");
-            
+              router.push("/");
             }
           }
           reject(err.response.data);
