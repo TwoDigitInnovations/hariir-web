@@ -382,7 +382,7 @@ const CompanyProfile = ({ companyData, getProfile, loader }) => {
                   <h3 className="text-[16px] font-semibold text-gray-800 mb-2">
                     {spec.title}
                   </h3>
-                  
+
                   <div className="text-gray-600 leading-relaxed">
                     {showSpecializations || spec.description?.length <= 170
                       ? spec.description
@@ -562,69 +562,83 @@ const CompanyProfile = ({ companyData, getProfile, loader }) => {
           </div>
         </section>
 
+        {/* --- Team Members Section --- */}
         <section className="mb-8">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-[18px] font-semibold text-gray-800 flex items-center gap-2">
               <Users size={24} />
               Meet Our Team
             </h2>
-            {/* <Edit3
-              size={20}
-              className="text-gray-400 hover:bg-gray-200 cursor-pointer"
-            /> */}
           </div>
-          {companyData.teamMembers?.map((member, index) => (
-            <div
-              key={index}
-              className="border-l-4 border-blue-400 md:pl-6 pl-4 ml-2 mb-6"
-            >
-              <div className="flex items-start gap-3">
-                <div className="mt-2 w-2 h-2 bg-blue-400 rounded-full flex items-center justify-center text-white text-sm font-bold"></div>
-                <div className="flex-1">
-                  <h3 className="text-[16px] font-semibold text-gray-800">
-                    {member.fullName}
-                  </h3>
-                  <p className="text-blue-600 text-[14px] font-medium mb-1">
-                    {member.designation}
-                  </p>
-                  <p className="text-gray-600 text-[14px]">
-                    {member.description}
-                  </p>
+
+          {companyData?.teamMembers?.length > 0 ? (
+            companyData.teamMembers.map((member, index) => (
+              <div
+                key={index}
+                className="border-l-4 border-blue-400 md:pl-6 pl-4 ml-2 mb-6"
+              >
+                <div className="flex items-start gap-3">
+                  <div className="mt-2 w-2 h-2 bg-blue-400 rounded-full"></div>
+                  <div className="flex-1">
+                    <h3 className="text-[16px] font-semibold text-gray-800">
+                      {member.fullName}
+                    </h3>
+                    <p className="text-blue-600 text-[14px] font-medium mb-1">
+                      {member.designation}
+                    </p>
+                    <p className="text-gray-600 text-[14px]">
+                      {member.description}
+                    </p>
+                  </div>
                 </div>
               </div>
+            ))
+          ) : (
+            <div className="text-center py-12 border-2 border-dashed border-gray-200 rounded-lg">
+              <p className="text-gray-400 mb-2">No team members added yet</p>
+              <p className="text-gray-400 mb-4">
+                Click the Edit Profile to add your team
+              </p>
             </div>
-          ))}
+          )}
         </section>
 
+        {/* --- Projects Section --- */}
         <section>
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-[18px] font-semibold text-gray-800 flex items-center gap-2">
               <Award size={24} />
               Past Projects
             </h2>
-            {/* <Edit3
-              size={20}
-              className="text-gray-400 hover:bg-gray-200 cursor-pointer"
-            /> */}
           </div>
-          {companyData.projects?.map((project, index) => (
-            <div key={index} className="bg-gray-50 p-4 rounded-lg mb-2">
-              <div className="flex justify-between items-start mb-1">
-                <h3 className="text-[16px] font-semibold text-gray-800">
-                  {project.title}
-                </h3>
-                <span className="text-gray-400 text-[14px]">
-                  {project.yearCompleted}
-                </span>
+
+          {companyData?.projects?.length > 0 ? (
+            companyData.projects.map((project, index) => (
+              <div key={index} className="bg-gray-50 p-4 rounded-lg mb-2">
+                <div className="flex justify-between items-start mb-1">
+                  <h3 className="text-[16px] font-semibold text-gray-800">
+                    {project.title}
+                  </h3>
+                  <span className="text-gray-400 text-[14px]">
+                    {project.yearCompleted}
+                  </span>
+                </div>
+                <p className="text-green-600 text-[14px] leading-relaxed mb-2">
+                  {project.client}
+                </p>
+                <p className="text-gray-600 text-[14px] leading-relaxed">
+                  {project.description}
+                </p>
               </div>
-              <p className="text-green-600 text-[14px] leading-relaxed mb-2">
-                {project.client}
-              </p>
-              <p className="text-gray-600 text-[14px] leading-relaxed">
-                {project.description}
+            ))
+          ) : (
+            <div className="text-center py-12 border-2 border-dashed border-gray-200 rounded-lg">
+              <p className="text-gray-400 mb-2">No projects added yet</p>
+              <p className="text-gray-400 mb-4">
+                Click the edit Profile to add past projects
               </p>
             </div>
-          ))}
+          )}
         </section>
       </div>
     </div>

@@ -31,7 +31,7 @@ const validationSchema = Yup.object({
     .url("Invalid LinkedIn URL")
     .matches(/linkedin\.com/, "Must be a LinkedIn URL"),
   bio: Yup.string()
-    .min(50, "Bio must be at least 50 characters")
+    .min(1, "Bio must be at least 1 characters")
     .max(1500, "Bio must not exceed 500 characters")
     .required("Professional bio is required"),
 });
@@ -40,7 +40,7 @@ export default function ProfileForm(props) {
   const [profileImage, setProfileImage] = useState(null);
   const router = useRouter();
   const [user] = useContext(userContext);
-  
+
   const countryOptions = useMemo(() => countryList().getData(), []);
 
   const formik = useFormik({
@@ -115,7 +115,7 @@ export default function ProfileForm(props) {
 
   const submit = (values, resetForm) => {
     props.loader(true);
-    const urlUserId = router.query.userId 
+    const urlUserId = router.query.userId;
     const userId = urlUserId || user._id;
 
     const data = {
@@ -410,8 +410,7 @@ export default function ProfileForm(props) {
             <h3 className="text-lg font-medium text-gray-900 mb-4">
               Professional Bio
             </h3>
-
-            <div className="p-1 text-black">
+            <div className="text-black">
               <JoditEditor
                 className={`w-full px-3 py-2 border border-t-0 rounded-b-md shadow-sm focus:outline-none text-black focus:border-blue-500 resize-none ${
                   formik.errors.bio
@@ -426,6 +425,12 @@ export default function ProfileForm(props) {
                 config={{
                   height: 400,
                   toolbarAdaptive: false,
+                  clipboard: {
+                    cleanPaste: false, // allow pasted HTML
+                  },
+                  askBeforePasteHTML: false, // don't show paste confirmation
+                  askBeforePasteFromWord: false,
+                  defaultActionOnPaste: "insert_clear_html", // or try 'insert_as_html' if styles are not retained
                   buttons: [
                     "bold",
                     "italic",
@@ -443,11 +448,7 @@ export default function ProfileForm(props) {
                   ],
                 }}
               />
-              {formik.touched.bio && formik.errors.bio && (
-                <p className="mt-1 text-sm text-red-600">{formik.errors.bio}</p>
-              )}
             </div>
-
             <p className="mt-2 text-xs text-gray-500">
               Use the toolbar to format your text. Bold: **text**, Italic:
               *text*, Large: ## text, Small: text, Bullet: • item, Number: 1.
