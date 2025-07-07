@@ -115,7 +115,7 @@ export default function ProfileCompletion(props) {
           <div className="lg:col-span-2">
             <div className="bg-white rounded-lg shadow-sm">
               {/* Profile Header */}
-              <div className="border-b border-gray-200 md:p-6 p-5">
+              <div className="border-b border-gray-200 md:p-4 p-5">
                 <div className="flex md:flex-row flex-col items-center justify-between">
                   <div className="flex justify-start mb-2">
                     {user?.role === "company" ? (
@@ -157,44 +157,63 @@ export default function ProfileCompletion(props) {
               {profileData.role === "professional"
                 ? profileData?.fullName && (
                     <div>
-                      <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
-                        <div className="bg-gradient-to-r bg-white text-white md:p-8 p-2">
-                          <div className="flex md:flex-row flex-col items-center gap-6">
-                            <div className="w-32 h-32 bg-blue-400 rounded-full flex items-center justify-center text-white text-4xl font-bold uppercase">
-                              {profileData?.fullName
-                                .split(" ")
-                                .map((word) => word[0])
-                                .join("")
-                                .toUpperCase()}
-                            </div>
-                            <div className="flex-1">
-                              <h1 className="md:text-[30px] text-black font-bold mb-2">
-                                {profileData.fullName}
-                              </h1>
-                              <p className="md:text-[20px] text-gray-700 mb-1">
-                                {profileData.professionalTitle}
-                              </p>
-                              <div className="flex flex-wrap gap-4 text-gray-700 mb-2">
-                                <div className="flex items-center gap-2">
-                                  <MapPin size={16} />
-                                  <span>{profileData.location}</span>
-                                </div>
+                      <div className="max-w-4xl mx-auto bg-white shadow-lg  overflow-hidden">
+                        <div className="bg-white text-white ">
+                          {/* Cover Section */}
+                          <div className=" w-full">
+                            {profileData.coverImage ? (
+                              <img
+                                src={profileData.coverImage}
+                                alt="CoverPage"
+                                className="w-full md:h-44 md:object-cover object-contain"
+                              />
+                            ) : (
+                              <div className="w-full h-40 bg-gradient-to-r from-gray-200 to-blue-50 " />
+                            )}
+
+                            <div className="ms-6 md:-mt-20 -mt-12 flex md:justify-start justify-center">
+                              <div className="md:w-40 md:h-40 w-28 h-28 bg-blue-400 rounded-full border-4 border-white shadow-md overflow-hidden">
+                                <img
+                                  src={
+                                    profileData.profileImage || "/profile.png"
+                                  }
+                                  alt="Company Logo"
+                                  className="w-full h-full object-cover"
+                                />
                               </div>
-                              <div className="flex flex-col md:flex-row justify-between md:w-lg">
-                                <div className="flex flex-row text-gray-500 items-center gap-2">
-                                  <Mail size={16} />
-                                  <span>{profileData.email}</span>
-                                </div>
-                                <div className="flex flex-row text-gray-500 items-center gap-2">
-                                  <Phone size={16} />
-                                  <span>{profileData.phone}</span>
-                                </div>
+                            </div>
+                          </div>
+
+                          {/* Info Section */}
+                          <div className=" text-black md:px-8 p-2">
+                            <h1 className="md:text-[30px] font-bold mb-2 text-center md:text-left">
+                              {profileData.fullName}
+                            </h1>
+                            <p className="md:text-[20px] text-gray-700 mb-1 text-center md:text-left">
+                              {profileData.professionalTitle}
+                            </p>
+
+                            <div className="flex flex-wrap gap-4 text-gray-700 mb-2 justify-center md:justify-start">
+                              <div className="flex items-center gap-2">
+                                <MapPin size={16} />
+                                <span>{profileData.location}</span>
+                              </div>
+                            </div>
+
+                            <div className="flex flex-col md:flex-row justify-between text-center md:text-left gap-2 md:gap-0">
+                              <div className="flex flex-row text-gray-500  items-center justify-center md:justify-start gap-2">
+                                <Mail size={16} />
+                                <span>{profileData.email}</span>
+                              </div>
+                              <div className="flex flex-row text-gray-500 items-center justify-center md:justify-start gap-2">
+                                <Phone size={16} />
+                                <span>{profileData.phone}</span>
                               </div>
                             </div>
                           </div>
                         </div>
 
-                        <div className="md:p-8 p-4">
+                        <div className="md:px-8 p-4">
                           <section className="mb-8">
                             <div className="flex items-center justify-between mb-4">
                               <h2 className="text-[18px] font-semibold text-gray-800 flex items-center gap-2">

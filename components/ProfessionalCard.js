@@ -16,7 +16,6 @@ import { useState, useEffect } from "react";
 import countries from "i18n-iso-countries";
 import { FaLinkedinIn } from "react-icons/fa6";
 
-
 const ProfileCard = ({ profile }) => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [country, setCountry] = useState("");
@@ -30,73 +29,49 @@ const ProfileCard = ({ profile }) => {
       profile.location?.trim().toUpperCase(),
       "en"
     );
-    setCountry(result || "not found");
-  });
+    setCountry(result || "US");
+  },[]);
+
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-6 max-w-sm mx-auto shadow-sm hover:shadow-lg transition-shadow duration-300">
-      <div className="flex justify-center mb-4">
-        <div
-          className="w-16 h-16 rounded-full flex items-center justify-center text-white font-bold text-xl"
-          style={{
-            background: profile.avatarColor || "#3B82F6",
-          }}
-        >
-          {profile.initials || "AB"}
+    <div className="bg-white rounded-lg border border-gray-200 max-w-sm mx-auto shadow-sm hover:shadow-lg transition-shadow duration-300 min-w-[280px]">
+      <div>
+        {profile.coverImage ? (
+          <img
+            src={profile.coverImage}
+            alt="CoverPage"
+            className="w-[280px] md:h-24 md:object-cover object-contain"
+          />
+        ) : (
+          <div className="w-full h-24 bg-gradient-to-r from-blue-50 to-blue-100 " />
+        )}
+
+        <div className="flex justify-center -mt-12 relative z-10">
+          <div className="w-32 h-32 rounded-full border-4 border-white shadow-md overflow-hidden bg-gray-200">
+            <img
+              src={profile.profileImage || "/profile.png"}
+              className="w-full h-full object-cover"
+              alt="Profile"
+            />
+          </div>
+        </div>
+
+        <div className="px-6 pb-6 pt-4 flex flex-col justify-center items-center gap-4">
+          <div className="text-center ">
+            <h3 className="text-xl font-semibold text-gray-900 mb-1">
+              {profile.fullName}
+            </h3>
+            <p className="text-gray-600 text-sm">{profile.professionalTitle}</p>
+          </div>
+
+          <button
+            className="w-full border-2 border-blue-600 hover:bg-blue-50 text-blue-600 py-2.5 px-4 rounded-full font-medium transition-all duration-200 flex items-center justify-center gap-2"
+            onClick={toggleProfile}
+          >
+            View Profile
+            <ExternalLink className="w-4 h-4" />
+          </button>
         </div>
       </div>
-
-      {/* Name and Title */}
-      <div className="text-center mb-1">
-        <h3 className="text-[18px] font-bold text-gray-900 mb-1">
-          {profile.fullName}
-        </h3>
-        <p className="text-gray-600 text-[14px]">{profile.professionalTitle}</p>
-      </div>
-
-      {/* Location */}
-      <div className="flex items-center justify-center text-gray-400 text-sm mb-4">
-        <MapPin className="w-4 h-4 mr-1" />
-        {country}
-      </div>
-
-      {/* Skills Section */}
-      <div className="mb-4">
-        <h4 className="text-sm font-semibold text-gray-800 mb-3">Skills</h4>
-        <div className="flex flex-wrap gap-2">
-          {profile.skills?.slice(0, 3).map((skill, index) => (
-            <span
-              key={index}
-              className="bg-blue-400 text-white text-xs px-3 py-1 rounded-full font-medium"
-            >
-              {skill}
-            </span>
-          ))}
-          {profile.skills?.length > 3 && (
-            <span className="bg-gray-200 text-gray-600 text-xs px-3 py-1 rounded-full font-medium">
-              +{profile.skills?.length - 3} more
-            </span>
-          )}
-        </div>
-      </div>
-
-      {/* Current Role */}
-      <div className="mb-3">
-        <h4 className="text-sm font-semibold text-gray-800 mb-1">
-          Current Role
-        </h4>
-        <p className="text-gray-600 text-sm leading-relaxed">
-          {profile?.experience[0]?.jobTitle} at {profile?.experience[0]?.company}
-        </p>
-      </div>
-
-      {/* View Profile Button */}
-      <button
-        className="w-full bg-blue-400 hover:bg-blue-600 text-white py-2 px-4 rounded-xl font-medium transition-colors duration-200 flex items-center justify-center gap-2"
-        onClick={toggleProfile}
-      >
-        View Profile
-        <ExternalLink className="w-4 h-4" />
-      </button>
 
       {isProfileOpen && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
@@ -105,15 +80,19 @@ const ProfileCard = ({ profile }) => {
             <div className="bg-gradient-to-r from-blue-50 to-blue-50 p-6 border-b border-gray-200">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div className="flex items-center space-x-4">
-                  <div className="w-16 h-16 bg-gradient-to-r from-blue-400 to-blue-400 rounded-full flex items-center justify-center text-white text-2xl font-bold shadow-lg">
-                    {profileData.fullName.slice(0, 2)}
+                  <div className="w-20 h-20 rounded-full border-4 border-white shadow-md overflow-hidden bg-gray-200">
+                    <img
+                      src={profileData.profileImage || "/profile.png"}
+                      className="w-full h-full object-cover"
+                      alt="Profile"
+                    />
                   </div>
                   <div>
                     <h1 className="text-xl sm:text-2xl font-bold text-gray-800">
                       {profileData.fullName}
                     </h1>
                     <p className="text-blue-600 font-medium text-base sm:text-lg">
-                      {profileData.title}
+                      {profileData.professionalTitle}
                     </p>
                     <p className="text-gray-600 flex items-center mt-1 text-sm sm:text-base">
                       <MapPin className="w-4 h-4 mr-1" />

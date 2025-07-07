@@ -61,7 +61,8 @@ const JoinNowModal = ({ isOpen, setIsOpen ,onClose, loader ,onSignInClick }) => 
   };
 
   if (!isOpen) return null;
-
+  if (user) return null;
+  
   return (
     <div className="fixed md:p-0 p-3 inset-0 bg-black/80 bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white w-full max-w-md md:w-[350px]  p-6 relative rounded-md shadow-lg">

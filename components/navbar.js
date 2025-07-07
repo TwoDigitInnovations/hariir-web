@@ -12,7 +12,7 @@ import { IoSearchSharp } from "react-icons/io5";
 import { AiOutlineHome } from "react-icons/ai";
 import { useRouter } from "next/router";
 import Swal from "sweetalert2";
-import { UserRound,LogOut } from "lucide-react";
+import { UserRound, LogOut } from "lucide-react";
 
 export const Navbar = ({ onSignInClick, onSingUpClick }) => {
   const [user, setUser] = useContext(userContext);
@@ -53,7 +53,7 @@ export const Navbar = ({ onSignInClick, onSingUpClick }) => {
         localStorage.removeItem("userDetail");
         localStorage.removeItem("token");
         setUser(null);
-        // router.replace("/signIn");
+        router.replace("/");
       }
     });
   }, [router, setUser]);
@@ -138,20 +138,27 @@ export const Navbar = ({ onSignInClick, onSingUpClick }) => {
               </div>
               <div className="flex items-center space-x-4">
                 <div className="relative" ref={dropdownRef}>
-             
                   <div
                     className="flex cursor-pointer items-center  text-black rounded-full md:px-4 ps-3 pr-3 md:py-2 py-3"
                     onClick={() => setShowDropdown((prev) => !prev)}
                   >
-                    <div className="uppercase text-white bg-blue-400 rounded-full w-8 h-8 flex items-center justify-center font-bold mr-2">
-                      {user?.fullName?.slice(0, 1) || user?.email?.slice(0, 1)}
+                    <div className=" rounded-full w-10 h-10 flex border-[2px] border-gray-200 items-center justify-center font-bold mr-2 overflow-hidden">
+                      <img
+                        src={
+                          user.role === "professional"
+                            ? user.profileImage || "/profile.png"
+                            : user.companyLogo || "/profile.png"
+                        }
+                        alt="User Avatar"
+                        className="w-full h-full object-cover"
+                      />
                     </div>
+
                     <span className="hidden md:block ms-2 font-medium">
                       {user?.fullName || user?.email}
                     </span>
                   </div>
 
-                
                   {showDropdown && (
                     <div className="transition-all duration-500 absolute right-0 mt-2 w-44 bg-white rounded-md shadow-lg z-50">
                       <button
@@ -161,7 +168,7 @@ export const Navbar = ({ onSignInClick, onSingUpClick }) => {
                         }}
                         className="w-full flex gap-4 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                       >
-                        <UserRound className="w-4 h-4"/>
+                        <UserRound className="w-4 h-4" />
                         My Profile
                       </button>
                       <button
@@ -171,8 +178,7 @@ export const Navbar = ({ onSignInClick, onSingUpClick }) => {
                         }}
                         className="w-full flex gap-4 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                       >
-                     
-                        <LogOut className="w-4 h-4"/>
+                        <LogOut className="w-4 h-4" />
                         Sign Out
                       </button>
                     </div>
