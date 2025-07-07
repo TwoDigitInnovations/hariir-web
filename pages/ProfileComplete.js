@@ -38,6 +38,7 @@ const validationSchema = Yup.object({
 
 export default function ProfileForm(props) {
   const [profileImage, setProfileImage] = useState(null);
+  const [coverImage, setCoverImage] = useState(null);
   const router = useRouter();
   const [user] = useContext(userContext);
 
@@ -111,6 +112,10 @@ export default function ProfileForm(props) {
     if (data.profileImage) {
       setProfileImage(data.profileImage);
     }
+     if (data.coverImage) {
+      setCoverImage(data.coverImage);
+    }
+    
   };
 
   const submit = (values, resetForm) => {
@@ -123,6 +128,7 @@ export default function ProfileForm(props) {
       userId: userId,
       email: values.email.toLowerCase(),
       profileImage: profileImage,
+      coverImage:coverImage
     };
 
     Api("post", "auth/updateProfile", data, router).then(
@@ -190,6 +196,46 @@ export default function ProfileForm(props) {
       },
     });
   };
+  const handleCoverChange = (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    console.log("Selected file:", file);
+
+    const fileSizeInMb = file.size / (1024 * 1024);
+    if (fileSizeInMb > 1) {
+      props.toaster({
+        type: "error",
+        message: "Too large file. Please upload a smaller image",
+      });
+      return;
+    }
+
+    new Compressor(file, {
+      quality: 0.6,
+      success: (compressedResult) => {
+        console.log("Compressed result:", compressedResult);
+        const data = new FormData();
+        data.append("file", compressedResult);
+        props.loader(true);
+        ApiFormData("post", "auth/fileupload", data, router).then(
+          (res) => {
+            props.loader(false);
+            console.log("File upload response:", res);
+            if (res.status) {
+              setCoverImage(res.data.file || res.data.fileUrl);
+              toast.success(res.data.message);
+            }
+          },
+          (err) => {
+            props.loader(false);
+            console.error("File upload error:", err);
+            toast.error(err?.data?.message || "File upload failed");
+          }
+        );
+      },
+    });
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4">
@@ -212,36 +258,72 @@ export default function ProfileForm(props) {
             </div>
 
             {/* Profile Picture */}
-            <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-700 mb-3">
-                Profile Picture
-              </label>
-              <div className="flex items-center gap-4">
-                <div className="w-20 h-20 rounded-full border-2 border-dashed border-gray-300 flex items-center justify-center bg-gray-50 overflow-hidden">
-                  {profileImage ? (
+            <div className="mb-6 space-y-6">
+              {/* Cover Photo Upload */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-3">
+                  Cover Photo
+                </label>
+                <div className="w-full h-40 rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 flex items-center justify-center overflow-hidden relative">
+                  {coverImage ? (
                     <img
-                      src={profileImage}
-                      alt="Profile"
-                      className="w-full h-full object-cover rounded-full"
+                      src={coverImage}
+                      alt="Cover"
+                      className="w-full h-full object-cover"
                     />
                   ) : (
-                    <User className="w-8 h-8 text-gray-400" />
+                    <span className="text-gray-400 text-sm">
+                      No cover photo uploaded
+                    </span>
                   )}
-                </div>
-                <div>
-                  <label className="inline-flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 cursor-pointer">
-                    <Upload className="w-4 h-4" />
-                    Upload Photo
+                  <label className="absolute bottom-2 right-2 px-3 py-1 text-xs bg-white border border-gray-300 rounded shadow cursor-pointer hover:bg-gray-100 text-black">
+                    <Upload className="inline w-4 h-4 mr-1" />
+                    Upload Cover
                     <input
                       type="file"
                       accept="image/jpeg,image/png"
-                      onChange={handleImageChange}
+                      onChange={handleCoverChange}
                       className="hidden"
                     />
                   </label>
-                  <p className="text-xs text-gray-500 mt-1">
-                    JPG, PNG up to 5MB. Square photos work best.
-                  </p>
+                </div>
+                <p className="text-xs text-gray-500 mt-1">
+                  JPG or PNG up to 1MB. Recommended size: 1200x400px.
+                </p>
+              </div>
+
+              {/* Profile Photo Upload */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-3">
+                  Profile Picture
+                </label>
+                <div className="flex items-center gap-4">
+                  <div className="w-20 h-20 rounded-full border-2 border-dashed border-gray-300 flex items-center justify-center bg-gray-50 overflow-hidden">
+                    {profileImage ? (
+                      <img
+                        src={profileImage}
+                        alt="Profile"
+                        className="w-full h-full object-cover rounded-full"
+                      />
+                    ) : (
+                      <User className="w-8 h-8 text-gray-400" />
+                    )}
+                  </div>
+                  <div>
+                    <label className="inline-flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 cursor-pointer">
+                      <Upload className="w-4 h-4" />
+                      Upload Photo
+                      <input
+                        type="file"
+                        accept="image/jpeg,image/png"
+                        onChange={handleImageChange}
+                        className="hidden"
+                      />
+                    </label>
+                    <p className="text-xs text-gray-500 mt-1">
+                      JPG, PNG up to 1MB. Square photos work best.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>

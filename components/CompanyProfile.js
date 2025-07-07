@@ -164,57 +164,72 @@ const CompanyProfile = ({ companyData, getProfile, loader }) => {
     );
   };
   return (
-    <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
+    <div className="max-w-4xl mx-auto bg-white shadow-lg overflow-hidden">
       {/* Header Section */}
-      <div className="bg-gradient-to-r bg-white text-white  md:px-6 pt-6  p-2">
-        <div className="flex md:flex-row flex-col pb-8 border-b-2 border-b-gray-200 items-center gap-6 ">
-          <div className="w-32 h-32 bg-blue-400 rounded-full flex items-center justify-center text-white text-4xl font-bold uppercase">
-            {companyData?.companyName?.slice(1, 2)}
+      <div className="bg-gradient-to-r bg-white text-white border-b-2 border-b-gray-200 ">
+        {companyData.coverImage ? (
+          <div>
+            <img src={companyData.coverImage} alt="CoverPage"
+            className="w-full md:h-44 md:object-cover object-contain"
+            />
           </div>
-          <div className="flex-1 px-4 ">
-            <h1 className="md:text-[30px] text-black font-bold mb-2">
-              {companyData.companyName}
-            </h1>
-            <p className="md:text-[20px] text-gray-700 mb-1">
-              {companyData.industry}
-            </p>
-            <div className="flex flex-wrap gap-4 text-gray-700 mb-3">
-              <div className="flex items-center gap-2">
-                <MapPin size={16} />
-                <span>{country}</span>
-              </div>
-            </div>
-            <div className="flex flex-col md:flex-row justify-between md:w-lg gap-2">
-              <div className="flex flex-row text-gray-400 items-center gap-2">
-                <Mail size={16} />
-                <span>{companyData.email}</span>
-              </div>
-              <div className="flex flex-row text-gray-400 items-center gap-2">
-                <Phone size={16} />
-                <span>{companyData.phone}</span>
-              </div>
-            </div>
-            <div className="flex flex-wrap md:gap-14 gap-4 text-gray-600 mt-5">
-              <div className="flex flex-col items-start ">
-                <div className="flex">
-                  <p className="">Founded:</p>
-                </div>
-                <span>{companyData.foundedYear}</span>
-              </div>
+        ) : (
+          <div className="h-40 bg-gradient-to-r from-blue-50 to-blue-100 rounded-t-lg"></div>
+        )}
 
-              <div className="flex flex-col items-start ">
-                <div className="flex">
-                  <p className="">Size:</p>
-                </div>
-                <span> {companyData.companySize} employees</span>
-              </div>
+        <div className="flex md:flex-row flex-col justify-start pb-4 items-center md:ms-8 gap-6 -mt-24">
+          <div className="w-40 h-40 bg-blue-400 rounded-full border-2 border-gray-300 flex items-center justify-center ">
+            <img
+              src={companyData.companyLogo || "/profile.png"}
+              className="w-full h-full object-cover rounded-full"
+              alt="companyLogo"
+            />
+          </div>
+        </div>
 
-              <div className="flex flex-col items-start ">
-                <div className="flex">
-                  <p className="">Website:</p>
-                </div>
-                <span>{companyData.website}</span>
+        <div className="flex-1 px-4 md:px-8 pt-6 pb-8">
+          <h1 className="md:text-[30px] text-black font-bold mb-2">
+            {companyData.companyName}
+          </h1>
+          <p className="md:text-[20px] text-gray-700 mb-1">
+            {companyData.industry}
+          </p>
+          <div className="flex flex-wrap gap-4 text-gray-700 mb-3">
+            <div className="flex items-center gap-2">
+              <MapPin size={16} />
+              <span>{country}</span>
+            </div>
+          </div>
+          <div className="flex flex-col md:flex-row justify-between md:w-lg gap-2">
+            <div className="flex flex-row text-gray-400 items-center gap-2">
+              <Mail size={16} />
+              <span>{companyData.email}</span>
+            </div>
+            <div className="flex flex-row text-gray-400 items-center gap-2">
+              <Phone size={16} />
+              <span>{companyData.phone}</span>
+            </div>
+          </div>
+          <div className="flex flex-wrap md:gap-14 gap-4 text-gray-600 mt-5">
+            <div className="flex flex-col items-start ">
+              <div className="flex">
+                <p className="">Founded:</p>
               </div>
+              <span>{companyData.foundedYear}</span>
+            </div>
+
+            <div className="flex flex-col items-start ">
+              <div className="flex">
+                <p className="">Size:</p>
+              </div>
+              <span> {companyData.companySize} employees</span>
+            </div>
+
+            <div className="flex flex-col items-start ">
+              <div className="flex">
+                <p className="">Website:</p>
+              </div>
+              <span>{companyData.website}</span>
             </div>
           </div>
         </div>
