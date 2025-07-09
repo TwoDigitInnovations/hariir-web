@@ -17,7 +17,13 @@ const initialValue = {
   password: "",
 };
 
-const JoinNowModal = ({ isOpen, setIsOpen ,onClose, loader ,onSignInClick }) => {
+const JoinNowModal = ({
+  isOpen,
+  setIsOpen,
+  onClose,
+  loader,
+  onSignInClick,
+}) => {
   const router = useRouter();
   const [user, setUser] = useContext(userContext);
   const [eyeIcon, setEyeIcon] = useState(false);
@@ -51,7 +57,7 @@ const JoinNowModal = ({ isOpen, setIsOpen ,onClose, loader ,onSignInClick }) => 
         resetForm();
         toast.success("You are successfully logged in");
         router.push("/");
-        setIsOpen(false)
+        setIsOpen(false);
       },
       (err) => {
         console.log(err);
@@ -61,8 +67,8 @@ const JoinNowModal = ({ isOpen, setIsOpen ,onClose, loader ,onSignInClick }) => 
   };
 
   if (!isOpen) return null;
-  if (user) return null;
-  
+  if (user.id) return null;
+
   return (
     <div className="fixed md:p-0 p-3 inset-0 bg-black/80 bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white w-full max-w-md md:w-[350px]  p-6 relative rounded-md shadow-lg">
@@ -132,7 +138,10 @@ const JoinNowModal = ({ isOpen, setIsOpen ,onClose, loader ,onSignInClick }) => 
 
         <p className="text-black py-3 text-center">
           Don't have an account?{" "}
-          <span className="text-blue-400 cursor-pointer" onClick={onSignInClick}>
+          <span
+            className="text-blue-400 cursor-pointer"
+            onClick={onSignInClick}
+          >
             Join Now
           </span>
         </p>
