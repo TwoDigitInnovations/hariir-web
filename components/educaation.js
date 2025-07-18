@@ -20,6 +20,7 @@ import { userContext } from "@/pages/_app";
           institution: "",
           year: "",
           description: "",
+          status:"Pending"
         },
       ]);
     }
@@ -39,6 +40,7 @@ import { userContext } from "@/pages/_app";
         institution: "",
         year: "",
         description: "",
+        status:"Pending"
       },
     ]);
   };

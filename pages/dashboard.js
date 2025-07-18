@@ -1,16 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect ,useContext} from "react";
 import { Search, Filter, Users, Building } from "lucide-react";
 import ProfileCard from "@/components/ProfessionalCard";
 import CompanyCard from "@/components/CompanyCard";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import { Api } from "@/services/service";
+import { userContext } from "./_app";
 
 const ProfessionalDirectory = (props) => {
   const [activeTab, setActiveTab] = useState("professionals");
   const [Professional, setProfessional] = useState([]);
   const [companies, setCompaniesData] = useState([]);
   const router = useRouter();
+  const [user, setuser] = useContext(userContext);
   const [token, setToken] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -35,8 +37,17 @@ const ProfessionalDirectory = (props) => {
       (res) => {
         props.loader(false);
         const allData = res.data || [];
-        setCompaniesData(allData.filter((item) => item.role === "company"));
-        setProfessional(allData.filter((item) => item.role === "professional"));
+        setCompaniesData(
+          allData.filter(
+            (item) => item.role === "company" && item._id !== user?._id
+          )
+        );
+
+        setProfessional(
+          allData.filter(
+            (item) => item.role === "professional" && item._id !== user?._id
+          )
+        );
       },
       (err) => {
         props.loader(false);
@@ -47,7 +58,7 @@ const ProfessionalDirectory = (props) => {
 
   const getProfileOnSearch = () => {
     if (!searchQuery) {
-      getAllData(); 
+      getAllData();
       return;
     }
 

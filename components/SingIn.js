@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { Api } from "@/services/service";
 import { useFormik } from "formik";
@@ -27,7 +27,7 @@ const JoinNowModal = ({
   const router = useRouter();
   const [user, setUser] = useContext(userContext);
   const [eyeIcon, setEyeIcon] = useState(false);
-
+  const [token, setToken] = useState(null);
   const {
     values,
     handleSubmit,
@@ -49,25 +49,44 @@ const JoinNowModal = ({
       email: value.email.toLowerCase(),
       password: value.password,
     };
+
     Api("post", "auth/login", data, router).then(
       (res) => {
-        localStorage.setItem("userDetail", JSON.stringify(res?.data?.user));
-        localStorage.setItem("token", res?.data?.token);
-        setUser(res.data.user);
-        resetForm();
-        toast.success("You are successfully logged in");
-        router.push("/");
-        setIsOpen(false);
+        if (res?.status) {
+          if (res.data?.user?.role === "Admin") {
+            toast.error(
+              res?.message ||
+                "Login failed you are admin please login to your Dashboard"
+            );
+          } else {
+            localStorage.setItem("userDetail", JSON.stringify(res?.data?.user));
+            localStorage.setItem("token", res?.data?.token);
+            setUser(res.data.user);
+            resetForm();
+            toast.success("You are successfully logged in");
+            router.push("/");
+            setIsOpen(false);
+          }
+        } else {
+          toast.error(res?.message || "Login failed");
+        }
       },
       (err) => {
         console.log(err);
-        toast.error(err?.data?.message || err?.message);
+        toast.error(
+          err?.data?.message || err?.message || "Something went wrong"
+        );
       }
     );
   };
+  useEffect(() => {
+    const storedToken =
+      typeof window !== "undefined" && localStorage.getItem("token");
+    setToken(storedToken);
+  }, []);
 
   if (!isOpen) return null;
-  if (user.id) return null;
+  if (token) return null;
 
   return (
     <div className="fixed md:p-0 p-3 inset-0 bg-black/80 bg-opacity-50 flex items-center justify-center z-50">

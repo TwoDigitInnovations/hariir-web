@@ -37,11 +37,7 @@ const CompanyProfile = ({ companyData, getProfile, loader }) => {
   const profileData = companyData;
 
   useEffect(() => {
-    const result = countries.getName(
-      companyData.location?.trim().toUpperCase(),
-      "en"
-    );
-    setCountry(result || "Invalid country code");
+    setCountry(companyData.location);
   });
 
   useEffect(() => {
@@ -169,16 +165,18 @@ const CompanyProfile = ({ companyData, getProfile, loader }) => {
       <div className="bg-gradient-to-r bg-white text-white border-b-2 border-b-gray-200 ">
         {companyData.coverImage ? (
           <div>
-            <img src={companyData.coverImage} alt="CoverPage"
-            className="w-full md:h-44 md:object-cover object-contain"
+            <img
+              src={companyData.coverImage}
+              alt="CoverPage"
+              className="w-full md:h-44 md:object-cover object-contain"
             />
           </div>
         ) : (
           <div className="h-40 bg-gradient-to-r from-blue-50 to-blue-100 rounded-t-lg"></div>
         )}
 
-        <div className="flex md:flex-row flex-col justify-start pb-4 items-center md:ms-8 gap-6 -mt-24">
-          <div className="w-40 h-40 bg-blue-400 rounded-full border-2 border-gray-300 flex items-center justify-center ">
+        <div className="md:-mt-20  flex md:flex-row flex-col justify-start pb-4 items-center md:ms-8 gap-6 -mt-12">
+          <div className="md:w-40 md:h-40 w-24 h-24 bg-blue-400 rounded-full border-2 border-gray-300 flex items-center justify-center ">
             <img
               src={companyData.companyLogo || "/profile.png"}
               className="w-full h-full object-cover rounded-full"
@@ -236,7 +234,6 @@ const CompanyProfile = ({ companyData, getProfile, loader }) => {
       </div>
 
       <div className="md:p-8 p-4">
-        {/* About Section */}
         <section className="mb-8">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-[18px] font-semibold text-gray-800 flex items-center gap-2">
