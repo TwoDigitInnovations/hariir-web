@@ -389,7 +389,7 @@ export default function ProfileForm(props) {
                       (option) => option.value === formik.values.location
                     )}
                     onChange={(selectedOption) => {
-                      formik.setFieldValue("location", selectedOption.value);
+                      formik.setFieldValue("location", selectedOption.label);
                     }}
                     onBlur={() => formik.setFieldTouched("location", true)}
                     className="react-select-container text-black"

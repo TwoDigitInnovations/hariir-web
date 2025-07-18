@@ -23,6 +23,7 @@ import Language from "../components/language";
 import Resume from "../components/Resume";
 import CompanyProfile from "@/components/CompanyProfile";
 import ResumeForCompany from "@/components/ResumeForCompany";
+import Swal from "sweetalert2";
 
 export default function ProfileCompletion(props) {
   const router = useRouter();
@@ -63,6 +64,76 @@ export default function ProfileCompletion(props) {
     );
   };
 
+  const handleVerifyRequest = (expid) => {
+    Swal.fire({
+      text: "Are you sure? You are about to request verification for this experience.",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Yes, request it!",
+      cancelButtonText: "Cancel",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const data = {
+          userId: user._id,
+          experienceId: expid,
+          status: "Requested",
+        };
+
+        props.loader(true);
+        Api("post", "auth/ExperienceVerification", data, router).then(
+          (res) => {
+            props.loader(false);
+            if (res.status) {
+              toast.success(res.message);
+              getProfile();
+            } else {
+              toast.error(res.message);
+            }
+          },
+          (err) => {
+            props.loader(false);
+            console.error("Error:", err);
+            toast.error(err?.message || "An error occurred");
+          }
+        );
+      }
+    });
+  };
+  const handleVerifyRequestForEdu = (expid) => {
+    Swal.fire({
+      text: "Are you sure? You are about to request verification for this education.",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Yes, request it!",
+      cancelButtonText: "Cancel",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const data = {
+          userId: user._id,
+          educationId: expid,
+          status: "Requested",
+        };
+
+        props.loader(true);
+        Api("post", "auth/EducationVerification", data, router).then(
+          (res) => {
+            props.loader(false);
+            if (res.status) {
+              toast.success(res.message);
+              getProfile();
+            } else {
+              toast.error(res.message);
+            }
+          },
+          (err) => {
+            props.loader(false);
+            console.error("Error:", err);
+            toast.error(err?.message || "An error occurred");
+          }
+        );
+      }
+    });
+  };
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Header */}
@@ -172,7 +243,7 @@ export default function ProfileCompletion(props) {
                             )}
 
                             <div className="ms-6 md:-mt-20 -mt-12 flex md:justify-start justify-center">
-                              <div className="md:w-40 md:h-40 w-28 h-28 bg-blue-400 rounded-full border-4 border-white shadow-md overflow-hidden">
+                              <div className="md:w-40 md:h-40 w-24 h-24 bg-blue-400 rounded-full border-4 border-white shadow-md overflow-hidden">
                                 <img
                                   src={
                                     profileData.profileImage || "/profile.png"
@@ -314,9 +385,44 @@ export default function ProfileCompletion(props) {
                                     key={key}
                                   >
                                     <div className="mb-6">
-                                      <h3 className="text-[16px] font-semibold text-gray-800">
-                                        {experience.jobTitle}
-                                      </h3>
+                                      <div className="flex justify-between">
+                                        <h3 className="text-[16px] font-semibold text-gray-800">
+                                          {experience.jobTitle}
+                                        </h3>
+                                        <div className="flex gap-4">
+                                          <button
+                                            className={`text-[16px] font-semibold ${
+                                              experience.status === "Approved"
+                                                ? "text-green-600"
+                                                : experience.status ===
+                                                  "Rejected"
+                                                ? "text-red-500"
+                                                : experience.status ===
+                                                  "Requested"
+                                                ? "text-blue-600"
+                                                : "text-yellow-500"
+                                            }`}
+                                          >
+                                            {experience.status === "Requested"
+                                              ? "Verification Requested"
+                                              : experience.status}
+                                          </button>
+                                          {experience.status !== "Requested" &&
+                                            experience.status !==
+                                              "Approved" && (
+                                              <button
+                                                onClick={() =>
+                                                  handleVerifyRequest(
+                                                    experience._id
+                                                  )
+                                                }
+                                                className="mt-1 px-4 py-1.5 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm cursor-pointer"
+                                              >
+                                                Verify
+                                              </button>
+                                            )}
+                                        </div>
+                                      </div>
                                       <p className="text-blue-600 text-[16px] font-medium">
                                         {experience.company}
                                       </p>
@@ -384,9 +490,41 @@ export default function ProfileCompletion(props) {
                                   className="bg-gray-50 p-4 rounded-lg mb-4"
                                   key={key}
                                 >
-                                  <h3 className="text-[16px] font-semibold text-gray-800">
-                                    {education.degree || "N/A"}
-                                  </h3>
+                                  <div className="flex justify-between">
+                                    <h3 className="text-[16px] font-semibold text-gray-800">
+                                      {education.degree || "N/A"}
+                                    </h3>
+                                    <div className="flex gap-4">
+                                      <button
+                                        className={`text-[16px] font-semibold ${
+                                          education.status === "Approved"
+                                            ? "text-green-600"
+                                            : education.status === "Rejected"
+                                            ? "text-red-500"
+                                            : education.status === "Requested"
+                                            ? "text-blue-600"
+                                            : "text-yellow-500"
+                                        }`}
+                                      >
+                                        {education.status === "Requested"
+                                          ? "Verification Requested"
+                                          : education.status}
+                                      </button>
+                                      {education.status !== "Requested" &&
+                                        education.status !== "Approved" && (
+                                          <button
+                                            onClick={() =>
+                                              handleVerifyRequestForEdu(
+                                                education._id
+                                              )
+                                            }
+                                            className="mt-1 px-4 py-1.5 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm cursor-pointer"
+                                          >
+                                            Verify
+                                          </button>
+                                        )}
+                                    </div>
+                                  </div>
                                   <p className="text-blue-600 text-[16px] font-medium">
                                     {education.institution || "N/A"}
                                   </p>

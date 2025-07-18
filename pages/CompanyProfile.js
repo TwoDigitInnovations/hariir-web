@@ -512,7 +512,7 @@ function CompanyProfileForm(props) {
                   <option value="">Select country</option>
 
                   {countryOptions.map((option) => (
-                    <option key={option.value} value={option.value}>
+                    <option key={option.value} value={option.label}>
                       {option.label}
                     </option>
                   ))}

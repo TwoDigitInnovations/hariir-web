@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useContext } from "react";
 import {
   MapPin,
   Search,
@@ -12,10 +12,12 @@ import ProfessionalCard from "../components/ProfessionalCard";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import countryList from "react-select-country-list";
+import { userContext } from "./_app";
 
 const FindProfessional = (props) => {
   const [profilesData, setProfileData] = useState([]);
   const router = useRouter();
+  const [user, setuser] = useContext(userContext);
   const [token, setToken] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedLocation, setSelectedLocation] = useState("");
@@ -44,7 +46,9 @@ const FindProfessional = (props) => {
       (res) => {
         props.loader(false);
         setProfileData(
-          (res.data || []).filter((item) => item.role === "professional")
+          (res.data || []).filter(
+            (item) => item.role === "professional" && item._id !== user?._id
+          )
         );
       },
       (err) => {
@@ -72,7 +76,9 @@ const FindProfessional = (props) => {
       (res) => {
         props.loader(false);
         setProfileData(
-          (res.data || []).filter((item) => item.role === "professional")
+          (res.data || []).filter(
+            (item) => item.role === "professional" && item._id !== user?._id
+          )
         );
       },
       (err) => {
@@ -88,7 +94,7 @@ const FindProfessional = (props) => {
     }, 400);
 
     return () => clearTimeout(delayDebounce);
-  }, [searchQuery ,selectedLocation]);
+  }, [searchQuery, selectedLocation]);
 
   return (
     <div className="min-h-screen bg-gray-50 md:p-6">

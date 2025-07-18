@@ -5,7 +5,13 @@ import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import { userContext } from "@/pages/_app";
 
-export default function ExperienceEditor({ open, close, loader, profileData, getProfile }) {
+export default function ExperienceEditor({
+  open,
+  close,
+  loader,
+  profileData,
+  getProfile,
+}) {
   const [experiences, setExperiences] = useState([]);
   const router = useRouter();
   const [user] = useContext(userContext);
@@ -21,6 +27,7 @@ export default function ExperienceEditor({ open, close, loader, profileData, get
           location: "",
           duration: "",
           description: "",
+          status: "Pending",
         },
       ]);
     }
@@ -41,6 +48,7 @@ export default function ExperienceEditor({ open, close, loader, profileData, get
         location: "",
         duration: "",
         description: "",
+        status: "Pending",
       },
     ]);
   };
@@ -83,8 +91,14 @@ export default function ExperienceEditor({ open, close, loader, profileData, get
       <div className="bg-white rounded-lg shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col">
         {/* Header */}
         <div className="flex justify-between items-center p-6 border-b border-gray-200">
-          <h2 className="text-xl font-semibold text-gray-800">Edit Experience</h2>
-          <X onClick={close} className="text-gray-600 hover:text-gray-800 cursor-pointer" size={24} />
+          <h2 className="text-xl font-semibold text-gray-800">
+            Edit Experience
+          </h2>
+          <X
+            onClick={close}
+            className="text-gray-600 hover:text-gray-800 cursor-pointer"
+            size={24}
+          />
         </div>
 
         {/* Content Area with Scroll */}
@@ -124,7 +138,9 @@ export default function ExperienceEditor({ open, close, loader, profileData, get
                   <input
                     type="text"
                     value={exp.jobTitle}
-                    onChange={(e) => handleChange(index, "jobTitle", e.target.value)}
+                    onChange={(e) =>
+                      handleChange(index, "jobTitle", e.target.value)
+                    }
                     placeholder="e.g. Software Engineer"
                     className="border border-gray-300 rounded-lg px-4 py-3 w-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
                   />
@@ -136,7 +152,9 @@ export default function ExperienceEditor({ open, close, loader, profileData, get
                   <input
                     type="text"
                     value={exp.company}
-                    onChange={(e) => handleChange(index, "company", e.target.value)}
+                    onChange={(e) =>
+                      handleChange(index, "company", e.target.value)
+                    }
                     placeholder="e.g. Tech Corp"
                     className="border border-gray-300 rounded-lg px-4 py-3 w-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
                   />
@@ -151,7 +169,9 @@ export default function ExperienceEditor({ open, close, loader, profileData, get
                   <input
                     type="text"
                     value={exp.duration}
-                    onChange={(e) => handleChange(index, "duration", e.target.value)}
+                    onChange={(e) =>
+                      handleChange(index, "duration", e.target.value)
+                    }
                     placeholder="e.g. Jan 2020 - Present"
                     className="border border-gray-300 rounded-lg px-4 py-3 w-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
                   />
@@ -163,7 +183,9 @@ export default function ExperienceEditor({ open, close, loader, profileData, get
                   <input
                     type="text"
                     value={exp.location}
-                    onChange={(e) => handleChange(index, "location", e.target.value)}
+                    onChange={(e) =>
+                      handleChange(index, "location", e.target.value)
+                    }
                     placeholder="e.g. Nairobi, Kenya"
                     className="border border-gray-300 rounded-lg px-4 py-3 w-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
                   />
@@ -177,7 +199,9 @@ export default function ExperienceEditor({ open, close, loader, profileData, get
                 <textarea
                   rows={4}
                   value={exp.description}
-                  onChange={(e) => handleChange(index, "description", e.target.value)}
+                  onChange={(e) =>
+                    handleChange(index, "description", e.target.value)
+                  }
                   placeholder="Describe your role and achievements..."
                   className="border border-gray-300 rounded-lg px-4 py-3 w-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent resize-none"
                 />

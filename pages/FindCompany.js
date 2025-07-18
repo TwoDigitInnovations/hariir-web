@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useContext } from "react";
 import {
   MapPin,
   Building2,
@@ -12,10 +12,12 @@ import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import { Api } from "@/services/service";
 import countryList from "react-select-country-list";
+import { userContext } from "./_app";
 
 const FindCompany = (props) => {
   const [companies, setCompaniesData] = useState([]);
   const router = useRouter();
+  const [user, setuser] = useContext(userContext);
   const [token, setToken] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const countryOptions = useMemo(() => countryList().getData(), []);
@@ -39,7 +41,9 @@ const FindCompany = (props) => {
       (res) => {
         props.loader(false);
         setCompaniesData(
-          (res.data || []).filter((item) => item.role === "company")
+          (res.data || []).filter(
+            (item) => item.role === "company" && item._id !== user?._id
+          )
         );
       },
       (err) => {
@@ -50,7 +54,7 @@ const FindCompany = (props) => {
   };
 
   const getProfileOnSearch = () => {
-    if (!searchQuery && !selectedLocation ) {
+    if (!searchQuery && !selectedLocation) {
       getAllCompany();
       return;
     }
@@ -68,8 +72,11 @@ const FindCompany = (props) => {
     ).then(
       (res) => {
         props.loader(false);
+
         setCompaniesData(
-          (res.data || []).filter((item) => item.role === "company")
+          (res.data || []).filter(
+            (item) => item.role === "company" && item._id !== user?._id
+          )
         );
       },
       (err) => {
