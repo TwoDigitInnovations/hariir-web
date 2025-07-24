@@ -24,6 +24,7 @@ import Resume from "../components/Resume";
 import CompanyProfile from "@/components/CompanyProfile";
 import ResumeForCompany from "@/components/ResumeForCompany";
 import Swal from "sweetalert2";
+import AllCV from "@/components/AllCV";
 
 export default function ProfileCompletion(props) {
   const router = useRouter();
@@ -36,7 +37,7 @@ export default function ProfileCompletion(props) {
   const [languageOpen, setLanguageOpen] = useState(false);
   const [token, setToken] = useState(null);
   const [showFull, setShowFull] = useState(false);
-
+  const [allCVOpen, setAllCVOpen] = useState(false);
   const role = user?.role === "professional" ? "Professional" : "Company";
 
   useEffect(() => {
@@ -217,9 +218,29 @@ export default function ProfileCompletion(props) {
                     </button>
 
                     {user?.role === "professional" ? (
-                      <Resume profile={profileData} />
+                      <button
+                        className="flex items-start text-gray-600 hover:text-gray-900 px-3 py-2 rounded-lg hover:bg-gray-50"
+                        type="button"
+                        aria-label="Download Resume"
+                        onClick={()=>setAllCVOpen(true)}
+                      >
+                        <Download className="w-5 h-5 mr-2" />
+                        PDF
+                      </button>
                     ) : (
                       <ResumeForCompany profile={profileData} />
+                    )}
+
+                    {allCVOpen && (
+                      <div className="flex flex-col justify-center items-center">
+                        <AllCV
+                          open={allCVOpen}
+                          close={() => setAllCVOpen(false)}
+                          loader={props.loader}
+                          profileData={profileData}
+                          getProfile={() => getProfile()}
+                        />
+                      </div>
                     )}
                   </div>
                 </div>

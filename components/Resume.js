@@ -1,43 +1,81 @@
 import React, { useRef, useState } from "react";
 import { Download } from "lucide-react";
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
 
 const Resume = ({ profile }) => {
   const resumeRef = useRef(null);
 
-  const downloadResume = async () => {
+ const downloadResume = async () => {
     const input = resumeRef.current;
     if (!input) return;
 
     await new Promise((res) => setTimeout(res, 500));
 
+    const html2canvas = (await import("html2canvas")).default;
+    const jsPDF = (await import("jspdf")).default;
+
     const canvas = await html2canvas(input, {
-      scale: 2,
+      scale: 1,
       useCORS: true,
+      allowTaint: true,
+      backgroundColor: "#ffffff",
+      height: input.scrollHeight,
+      width: input.scrollWidth,
     });
 
-    const imgData = canvas.toDataURL("image/png");
+    const imgData = canvas.toDataURL("image/png", 1.0);
     const pdf = new jsPDF("p", "mm", "a4");
 
     const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+    const pdfHeight = pdf.internal.pageSize.getHeight();
 
-    pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+    const imgWidth = pdfWidth;
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+    let heightLeft = imgHeight;
+    let position = 0;
+
+    const topMargin = 10; // Top margin for subsequent pages
+    const bottomMargin = 10; // Bottom margin for first page
+
+    // First Page
+    pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+    heightLeft -= pdfHeight;
+
+    // Add additional pages ONLY IF content is overflowing
+    while (heightLeft > 0) {
+      position -= pdfHeight;
+      pdf.addPage();
+      pdf.addImage(
+        imgData,
+        "PNG",
+        0,
+        position + topMargin,
+        imgWidth,
+        imgHeight
+      );
+      heightLeft -= pdfHeight;
+    }
+
     pdf.save(`Resume-${profile?.fullName?.replace(/\s+/g, "_")}.pdf`);
   };
 
   return (
     <div className="">
-      <div className="relative inline-block">
+      <div className="relative inline-block text-center">
+        <img
+          src="/resume1.png" 
+          alt="Resume Preview"
+          className="md:w-[320px] w-48 h-auto mx-auto mb-2 rounded-md shadow-md"
+        />
+
         <button
-          className="flex items-start text-gray-600 hover:text-gray-900 px-3 py-2 rounded-lg hover:bg-gray-50"
+          className="flex items-center justify-center text-gray-600 hover:text-gray-900 px-3 py-2 rounded-lg hover:bg-gray-50 mx-auto"
           onClick={downloadResume}
           type="button"
           aria-label="Download Resume"
         >
           <Download className="w-5 h-5 mr-2" />
-          PDF
+          CV 1
         </button>
       </div>
 
@@ -48,13 +86,15 @@ const Resume = ({ profile }) => {
           top: "-9999px",
           left: "-9999px",
           width: "800px",
-          height: "1120px",
+          minHeight: "1120px",
+          overflow:"hidden" ,// Changed to minHeight
           background: "white",
           color: "black",
           fontFamily: "Arial, sans-serif",
           display: "flex",
         }}
       >
+        {/* Left Sidebar - Blue - Full Height */}
         <div
           style={{
             width: "280px",
@@ -63,8 +103,10 @@ const Resume = ({ profile }) => {
             padding: "40px 30px",
             display: "flex",
             flexDirection: "column",
+            minHeight: "100%", // Ensures full height coverage
           }}
         >
+          {/* Contact Section */}
           <div style={{ marginBottom: "25px" }}>
             <h3
               style={{
@@ -111,7 +153,7 @@ const Resume = ({ profile }) => {
                 EDUCATION
               </h3>
               {profile.education.map((edu, idx) => (
-                <div key={idx} style={{ marginBottom: "15px" }}>
+                <div key={idx} style={{ marginBottom: "15px", pageBreakInside: "avoid" }}>
                   <div
                     style={{
                       fontSize: "0.9rem",
@@ -137,6 +179,18 @@ const Resume = ({ profile }) => {
                   >
                     {edu.degree}
                   </div>
+                  {edu.description && (
+                    <div
+                      style={{
+                        fontSize: "0.8rem",
+                        lineHeight: "1.3",
+                        marginTop: "3px",
+                        opacity: "0.9",
+                      }}
+                    >
+                      {edu.description}
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
@@ -195,6 +249,42 @@ const Resume = ({ profile }) => {
               </div>
             </div>
           )}
+
+          {/* Certifications Section */}
+          {profile?.certifications && profile.certifications.length > 0 && (
+            <div style={{ marginBottom: "25px" }}>
+              <h3
+                style={{
+                  fontSize: "1.1rem",
+                  fontWeight: "bold",
+                  textTransform: "uppercase",
+                  letterSpacing: "1px",
+                  borderBottom: "2px solid white",
+                  paddingBottom: "8px",
+                  marginBottom: "20px",
+                  margin: "0 0 20px 0",
+                }}
+              >
+                CERTIFICATIONS
+              </h3>
+              <div style={{ fontSize: "0.85rem", lineHeight: "1.6" }}>
+                {profile.certifications.map((cert, idx) => (
+                  <div key={idx} style={{ marginBottom: "8px" }}>
+                    • {cert}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Blue background extension to fill remaining space */}
+          <div
+            style={{
+              background: "#1e3a8a",
+              flex: 1,
+              minHeight: "100px",
+            }}
+          />
         </div>
 
         {/* Right Content Area - Light Gray */}
@@ -205,6 +295,7 @@ const Resume = ({ profile }) => {
             padding: "40px 40px",
             display: "flex",
             flexDirection: "column",
+            minHeight: "100%",
           }}
         >
           {/* Header Section */}
@@ -219,7 +310,7 @@ const Resume = ({ profile }) => {
                 letterSpacing: "2px",
               }}
             >
-              {profile?.fullName || "RISHABH TIWARI"}
+              {profile?.fullName}
             </h1>
             <h2
               style={{
@@ -230,7 +321,7 @@ const Resume = ({ profile }) => {
                 letterSpacing: "1px",
               }}
             >
-              {profile?.professionalTitle || "SOFTWARE ENGINEER"}
+              {profile?.professionalTitle}
             </h2>
           </div>
 
@@ -258,9 +349,10 @@ const Resume = ({ profile }) => {
                   lineHeight: "1.6",
                   margin: "0",
                   color: "#374151",
+                  whiteSpace: "pre-wrap",
                 }}
                 dangerouslySetInnerHTML={{ __html: profile.bio }}
-              ></div>
+              />
             </div>
           )}
 
@@ -283,7 +375,7 @@ const Resume = ({ profile }) => {
                 WORK EXPERIENCE
               </h3>
               {profile.experience.map((exp, idx) => (
-                <div key={idx} style={{ marginBottom: "25px" }}>
+                <div key={idx} style={{ marginBottom: "25px", pageBreakInside: "avoid" }}>
                   <div
                     style={{
                       display: "flex",
@@ -299,7 +391,7 @@ const Resume = ({ profile }) => {
                           fontWeight: "bold",
                           margin: "0 0 3px 0",
                           color: "#374151",
-                          textTransform: "lowercase",
+                          textTransform: "capitalize",
                         }}
                       >
                         {exp.jobTitle}
@@ -325,21 +417,69 @@ const Resume = ({ profile }) => {
                       {exp.duration}
                     </span>
                   </div>
-                  <p
+                  <div
                     style={{
                       fontSize: "0.85rem",
                       lineHeight: "1.5",
                       margin: "8px 0 0 0",
                       color: "#374151",
+                      whiteSpace: "pre-wrap",
                     }}
                   >
                     {exp.description}
-                  </p>
+                  </div>
                 </div>
               ))}
             </div>
           )}
 
+          {/* Projects Section */}
+          {profile?.projects && profile.projects.length > 0 && (
+            <div style={{ marginBottom: "40px" }}>
+              <h3
+                style={{
+                  fontSize: "1.1rem",
+                  fontWeight: "bold",
+                  color: "#374151",
+                  textTransform: "uppercase",
+                  letterSpacing: "1px",
+                  borderBottom: "2px solid #06b6d4",
+                  paddingBottom: "8px",
+                  marginBottom: "20px",
+                  margin: "0 0 20px 0",
+                }}
+              >
+                PROJECTS
+              </h3>
+              {profile.projects.map((project, idx) => (
+                <div key={idx} style={{ marginBottom: "20px", pageBreakInside: "avoid" }}>
+                  <h4
+                    style={{
+                      fontSize: "1rem",
+                      fontWeight: "bold",
+                      margin: "0 0 5px 0",
+                      color: "#374151",
+                    }}
+                  >
+                    {project.title}
+                  </h4>
+                  <div
+                    style={{
+                      fontSize: "0.85rem",
+                      lineHeight: "1.5",
+                      margin: "0",
+                      color: "#374151",
+                      whiteSpace: "pre-wrap",
+                    }}
+                  >
+                    {project.description}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* References Section */}
           {profile?.referees && profile.referees.length > 0 && (
             <div style={{ marginBottom: "25px" }}>
               <h3
@@ -358,7 +498,7 @@ const Resume = ({ profile }) => {
                 REFERENCES
               </h3>
               {profile.referees.map((ref, idx) => (
-                <div key={idx} style={{ marginBottom: "15px" }}>
+                <div key={idx} style={{ marginBottom: "15px", pageBreakInside: "avoid" }}>
                   <h4
                     style={{
                       fontSize: "1rem",
