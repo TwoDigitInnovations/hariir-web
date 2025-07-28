@@ -3,7 +3,7 @@ import { useEffect, useState, useContext } from "react";
 import { userContext } from "../pages/_app";
 import { Navbar } from "./navbar";
 import SingIn from "./SingIn";
-import SingUp from "./SingUp";
+import SingUp from "./SingUp"
 
 const Layout = ({ children, loader }) => {
   const [user, setUser] = useContext(userContext);
@@ -11,6 +11,8 @@ const Layout = ({ children, loader }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSingUp, setIsSingUp] = useState(false);
   const [token, setToken] = useState(null);
+
+const isPdfTemplate = ["/resume1", "/resume2", "/resume3"].includes(router.pathname);
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
@@ -25,8 +27,9 @@ const Layout = ({ children, loader }) => {
   };
   
   const handleSignUpClick = () => { 
-    setIsModalOpen(false)
-    setIsSingUp(true)};
+    setIsModalOpen(false);
+    setIsSingUp(true);
+  };
 
   useEffect(() => {
     router.events.on("routeChangeComplete", () => loader(false));
@@ -48,34 +51,41 @@ const Layout = ({ children, loader }) => {
   return (
     <>
       <div className="flex-1 flex-col bg-white relative">
-        <div className="fixed w-full top-0 z-50">
-          <Navbar
-            user={user}
-            setUser={setUser}
-            loader={loader}
-            onSignInClick={handleSignInClick}
-            onSingUpClick={handleSignUpClick}
-          />
-        </div>
-        <div className="z-0 md:pt-18 pt-14 max-w-screen min-h-screen overflow-x-hidden">
+        {!isPdfTemplate && ( // 👈 only render Navbar if not on /pdf-template
+          <div className="fixed w-full top-0 z-50">
+            <Navbar
+              user={user}
+              setUser={setUser}
+              loader={loader}
+              onSignInClick={handleSignInClick}
+              onSingUpClick={handleSignUpClick}
+            />
+          </div>
+        )}
+
+        <div className={`${!isPdfTemplate ? "md:pt-18 pt-14" : ""} z-0 max-w-screen min-h-screen overflow-x-hidden`}>
           <main className="flex-1">{children}</main>
         </div>
       </div>
 
-      <SingIn
-        isOpen={isModalOpen}
-        setIsOpen={setIsModalOpen}
-        loader={loader}
-        onSignInClick={handleSignUpClick}
-        onClose={() => setIsModalOpen(false)}
-      />
-      <SingUp
-        isOpen={isSingUp}
-        loader={loader}
-        setIsOpen={setIsSingUp}
-        onSignInClick={handleSignInClick}
-        onClose={() => setIsSingUp(false)}
-      />
+      {!isPdfTemplate && ( // 👈 hide modals on /pdf-template
+        <>
+          <SingIn
+            isOpen={isModalOpen}
+            setIsOpen={setIsModalOpen}
+            loader={loader}
+            onSignInClick={handleSignUpClick}
+            onClose={() => setIsModalOpen(false)}
+          />
+          <SingUp
+            isOpen={isSingUp}
+            loader={loader}
+            setIsOpen={setIsSingUp}
+            onSignInClick={handleSignInClick}
+            onClose={() => setIsSingUp(false)}
+          />
+        </>
+      )}
     </>
   );
 };

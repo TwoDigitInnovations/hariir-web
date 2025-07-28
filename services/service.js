@@ -10,6 +10,7 @@ function Api(method, url, data, router) {
     if (typeof window !== "undefined") {
       token = localStorage?.getItem("token") || "";
     }
+
     axios({
       method,
       url: ConstantsUrl + url,
@@ -20,14 +21,23 @@ function Api(method, url, data, router) {
         resolve(res.data);
       },
       (err) => {
-        console.log(err);
-        if (err.response) {
-          if (err?.response?.status === 401) {
-            if (typeof window !== "undefined") {
-              localStorage.removeItem("userDetail");
-              router.push("/");
-            }
+        console.error("API Error:", err);
+
+        const status = err?.response?.status;
+
+        if (status === 401 || status === 403) {
+          if (typeof window !== "undefined") {
+            localStorage.removeItem("token");
+            localStorage.removeItem("userDetail");
           }
+
+          if (router) {
+            router.push("/");
+          }
+        }
+
+        // Reject with detailed error
+        if (err.response) {
           reject(err.response.data);
         } else {
           reject(err);

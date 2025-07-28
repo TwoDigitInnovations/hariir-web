@@ -391,7 +391,7 @@ const Resume = ({ profile }) => {
               >
                 EDUCATION
               </h3>
-              {currentProfile.education.map((edu, idx) => (
+              {currentProfile?.education?.map((edu, idx) => (
                 <div key={idx} style={{ marginBottom: "20px" }}>
                   <div
                     style={{

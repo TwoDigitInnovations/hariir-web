@@ -12,7 +12,9 @@ import {
   Languages,
   Users,
   Building2,
+  ShieldCheck,
 } from "lucide-react";
+import { RiVerifiedBadgeLine } from "react-icons/ri";
 import { Api } from "@/services/service";
 import { toast } from "react-toastify";
 import Skills from "../components/Skills";
@@ -222,7 +224,7 @@ export default function ProfileCompletion(props) {
                         className="flex items-start text-gray-600 hover:text-gray-900 px-3 py-2 rounded-lg hover:bg-gray-50"
                         type="button"
                         aria-label="Download Resume"
-                        onClick={()=>setAllCVOpen(true)}
+                        onClick={() => setAllCVOpen(true)}
                       >
                         <Download className="w-5 h-5 mr-2" />
                         PDF
@@ -407,26 +409,31 @@ export default function ProfileCompletion(props) {
                                   >
                                     <div className="mb-6">
                                       <div className="flex justify-between">
-                                        <h3 className="text-[16px] font-semibold text-gray-800">
+                                        <h3 className="text-[16px] font-semibold text-gray-800 flex items-center gap-2 mb-1">
                                           {experience.jobTitle}
+                                          {experience.status === "Approved" ? (
+                                            <RiVerifiedBadgeLine className="text-green-600 text-2xl" />
+                                          ) : experience.status ===
+                                            "Rejected" ? (
+                                            <img
+                                              src="/reject.png"
+                                              className="w-6 h-6"
+                                            />
+                                          ) : null}
                                         </h3>
                                         <div className="flex gap-4">
                                           <button
-                                            className={`text-[16px] font-semibold ${
-                                              experience.status === "Approved"
-                                                ? "text-green-600"
-                                                : experience.status ===
-                                                  "Rejected"
-                                                ? "text-red-500"
-                                                : experience.status ===
-                                                  "Requested"
-                                                ? "text-blue-600"
-                                                : "text-yellow-500"
+                                            className={`text-[16px] text-gray-800 font-semibold ${
+                                              experience.status === "Pending" &&
+                                              "text-yellow-500"
                                             }`}
                                           >
-                                            {experience.status === "Requested"
-                                              ? "Verification Requested"
-                                              : experience.status}
+                                             {experience.status === "Requested"
+                                          ? "Verification Requested"
+                                          : experience.status === "Approved" ||
+                                            experience.status === "Rejected"
+                                          ? ""
+                                          : experience.status}
                                           </button>
                                           {experience.status !== "Requested" &&
                                             experience.status !==
@@ -512,25 +519,33 @@ export default function ProfileCompletion(props) {
                                   key={key}
                                 >
                                   <div className="flex justify-between">
-                                    <h3 className="text-[16px] font-semibold text-gray-800">
+                                    <h3 className="text-[16px] font-semibold text-gray-800 flex items-center gap-2 mb-1">
                                       {education.degree || "N/A"}
+                                      {education.status === "Approved" ? (
+                                        <RiVerifiedBadgeLine className="text-green-600 text-2xl" />
+                                      ) : education.status === "Rejected" ? (
+                                        <img
+                                          src="/reject.png"
+                                          className="w-6 h-6"
+                                        />
+                                      ) : null}
                                     </h3>
                                     <div className="flex gap-4">
                                       <button
                                         className={`text-[16px] font-semibold ${
-                                          education.status === "Approved"
-                                            ? "text-green-600"
-                                            : education.status === "Rejected"
-                                            ? "text-red-500"
-                                            : education.status === "Requested"
-                                            ? "text-blue-600"
-                                            : "text-yellow-500"
+                                          education.status === "Pending"
+                                            ? "text-yellow-500"
+                                            : ""
                                         }`}
                                       >
                                         {education.status === "Requested"
                                           ? "Verification Requested"
+                                          : education.status === "Approved" ||
+                                            education.status === "Rejected"
+                                          ? ""
                                           : education.status}
                                       </button>
+
                                       {education.status !== "Requested" &&
                                         education.status !== "Approved" && (
                                           <button
