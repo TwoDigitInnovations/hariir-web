@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   X,
   ExternalLink,
@@ -15,10 +15,12 @@ import enLocale from "i18n-iso-countries/langs/en.json";
 import { useState, useEffect } from "react";
 import countries from "i18n-iso-countries";
 import { FaLinkedinIn } from "react-icons/fa6";
+import { userContext } from "@/pages/_app";
 
 const ProfileCard = ({ profile }) => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [country, setCountry] = useState("");
+  const [user, setuser] = useContext(userContext)
   const profileData = profile;
   const toggleProfile = () => {
     setIsProfileOpen(!isProfileOpen);
@@ -30,7 +32,7 @@ const ProfileCard = ({ profile }) => {
       "en"
     );
     setCountry(result || "US");
-  },[]);
+  }, []);
 
   return (
     <div className="bg-white rounded-lg border border-gray-200 max-w-sm mx-auto shadow-sm hover:shadow-lg transition-shadow duration-300 min-w-[280px]">
@@ -242,18 +244,19 @@ const ProfileCard = ({ profile }) => {
                       Contact
                     </h2>
                     <div className="space-y-4">
-                      <div className="flex items-center space-x-3">
-                        <Mail className="w-5 h-5 text-blue-400" />
-                        <div>
-                          <p className="text-sm text-gray-400">Email</p>
-                          <a
-                            href={`mailto:${profileData?.email}`}
-                            className="text-blue-600 hover:text-blue-700 font-medium"
-                          >
-                            {profileData?.email}
-                          </a>
+                      {user?._id && (
+                        <>  <div className="flex items-center space-x-3">
+                          <Mail className="w-5 h-5 text-blue-400" />
+                          <div>
+                            <p className="text-sm text-gray-400">Email</p>
+                            <a
+                              href={`mailto:${profileData?.email}`}
+                              className="text-blue-600 hover:text-blue-700 font-medium"
+                            >
+                              {profileData?.email}
+                            </a>
+                          </div>
                         </div>
-                      </div>
 
                       <div className="flex items-center space-x-3">
                         <Phone className="w-5 h-5 text-blue-400" />
@@ -267,20 +270,22 @@ const ProfileCard = ({ profile }) => {
                           </a>
                         </div>
                       </div>
+                    </>
+                      )}
 
-                      <div className="flex items-center space-x-3">
-                        <FaLinkedinIn className="w-5 h-5 text-blue-400" />
-                        <div>
-                          <p className="text-sm text-gray-400">LinkedIn</p>
-                          <a
-                            href={`https://${profileData.linkedinUrl}`}
-                            className="text-blue-600 hover:text-blue-700 font-medium"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            {profileData.linkedinUrl}
-                          </a>
-                        </div>
+
+                    <div className="flex items-center space-x-3">
+                      <FaLinkedinIn className="w-5 h-5 text-blue-400" />
+                      <div>
+                        <p className="text-sm text-gray-400">LinkedIn</p>
+                        <a
+                          href={`https://${profileData.linkedinUrl}`}
+                          className="text-blue-600 hover:text-blue-700 font-medium"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {profileData.linkedinUrl}
+                        </a>
                       </div>
                     </div>
                   </div>
@@ -289,8 +294,10 @@ const ProfileCard = ({ profile }) => {
             </div>
           </div>
         </div>
-      )}
-    </div>
+        </div>
+  )
+}
+    </div >
   );
 };
 

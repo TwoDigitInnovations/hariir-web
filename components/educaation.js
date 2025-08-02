@@ -4,8 +4,9 @@ import { Api } from "@/services/service";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import { userContext } from "@/pages/_app";
+import { RiVerifiedBadgeLine } from "react-icons/ri";
 
- function EducationEditor({ open, close, loader, profileData ,getProfile}) {
+function EducationEditor({ open, close, loader, profileData, getProfile }) {
   const [educations, setEducations] = useState([]);
   const router = useRouter();
   const [user] = useContext(userContext);
@@ -20,7 +21,7 @@ import { userContext } from "@/pages/_app";
           institution: "",
           year: "",
           description: "",
-          status:"Pending"
+          status: "Pending"
         },
       ]);
     }
@@ -40,7 +41,7 @@ import { userContext } from "@/pages/_app";
         institution: "",
         year: "",
         description: "",
-        status:"Pending"
+        status: "Pending"
       },
     ]);
   };
@@ -99,77 +100,92 @@ import { userContext } from "@/pages/_app";
             </button>
           </div>
 
-          {educations.map((edu, index) => (
-            <div
-              key={index}
-              className="border border-gray-200 rounded-lg p-6 mb-4 bg-white shadow-sm relative"
-            >
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-medium text-gray-800">
-                  Education {index + 1}
-                </h3>
-                <div
-                  className="cursor-pointer p-2 hover:bg-gray-100 rounded-lg transition-colors"
-                  onClick={() => removeEducation(index)}
-                >
-                  <Trash2 size={16} className="text-gray-600" />
-                </div>
-              </div>
+          {educations.map((edu, index) => {
+            const isApproved = edu.status === "Approved";
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                <div>
+            return (
+              <div
+                key={index}
+                className="border border-gray-200 rounded-lg p-6 mb-4 bg-white shadow-sm relative"
+              >
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-lg font-medium text-gray-800">
+                    Education {index + 1}
+                    {edu.status === "Approved" ? (
+                      <RiVerifiedBadgeLine className="text-green-600 text-2xl inline ml-2" />
+                    ) : edu.status === "Rejected" ? (
+                      <img src="/reject.png" className="w-6 h-6 inline ml-2" />
+                    ) : null}
+                  </h3>
+                  <div
+                    className="cursor-pointer p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                    onClick={() => removeEducation(index)}
+                  >
+                    <Trash2 size={16} className="text-gray-600" />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Degree <span className="text-red-400">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      value={edu.degree}
+                      onChange={(e) => handleChange(index, "degree", e.target.value)}
+                      disabled={isApproved}
+                      placeholder="e.g. Bachelor of Computer Science"
+                      className="border border-gray-300 rounded-lg px-4 py-3 w-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Institution <span className="text-red-400">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      value={edu.institution}
+                      onChange={(e) => handleChange(index, "institution", e.target.value)}
+                      disabled={isApproved}
+                      placeholder="e.g. University of Nairobi"
+                      className="border border-gray-300 rounded-lg px-4 py-3 w-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
+                    />
+                  </div>
+                </div>
+
+                <div className="mb-4">
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Degree <span className="text-red-400">*</span>
+                    Year <span className="text-red-400">*</span>
                   </label>
                   <input
                     type="text"
-                    value={edu.degree}
-                    onChange={(e) => handleChange(index, "degree", e.target.value)}
-                    placeholder="e.g. Bachelor of Computer Science"
-                    className="border border-gray-300 rounded-lg px-4 py-3 w-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
+                    value={edu.year}
+                    onChange={(e) => handleChange(index, "year", e.target.value)}
+                    disabled={isApproved}
+                    placeholder="e.g. 2020"
+                    className="border border-gray-300 rounded-lg px-4 py-3 w-full md:w-1/2 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
                   />
                 </div>
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Institution <span className="text-red-400">*</span>
+                    Description
                   </label>
-                  <input
-                    type="text"
-                    value={edu.institution}
-                    onChange={(e) => handleChange(index, "institution", e.target.value)}
-                    placeholder="e.g. University of Nairobi"
-                    className="border border-gray-300 rounded-lg px-4 py-3 w-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
+                  <textarea
+                    rows={4}
+                    value={edu.description}
+                    onChange={(e) => handleChange(index, "description", e.target.value)}
+                    disabled={isApproved}
+                    placeholder="Additional details about your education..."
+                    className="border border-gray-300 rounded-lg px-4 py-3 w-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent resize-none"
                   />
                 </div>
               </div>
+            );
+          })}
 
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Year <span className="text-red-400">*</span>
-                </label>
-                <input
-                  type="text"
-                  value={edu.year}
-                  onChange={(e) => handleChange(index, "year", e.target.value)}
-                  placeholder="e.g. 2020"
-                  className="border border-gray-300 rounded-lg px-4 py-3 w-full md:w-1/2 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
-                />
-              </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Description
-                </label>
-                <textarea
-                  rows={4}
-                  value={edu.description}
-                  onChange={(e) => handleChange(index, "description", e.target.value)}
-                  placeholder="Additional details about your education..."
-                  className="border border-gray-300 rounded-lg px-4 py-3 w-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent resize-none"
-                />
-              </div>
-            </div>
-          ))}
         </div>
 
         {/* Footer */}
