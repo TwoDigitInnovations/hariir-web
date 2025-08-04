@@ -258,35 +258,36 @@ const ProfileCard = ({ profile }) => {
                           </div>
                         </div>
 
+                          <div className="flex items-center space-x-3">
+                            <Phone className="w-5 h-5 text-blue-400" />
+                            <div>
+                              <p className="text-sm text-gray-400">Phone</p>
+                              <a
+                                href={`tel:${profileData?.phone}`}
+                                className="text-blue-600 hover:text-blue-700 font-medium"
+                              >
+                                {profileData?.phone}
+                              </a>
+                            </div>
+                          </div>
+                        </>
+                      )}
+
                       <div className="flex items-center space-x-3">
-                        <Phone className="w-5 h-5 text-blue-400" />
+                        <FaLinkedinIn className="w-5 h-5 text-blue-400" />
                         <div>
-                          <p className="text-sm text-gray-400">Phone</p>
+                          <p className="text-sm text-gray-400">LinkedIn</p>
                           <a
-                            href={`tel:${profileData?.phone}`}
+                            href={`https://${profileData.linkedinUrl}`}
                             className="text-blue-600 hover:text-blue-700 font-medium"
+                            target="_blank"
+                            rel="noopener noreferrer"
                           >
-                            {profileData?.phone}
+                            {profileData.linkedinUrl}
                           </a>
                         </div>
                       </div>
-                    </>
-                      )}
-
-
-                    <div className="flex items-center space-x-3">
-                      <FaLinkedinIn className="w-5 h-5 text-blue-400" />
-                      <div>
-                        <p className="text-sm text-gray-400">LinkedIn</p>
-                        <a
-                          href={`https://${profileData.linkedinUrl}`}
-                          className="text-blue-600 hover:text-blue-700 font-medium"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          {profileData.linkedinUrl}
-                        </a>
-                      </div>
+                      
                     </div>
                   </div>
                 </div>
@@ -294,9 +295,8 @@ const ProfileCard = ({ profile }) => {
             </div>
           </div>
         </div>
-        </div>
-  )
-}
+      )
+      }
     </div >
   );
 };
