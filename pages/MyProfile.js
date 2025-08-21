@@ -28,6 +28,7 @@ import ResumeForCompany from "@/components/ResumeForCompany";
 import Swal from "sweetalert2";
 import AllCV from "@/components/AllCV";
 import calculateProfileCompletion from "@/components/ProfileComplete";
+import CertificationComponent from "@/components/Certificate";
 
 export default function ProfileCompletion(props) {
   const router = useRouter();
@@ -103,6 +104,7 @@ export default function ProfileCompletion(props) {
       }
     });
   };
+
   const handleVerifyRequestForEdu = (expid) => {
     Swal.fire({
       text: "Are you sure? You are about to request verification for this education? Once verified, it cannot be edited or changed.",
@@ -579,7 +581,13 @@ export default function ProfileCompletion(props) {
                           )}
                         </section>
 
-                        {/* Languages Section */}
+                        <section className="mb-8">
+                          <CertificationComponent
+                            loader={props.loader}
+                            profileData={profileData}
+                            getProfile={() => getProfile()}
+                          />
+                        </section>
                         <section className="mb-8">
                           <div className="flex items-center justify-between mb-4">
                             <h2 className="text-[18px] font-semibold text-gray-800 flex items-center gap-2">
