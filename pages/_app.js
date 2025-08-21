@@ -33,14 +33,14 @@ export default function App({ Component, pageProps }) {
   };
 
   return (
-    <SessionProvider session={pageProps.session}>
-      <ToastContainer />
+  
       <userContext.Provider value={[user, setUser]}>
+        <ToastContainer />
         <Layout loader={setOpen} toaster={(t) => toast(t.message)}>
           {open && <Loader open={open} />}
           <Component {...pageProps} loader={setOpen} user={user} />
         </Layout>
       </userContext.Provider>
-    </SessionProvider>
+
   );
 }
