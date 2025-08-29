@@ -9,11 +9,11 @@ const HeroSection = () => {
                 backgroundColor: "#FFFFFF66" 
             }}>
               
-            <div className=" py-8  rounded-lg ">
+            <div className="md:py-8 py-6  rounded-lg ">
                 <h2 className="text-xl text-black font-semibold mb-3">
                     Available Across East Africa
                 </h2>
-                <p className="text-[#1E1E1E] font-light mb-8">
+                <p className="text-[#1E1E1E] font-light md:mb-8 mb-4 p-3">
                     Connecting professionals in major cities and growing markets
                 </p>
 

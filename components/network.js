@@ -9,7 +9,7 @@ const Network = () => {
                 backgroundColor: "#FFFFFF66", 
             }}
         >
-            <div className="py-8 flex flex-col justify-center items-center">
+            <div className="md:py-8 py-10 flex flex-col justify-center items-center">
                 <img src="/image-1.png" className="h-16 mb-4" />
                 <h1 className="text-3xl text-black font-bold mb-3">
                     Ready to advance your career?
@@ -18,7 +18,7 @@ const Network = () => {
                     Join thousands of professionals and companies already building their
                     network on Hariir.
                 </p>
-                <div className="flex justify-center gap-4 mb-10">
+                <div className="flex justify-center gap-4 md:mb-10 mb-6">
                     <button className="bg-[#FDC700] text-black px-4 py-2 rounded-[8px]  w-[128px] shadow-[1.5px 4px 4px 0px] text-[14px]">
                         Browse
                     </button>

@@ -29,9 +29,9 @@ function BeforeLogin() {
     return (
         <>
             <div className="md:py-6 md:pt-40 pt-14 px-4 md:px-8 relative max-w-6xl  flex flex-col lg:flex-row items-center mx-auto">
-                <div className="flex flex-col justify-start items-start w-full md:gap-0 gap-6">
+                <div className="flex flex-col justify-start items-start w-full md:gap-0 gap-4">
                     <div>
-                        <p className="font-bold text-white md:text-[52px] text-[42px] leading-[52px]"> Welcome to the professional community <span className="flex md:hidden"> for {" "} <span className="text-[#FDC700] ml-2">{" "} East Africa</span></span> </p>
+                        <p className="font-bold text-white md:text-[52px] text-[40px] leading-[52px]"> Welcome to the professional community <span className="flex md:hidden"> for {" "} <span className="text-[#FDC700] ml-2">{" "} East Africa</span></span> </p>
                     </div>
                     <div className="flex md:gap-8 gap-2 mt-4">
                         <div className="shadow-2xl text-[#1E1E1E] md:max-w-[320px] w-fit md:p-2 p-4 flex justify-center items-center rounded-3xl"
@@ -98,7 +98,7 @@ function BeforeLogin() {
                 </div>
             </div>
             <div className="py-4 min-h-[250px]">
-                <div className="max-w-6xl mx-auto h-[200px] px-4 grid grid-cols-2 md:grid-cols-4 flex-wrap justify-evenly items-center gap-8 md:gap-20 text-center">
+                <div className="max-w-6xl mx-auto h-[200px] px-4 grid grid-cols-2 md:grid-cols-4 flex-wrap justify-evenly items-center gap-6 md:gap-20 text-center">
                     {stats.map((stat, index) => (
                         <div
                             key={index}
@@ -108,8 +108,8 @@ function BeforeLogin() {
                          linear-gradient(0deg, rgba(237, 230, 246, 0.2), rgba(237, 230, 246, 0.2))`,
                             }}
                         >
-                            <h2 className={`text-3xl font-bold `}>{stat.number}</h2>
-                            <p className={`text-lg font-bold `}>{stat.label}</p>
+                            <h2 className={`md:text-3xl text-2xl font-bold `}>{stat.number}</h2>
+                            <p className={`md:text-lg text-md font-bold `}>{stat.label}</p>
                         </div>
                     ))}
                 </div>
