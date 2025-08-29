@@ -1,0 +1,65 @@
+
+import {  FaSearchLocation } from "react-icons/fa";
+
+const HeroSection = () => {
+    return (
+        <div className="text-center pt-2  md:bg-center bg-right-bottom bg-cover bg-no-repeat rounded-t-2xl"
+            style={{
+                backgroundImage: 'url("./Group6.png")',
+                backgroundColor: "#FFFFFF66" 
+            }}>
+              
+            <div className=" py-8  rounded-lg ">
+                <h2 className="text-xl text-black font-semibold mb-3">
+                    Available Across East Africa
+                </h2>
+                <p className="text-[#1E1E1E] font-light mb-8">
+                    Connecting professionals in major cities and growing markets
+                </p>
+
+
+                <div className="flex flex-row justify-between gap-4 md:max-w-[1140px] md:mx-auto md:mb-0 mb-4 mx-3">
+                    <span
+                        className="bg-white px-4 py-2 rounded-full shadow-sm text-sm text-[#1E1E1E] flex items-center gap-2 md:w-[200px] justify-center"
+                    >
+                        <FaSearchLocation className="" />
+                        Nairobi, Kenya
+                    </span>
+                    <span
+
+                        className="bg-white px-4 py-2 rounded-full shadow-sm text-sm text-[#1E1E1E] flex items-center gap-2 md:w-[200px] justify-center"
+                    >
+                        <FaSearchLocation className="" />
+                        Addis Ababa, Ethiopia
+                    </span>
+                </div>
+                <div className="flex flex-row justify-between gap-4 max-w-2xl md:mx-auto md:mb-0 mb-4 mx-3">
+                    <span
+                        className="bg-white px-4 py-2 rounded-full shadow-sm text-sm text-[#1E1E1E] flex items-center gap-2 md:w-[200px] justify-center"
+                    >
+                        <FaSearchLocation className="" />
+                        Kampala, Uganda
+                    </span>
+                    <span
+
+                        className="bg-white px-4 py-2 rounded-full shadow-sm text-sm text-[#1E1E1E] flex items-center gap-2 md:w-[200px] justify-center"
+                    >
+                        <FaSearchLocation className="" />
+                        Kigali, Rwanda
+                    </span>
+                </div>
+                <div className="flex flex-row justify-center gap-4 max-w-sm md:mx-auto md:mb-0 mb-4 mx-3">
+                    <span
+                        className="bg-white px-4 py-2 rounded-full shadow-sm text-sm text-[#1E1E1E] flex items-center gap-2 w-[220px] justify-center"
+                    >
+                        <FaSearchLocation className="" />
+                        Dar es Salaam, Tanzania
+                    </span>
+
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default HeroSection
