@@ -1,8 +1,9 @@
 
 import { Users, Building2, Search, MapPin, User, Eye, UserRound } from "lucide-react";
 import HeroSection from "./Footer";
-
+import { useRouter } from "next/router";
 function AfterLogin() {
+    const router = useRouter()
     return (<>
         <div className="max-w-7xl min-h-screen px-4  mx-auto md:pb-0 pb-10">
             <div className="pt-18">
@@ -59,7 +60,7 @@ function AfterLogin() {
                                 className="w-[80%] mx-auto bg-[#50A2FF99] text-black font-medium py-2 px-4 rounded-lg transition-colors flex gap-1 items-center justify-center cursor-pointer text-[11px]"
                                 onClick={() => router.push('/FindProfessional')}
                             >
-                                <Search size={13}/>
+                                <Search size={13} />
                                 Browse Professionals
                             </button>
                         </div>
@@ -103,7 +104,7 @@ function AfterLogin() {
 
                             <button
                                 className="w-[80%] mx-auto bg-[#50A2FF99] text-black font-medium py-2 px-4 rounded-lg transition-colors flex gap-1 items-center justify-center cursor-pointer text-[11px]"
-                                onClick={() => router.push('/FindProfessional')}
+                                onClick={() => router.push('/FindCompany')}
                             >
                                 <Search size={13} />
                                 Browse Companies
@@ -149,9 +150,9 @@ function AfterLogin() {
 
                             <button
                                 className="w-[80%] mx-auto bg-[#50A2FF99] text-black font-medium py-2 px-4 rounded-lg transition-colors flex gap-1 items-center justify-center cursor-pointer text-[11px]"
-                                onClick={() => router.push('/FindProfessional')}
+                                onClick={() => router.push('/dashboard')}
                             >
-                                <Search size={13}/>
+                                <Search size={13} />
                                 Browse Directory
                             </button>
                         </div>
