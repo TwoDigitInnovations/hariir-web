@@ -72,7 +72,6 @@ export const Navbar = ({ onSignInClick, onSingUpClick }) => {
     <>
       <nav className="flex justify-center md:h-18 bg-white drop-shadow-2xl w-full z-50 md:p-0 p-1.5 ">
         <div className="max-w-7xl mx-auto flex items-center justify-between w-full px-4">
-          {/* Logo */}
           <div
             className="flex items-center cursor-pointer"
             onClick={() => router.push("/")}

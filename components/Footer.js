@@ -18,7 +18,7 @@ const HeroSection = () => {
                 </p>
 
 
-                <div className="flex flex-row justify-between gap-4 md:max-w-[1140px] md:mx-auto md:mb-0 mb-4 mx-3">
+                <div className="flex flex-row justify-between gap-4 md:max-w-[1240px] md:mx-auto md:mb-0 mb-4 mx-3">
                     <span
                         className="bg-white px-4 py-2 rounded-full shadow-sm text-sm text-[#1E1E1E] flex items-center gap-2 md:w-[200px] justify-center"
                     >
@@ -33,7 +33,7 @@ const HeroSection = () => {
                         Addis Ababa, Ethiopia
                     </span>
                 </div>
-                <div className="flex flex-row justify-between gap-4 max-w-2xl md:mx-auto md:mb-0 mb-4 mx-3">
+                <div className="flex flex-row justify-between gap-4 max-w-[720px] md:mx-auto md:mb-0 mb-4 mx-3">
                     <span
                         className="bg-white px-4 py-2 rounded-full shadow-sm text-sm text-[#1E1E1E] flex items-center gap-2 md:w-[200px] justify-center"
                     >

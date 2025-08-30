@@ -27,9 +27,9 @@ function BeforeLogin() {
     const countryOptions = useMemo(() => countryList().getData(), []);
 
     return (
-        <>
-            <div className="md:py-6 md:pt-40 pt-14 px-4 md:px-8 relative max-w-6xl  flex flex-col lg:flex-row items-center mx-auto">
-                <div className="flex flex-col justify-start items-start w-full md:gap-0 gap-4">
+        <><div className="mx-auto max-w-7xl">
+            <div className="md:py-6 md:pt-40 pt-14 px-4 md:px-8 relative flex flex-col lg:flex-row items-center mx-auto">
+                <div className=" max-w-6xl mx-auto flex flex-col justify-start items-start w-full md:gap-0 gap-4">
                     <div>
                         <p className="font-bold text-white md:text-[52px] text-[40px] leading-[52px]"> Welcome to the professional community <span className="flex md:hidden"> for {" "} <span className="text-[#FDC700] ml-2">{" "} East Africa</span></span> </p>
                     </div>
@@ -98,7 +98,7 @@ function BeforeLogin() {
                 </div>
             </div>
             <div className="py-4 min-h-[250px]">
-                <div className="max-w-6xl mx-auto h-[200px] px-4 grid grid-cols-2 md:grid-cols-4 flex-wrap justify-evenly items-center gap-6 md:gap-20 text-center">
+                <div className=" h-[200px] px-4 grid grid-cols-2 md:grid-cols-4 flex-wrap justify-evenly items-center gap-6 md:gap-20 text-center">
                     {stats.map((stat, index) => (
                         <div
                             key={index}
@@ -114,7 +114,7 @@ function BeforeLogin() {
                     ))}
                 </div>
             </div>
-
+</div>
         </>
     )
 }

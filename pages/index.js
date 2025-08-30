@@ -95,14 +95,14 @@ export default function Home(props) {
           style={{
             backgroundImage: `url('./Group8.png')`,
             backgroundRepeat: "no-repeat",
-            backgroundSize: "cover",   // ya "contain" agar pura dikhana hai
+            backgroundSize: "cover",   
             backgroundPosition: "top center",
           }}
         >
           <AfterLogin />
         </div>
       ) : (
-        <div className="max-w-7xl">
+        <div className="">
           <div
             className="min-h-screen bg-no-repeat bg-cover md:bg-center bg-bottom md:bg-no-repeat "
             style={{ backgroundImage: 'url("./background1.png' }}
