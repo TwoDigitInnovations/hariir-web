@@ -3,17 +3,17 @@ import {  FaSearchLocation } from "react-icons/fa";
 
 const HeroSection = () => {
     return (
-        <div className="text-center pt-2  md:bg-center bg-right-bottom bg-cover bg-no-repeat rounded-t-2xl"
+        <div className=" text-center pt-2  md:bg-center bg-right-bottom bg-cover bg-no-repeat rounded-t-2xl"
             style={{
                 backgroundImage: 'url("./Group6.png")',
                 backgroundColor: "#FFFFFF66" 
             }}>
               
             <div className="md:py-8 py-6  rounded-lg ">
-                <h2 className="text-xl text-black font-semibold mb-3">
+                <h2 className="text-xl text-black font-semibold">
                     Available Across East Africa
                 </h2>
-                <p className="text-[#1E1E1E] font-light md:mb-8 mb-4 p-3">
+                <p className="text-[#1E1E1E] font-light md:mb-4 mb-8 text-[14px]">
                     Connecting professionals in major cities and growing markets
                 </p>
 

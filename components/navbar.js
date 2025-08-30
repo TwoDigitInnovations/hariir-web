@@ -70,8 +70,8 @@ export const Navbar = ({ onSignInClick, onSingUpClick }) => {
   }, []);
   return (
     <>
-      <nav className="flex justify-center md:h-18 min-h-max h-auto drop-shadow-md bg-white w-full z-50 md:p-0 p-3">
-        <div className="flex items-center justify-between w-full max-w-7xl px-4">
+      <nav className="flex justify-center md:h-18 bg-white drop-shadow-2xl w-full z-50 md:p-0 p-1.5 ">
+        <div className="max-w-7xl mx-auto flex items-center justify-between w-full px-4">
           {/* Logo */}
           <div
             className="flex items-center cursor-pointer"
@@ -112,7 +112,7 @@ export const Navbar = ({ onSignInClick, onSingUpClick }) => {
                         : "text-gray-700 hover:text-blue-400"
                     }`}
                   >
-                    <AiOutlineHome className="text-xl" />
+                    
                     Home
                   </a>
 
@@ -124,14 +124,14 @@ export const Navbar = ({ onSignInClick, onSingUpClick }) => {
                         : "text-gray-700 hover:text-blue-400"
                     }`}
                   >
-                    <IoSearchSharp className="text-xl" />
+                    
                     Browse
                   </a>
                   <a
                     href="#"
                     className="flex items-center text-gray-700 gap-4 hover:text-blue-400"
                   >
-                    <LuMessageCircle className="text-xl" />
+               
                     Messages
                   </a>
                 </div>
