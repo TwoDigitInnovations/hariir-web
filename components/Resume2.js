@@ -439,32 +439,34 @@ const Resume = ({ profile }) => {
             </div>
           )}
 
-          {/* Additional sections can be added here */}
-          {currentProfile.certifications && currentProfile.certifications.length > 0 && (
+        
+           {currentProfile?.certifications && currentProfile?.certifications?.length > 0 && (
             <div style={{ marginBottom: "25px" }}>
               <h3
                 style={{
-                  fontSize: "1.2rem",
+                  fontSize: "1.1rem",
                   fontWeight: "bold",
-                  color: "#1e3a8a",
-                  margin: "0 0 15px 0",
+                  textTransform: "uppercase",
+                  letterSpacing: "1px",
+                  borderBottom: "2px solid white",
+                  paddingBottom: "8px",
+                  marginBottom: "20px",
+                  margin: "0 0 20px 0",
                 }}
               >
-                Certifications
+                CERTIFICATIONS
               </h3>
-              {currentProfile.certifications.map((cert, idx) => (
-                <div key={idx} style={{ marginBottom: "10px", pageBreakInside: "avoid" }}>
-                  <div
-                    style={{
-                      fontSize: "0.9rem",
-                      color: "#374151",
-                      lineHeight: "1.5",
-                    }}
-                  >
-                    {cert}
+              <div style={{ fontSize: "0.85rem", lineHeight: "1.6" }}>
+                {currentProfile?.certifications?.map((cert, idx) => (
+                  <div key={idx} style={{ marginBottom: "12px" }}>
+                    <p><strong>Name:</strong> {cert.certificateName}</p>
+                    <p><strong>Issuer:</strong> {cert.issuerName}</p>
+                    <p><strong>Issue Date:</strong> {cert.issueDate}</p>
+                    <p><strong>Certificate No:</strong> {cert.certificateNumber}</p>
+                    {/* Image (attachmentUrl) skip kar diya */}
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           )}
 

@@ -4,7 +4,7 @@ import { Download } from "lucide-react";
 const Resume = ({ profile }) => {
   const resumeRef = useRef(null);
 
- const downloadResume = async () => {
+  const downloadResume = async () => {
     const input = resumeRef.current;
     if (!input) return;
 
@@ -63,7 +63,7 @@ const Resume = ({ profile }) => {
     <div className="">
       <div className="relative inline-block text-center">
         <img
-          src="/resume1.png" 
+          src="/resume1.png"
           alt="Resume Preview"
           className="md:w-[320px] w-48 h-auto mx-auto mb-2 rounded-md shadow-md"
         />
@@ -87,7 +87,7 @@ const Resume = ({ profile }) => {
           left: "-9999px",
           width: "800px",
           minHeight: "1120px",
-          overflow:"hidden" ,// Changed to minHeight
+          overflow: "hidden",// Changed to minHeight
           background: "white",
           color: "black",
           fontFamily: "Arial, sans-serif",
@@ -136,7 +136,7 @@ const Resume = ({ profile }) => {
           </div>
 
           {/* Education Section */}
-          {profile?.education && profile.education.length > 0 && (
+          {profile?.education && profile?.education?.length > 0 && (
             <div style={{ marginBottom: "25px" }}>
               <h3
                 style={{
@@ -152,7 +152,7 @@ const Resume = ({ profile }) => {
               >
                 EDUCATION
               </h3>
-              {profile.education.map((edu, idx) => (
+              {profile?.education?.map((edu, idx) => (
                 <div key={idx} style={{ marginBottom: "15px", pageBreakInside: "avoid" }}>
                   <div
                     style={{
@@ -196,8 +196,8 @@ const Resume = ({ profile }) => {
             </div>
           )}
 
-          {/* Skills Section */}
-          {profile?.skills && profile.skills.length > 0 && (
+
+          {profile?.skills && profile?.skills?.length > 0 && (
             <div style={{ marginBottom: "25px" }}>
               <h3
                 style={{
@@ -223,8 +223,8 @@ const Resume = ({ profile }) => {
             </div>
           )}
 
-          {/* Languages Section */}
-          {profile?.languages && profile.languages.length > 0 && (
+
+          {profile?.languages && profile?.languages?.length > 0 && (
             <div style={{ marginBottom: "25px" }}>
               <h3
                 style={{
@@ -251,7 +251,8 @@ const Resume = ({ profile }) => {
           )}
 
           {/* Certifications Section */}
-          {profile?.certifications && profile.certifications.length > 0 && (
+          
+          {profile?.certifications && profile?.certifications?.length > 0 && (
             <div style={{ marginBottom: "25px" }}>
               <h3
                 style={{
@@ -268,14 +269,19 @@ const Resume = ({ profile }) => {
                 CERTIFICATIONS
               </h3>
               <div style={{ fontSize: "0.85rem", lineHeight: "1.6" }}>
-                {profile.certifications.map((cert, idx) => (
-                  <div key={idx} style={{ marginBottom: "8px" }}>
-                    • {cert}
+                {profile?.certifications?.map((cert, idx) => (
+                  <div key={idx} style={{ marginBottom: "12px" }}>
+                    <p><strong>Name:</strong> {cert.certificateName}</p>
+                    <p><strong>Issuer:</strong> {cert.issuerName}</p>
+                    <p><strong>Issue Date:</strong> {cert.issueDate}</p>
+                    <p><strong>Certificate No:</strong> {cert.certificateNumber}</p>
+                    {/* Image (attachmentUrl) skip kar diya */}
                   </div>
                 ))}
               </div>
             </div>
           )}
+
 
           {/* Blue background extension to fill remaining space */}
           <div

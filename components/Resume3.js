@@ -4,7 +4,7 @@ import { Download } from "lucide-react";
 const Resume = ({ profile }) => {
   const resumeRef = useRef(null);
 
- const downloadResume = async () => {
+  const downloadResume = async () => {
     const input = resumeRef.current;
     if (!input) return;
 
@@ -100,20 +100,20 @@ const Resume = ({ profile }) => {
     ],
   };
 
- 
+
   const contentHeight =
     140 +
     Math.max(
       // Left sidebar content
       300 +
-        (currentProfile?.skills?.length || 0) * 25 +
-        (currentProfile?.languages?.length || 0) * 30 +
-        200,
+      (currentProfile?.skills?.length || 0) * 25 +
+      (currentProfile?.languages?.length || 0) * 30 +
+      200,
 
       200 + // Summary
-        (currentProfile?.education?.length || 0) * 80 + // Education
-        (currentProfile?.experience?.length || 0) * 100 + // Experience
-        (currentProfile?.referees?.length || 0) * 80 // References
+      (currentProfile?.education?.length || 0) * 80 + // Education
+      (currentProfile?.experience?.length || 0) * 100 + // Experience
+      (currentProfile?.referees?.length || 0) * 80 // References
     );
 
   const totalHeight = Math.max(contentHeight, 2240);
@@ -548,7 +548,35 @@ const Resume = ({ profile }) => {
               ))}
             </div>
 
-            {/* References Section */}
+            {currentProfile?.certifications && currentProfile?.certifications?.length > 0 && (
+              <div style={{ marginBottom: "25px" }}>
+                <h3
+                  style={{
+                    fontSize: "1.1rem",
+                    fontWeight: "bold",
+                    textTransform: "uppercase",
+                    letterSpacing: "1px",
+                    borderBottom: "2px solid white",
+                    paddingBottom: "8px",
+                    marginBottom: "20px",
+                    margin: "0 0 20px 0",
+                  }}
+                >
+                  CERTIFICATIONS
+                </h3>
+                <div style={{ fontSize: "0.85rem", lineHeight: "1.6" }}>
+                  {currentProfile?.certifications?.map((cert, idx) => (
+                    <div key={idx} style={{ marginBottom: "12px" }}>
+                      <p><strong>Name:</strong> {cert.certificateName}</p>
+                      <p><strong>Issuer:</strong> {cert.issuerName}</p>
+                      <p><strong>Issue Date:</strong> {cert.issueDate}</p>
+                      <p><strong>Certificate No:</strong> {cert.certificateNumber}</p>
+                      {/* Image (attachmentUrl) skip kar diya */}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
             {currentProfile?.referees && currentProfile.referees.length > 0 && (
               <div style={{ marginBottom: "25px" }}>
                 <h3

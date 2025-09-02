@@ -2,6 +2,7 @@
 import React, { useContext, useEffect, useState, useMemo } from "react";
 import { FiSearch } from "react-icons/fi";
 import countryList from "react-select-country-list";
+import { useRouter } from "next/router";
 const stats = [
     {
         number: "10K+",
@@ -25,7 +26,7 @@ const stats = [
 ];
 function BeforeLogin() {
     const countryOptions = useMemo(() => countryList().getData(), []);
-
+    const router = useRouter()
     return (
         <><div className="mx-auto max-w-7xl">
             <div className="md:py-6 md:pt-40 pt-14 px-4 md:px-8 relative flex flex-col lg:flex-row items-center mx-auto">
@@ -34,12 +35,13 @@ function BeforeLogin() {
                         <p className="font-bold text-white md:text-[52px] text-[40px] leading-[52px]"> Welcome to the professional community <span className="flex md:hidden"> for {" "} <span className="text-[#FDC700] ml-2">{" "} East Africa</span></span> </p>
                     </div>
                     <div className="flex md:gap-8 gap-2 mt-4">
-                        <div className="shadow-2xl text-[#1E1E1E] md:max-w-[320px] w-fit md:p-2 p-4 flex justify-center items-center rounded-3xl"
+                        <div className=" text-[#1E1E1E] md:max-w-[320px] w-fit md:p-2 p-4 flex justify-center items-center rounded-3xl shadow-[1.5px_2px_2px_0px] text-[16px] cursor-pointer 
+                     transform transition-transform duration-300 hover:scale-105"
                             style={{
                                 background: "linear-gradient(93.28deg, rgba(176, 201, 230, 0.15) 0%, rgba(255, 255, 255, 0.5) 48.74%, rgba(176, 201, 230, 0.35) 100%)",
                             }}
                         >
-                            <p className="md:text-[14px] text-md text-center"> Connect with professionals, discover opportunities, and build your career across Kenya, Tanzania, Riwanda, and beyond.</p>
+                            <p className="md:text-[14px] text-md text-center "> Connect with professionals, discover opportunities, and build your career across Kenya, Tanzania, Riwanda, and beyond.</p>
                         </div>
                         <div className="md:flex hidden">
                             <p className="font-bold text-white md:text-[52px] text-3xl"> for <span className="text-[#FDC700] "> East Africa</span></p>
@@ -89,7 +91,8 @@ function BeforeLogin() {
 
                         {/* Search Button */}
                         <button
-                            className="bg-[#FDC700] text-black w-[150px] md:w-[120px] px-7 py-2 rounded-[12px] font-medium transition-colors duration-200 flex items-center justify-center gap-2 text-[16px]"
+                            className="bg-[#FDC700] text-black w-[150px] md:w-[120px] px-7 py-2 rounded-[12px] font-medium flex items-center justify-center gap-2 shadow-[1.5px_2px_2px_0px] text-[16px] cursor-pointer 
+                     transform transition-transform duration-300 hover:scale-105"
                             onClick={() => router.push("/dashboard")}
                         >
                             Search
@@ -102,7 +105,8 @@ function BeforeLogin() {
                     {stats.map((stat, index) => (
                         <div
                             key={index}
-                            className={`py-6 rounded-3xl shadow-2xl text-[#1E1E1E]`}
+                            className={`py-6 rounded-3xl  text-[#1E1E1E] shadow-[1.5px_2px_2px_0px]  cursor-pointer 
+                     transform transition-transform duration-300 hover:scale-105`}
                             style={{
                                 background: `linear-gradient(0deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.3)),
                          linear-gradient(0deg, rgba(237, 230, 246, 0.2), rgba(237, 230, 246, 0.2))`,
@@ -114,7 +118,7 @@ function BeforeLogin() {
                     ))}
                 </div>
             </div>
-</div>
+        </div>
         </>
     )
 }

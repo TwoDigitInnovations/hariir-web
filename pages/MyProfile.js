@@ -740,7 +740,7 @@ export default function ProfileCompletion(props) {
             </div>
           </div>
 
-          {/* Sidebar */}
+         
           <div className="lg:col-span-1">
             {profileData?.phone && (
               <div className="bg-white rounded-lg shadow-sm p-6 mb-6 ">

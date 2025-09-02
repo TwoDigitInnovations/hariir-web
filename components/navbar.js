@@ -71,7 +71,8 @@ export const Navbar = ({ onSignInClick, onSingUpClick }) => {
   return (
     <>
       <nav className="flex justify-center md:h-18 bg-white drop-shadow-2xl w-full z-50 md:p-0 p-1.5 ">
-        <div className="max-w-7xl mx-auto flex items-center justify-between w-full px-4">
+        <div className={` flex items-center w-full px-4 ${isLoggedIn ? "justify-center gap-[20rem]" : "justify-between"
+          }`}>
           <div
             className="flex items-center cursor-pointer"
             onClick={() => router.push("/")}
@@ -105,32 +106,30 @@ export const Navbar = ({ onSignInClick, onSingUpClick }) => {
                 <div className="hidden cursor-pointer md:flex items-center space-x-8">
                   <a
                     onClick={() => router.push("/")}
-                    className={`flex items-center gap-4 ${
-                      isActiveHome
-                        ? "text-blue-400"
-                        : "text-gray-700 hover:text-blue-400"
-                    }`}
+                    className={`flex items-center gap-4 ${isActiveHome
+                      ? "text-blue-400"
+                      : "text-gray-700 hover:text-blue-400"
+                      }`}
                   >
-                    
+
                     Home
                   </a>
 
                   <a
                     onClick={() => router.push("/dashboard")}
-                    className={`flex cursor-pointer items-center gap-4 ${
-                      isActive
-                        ? "text-blue-400"
-                        : "text-gray-700 hover:text-blue-400"
-                    }`}
+                    className={`flex cursor-pointer items-center gap-4 ${isActive
+                      ? "text-blue-400"
+                      : "text-gray-700 hover:text-blue-400"
+                      }`}
                   >
-                    
+
                     Browse
                   </a>
                   <a
                     href="#"
                     className="flex items-center text-gray-700 gap-4 hover:text-blue-400"
                   >
-               
+
                     Messages
                   </a>
                 </div>

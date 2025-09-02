@@ -18,7 +18,7 @@ function AfterLogin() {
                 </div>
 
                 <div className="grid md:grid-cols-3 gap-8">
-                    <div className="bg-white rounded-[20px]  transition-shadow duration-200 "
+                    <div className="bg-white rounded-[20px] transform transition-transform duration-300 hover:scale-105 "
                     >
                         <div className="py-6 text-center md:bg-center bg-right-bottom bg-cover bg-no-repeat rounded-t-2xl"
                             style={{
@@ -41,23 +41,23 @@ function AfterLogin() {
                             className="[background:linear-gradient(180deg,rgba(255,255,255,0.35)_38.16%,rgba(153,153,153,0.35)_99.93%)] p-4 rounded-xl"
                         >
                             <div className="space-y-3 mb-6 flex flex-wrap mx-auto justify-center items-center space-x-3">
-                                <div className="flex gap-1 items-center text-[#1E1E1E] px-3 py-2 rounded-2xl text-[11px] bg-[#FFEFB466]
+                                <div className="flex gap-1 items-center text-[#1E1E1E] px-3 py-2 rounded-2xl text-[11px] bg-[#FFEFB466] transform transition-transform duration-300 hover:scale-103
 ">
                                     <Users size={15} />
                                     <span>Browse by expertise</span>
                                 </div>
-                                <div className="flex gap-1 items-center text-[#1E1E1E] px-3 py-2 rounded-2xl text-[11px] bg-[#FFEFB466]">
+                                <div className="flex gap-1 items-center text-[#1E1E1E] px-3 py-2 rounded-2xl text-[11px] bg-[#FFEFB466] transform transition-transform duration-300 hover:scale-103">
                                     <MapPin size={15} />
                                     <span>Filter by location</span>
                                 </div>
-                                <div className="flex gap-1 items-center text-[#1E1E1E] px-3 py-2 rounded-2xl text-[11px] bg-[#FFEFB466]">
+                                <div className="flex gap-1 items-center text-[#1E1E1E] px-3 py-2 rounded-2xl text-[11px] bg-[#FFEFB466] transform transition-transform duration-300 hover:scale-103">
                                     <Eye size={15} />
                                     <span>View professional profiles</span>
                                 </div>
                             </div>
 
                             <button
-                                className="w-[80%] mx-auto bg-[#50A2FF99] text-black font-medium py-2 px-4 rounded-lg transition-colors flex gap-1 items-center justify-center cursor-pointer text-[11px]"
+                                className="w-[80%] mx-auto bg-[#50A2FF99] text-black font-medium py-2 px-4 rounded-lg flex gap-1 items-center justify-center cursor-pointer text-[11px] transform transition-transform duration-300 hover:scale-105"
                                 onClick={() => router.push('/FindProfessional')}
                             >
                                 <Search size={13} />
@@ -66,7 +66,7 @@ function AfterLogin() {
                         </div>
 
                     </div>
-                    <div className="bg-white rounded-[20px]  transition-shadow duration-200 "
+                    <div className="bg-white rounded-[20px] transform transition-transform duration-300 hover:scale-105"
                     >
                         <div className="py-6 text-center md:bg-center bg-right-bottom bg-cover bg-no-repeat rounded-t-2xl"
                             style={{
@@ -87,23 +87,23 @@ function AfterLogin() {
                             className="[background:linear-gradient(180deg,rgba(255,255,255,0.35)_38.16%,rgba(153,153,153,0.35)_99.93%)] p-4 rounded-xl"
                         >
                             <div className="space-y-3 mb-6 flex flex-wrap mx-auto justify-center items-center space-x-3">
-                                <div className="flex gap-1 items-center text-[#1E1E1E] px-3 py-2 rounded-2xl text-[11px] bg-[#FFEFB466]
+                                <div className="flex gap-1 items-center text-[#1E1E1E] px-3 py-2 rounded-2xl text-[11px] bg-[#FFEFB466] transform transition-transform duration-300 hover:scale-103
 ">
                                     <Users size={15} />
                                     <span>Browse by industry</span>
                                 </div>
-                                <div className="flex gap-1 items-center text-[#1E1E1E] px-3 py-2 rounded-2xl text-[11px] bg-[#FFEFB466]">
+                                <div className="flex gap-1 items-center text-[#1E1E1E] px-3 py-2 rounded-2xl text-[11px] bg-[#FFEFB466] transform transition-transform duration-300 hover:scale-105">
                                     <MapPin size={15} />
                                     <span>Filter by location</span>
                                 </div>
-                                <div className="flex gap-1 items-center text-[#1E1E1E] px-3 py-2 rounded-2xl text-[11px] bg-[#FFEFB466]">
+                                <div className="flex gap-1 items-center text-[#1E1E1E] px-3 py-2 rounded-2xl text-[11px] bg-[#FFEFB466] transform transition-transform duration-300 hover:scale-105">
                                     <Eye size={15} />
                                     <span>view company profiles</span>
                                 </div>
                             </div>
 
                             <button
-                                className="w-[80%] mx-auto bg-[#50A2FF99] text-black font-medium py-2 px-4 rounded-lg transition-colors flex gap-1 items-center justify-center cursor-pointer text-[11px]"
+                                className="w-[80%] mx-auto bg-[#50A2FF99] text-black font-medium py-2 px-4 rounded-lg  flex gap-1 items-center justify-center cursor-pointer text-[11px] transform transition-transform duration-300 hover:scale-105"
                                 onClick={() => router.push('/FindCompany')}
                             >
                                 <Search size={13} />
@@ -112,9 +112,9 @@ function AfterLogin() {
                         </div>
 
                     </div>
-                    <div className="bg-white rounded-[20px]  transition-shadow duration-200 "
+                    <div className="bg-white rounded-[20px] transform transition-transform duration-300 hover:scale-105 cursor-pointer "
                     >
-                        <div className="py-6 text-center md:bg-center bg-right-bottom bg-cover bg-no-repeat rounded-t-2xl"
+                        <div className="py-6 text-center md:bg-center bg-right-bottom bg-cover bg-no-repeat rounded-t-2xl transform transition-transform duration-300 hover:scale-105"
                             style={{
                                 backgroundImage: 'url("./image-2.png")',
                             }}
@@ -133,23 +133,23 @@ function AfterLogin() {
                             className="[background:linear-gradient(180deg,rgba(255,255,255,0.35)_38.16%,rgba(153,153,153,0.35)_99.93%)] p-4 rounded-[20px]"
                         >
                             <div className="space-y-3 mb-6 flex flex-wrap mx-auto justify-center items-center space-x-3">
-                                <div className="flex gap-1 items-center text-[#1E1E1E] px-3 py-2 rounded-2xl text-[11px] bg-[#FFEFB466]
+                                <div className="flex gap-1 items-center text-[#1E1E1E] px-3 py-2 rounded-2xl text-[11px] bg-[#FFEFB466] transform transition-transform duration-300 hover:scale-103
 ">
                                     <Users size={15} />
                                     <span>Browse Everything</span>
                                 </div>
-                                <div className="flex gap-1 items-center text-[#1E1E1E] px-3 py-2 rounded-2xl text-[11px] bg-[#FFEFB466]">
+                                <div className="flex gap-1 items-center text-[#1E1E1E] px-3 py-2 rounded-2xl text-[11px] bg-[#FFEFB466] transform transition-transform duration-300 hover:scale-103">
                                     <MapPin size={15} />
                                     <span>Filter by location</span>
                                 </div>
-                                <div className="flex gap-1 items-center text-[#1E1E1E] px-3 py-2 rounded-2xl text-[11px] bg-[#FFEFB466]">
+                                <div className="flex gap-1 items-center text-[#1E1E1E] px-3 py-2 rounded-2xl text-[11px] bg-[#FFEFB466] transform transition-transform duration-300 hover:scale-103">
                                     <Eye size={15} />
                                     <span>View All profiles</span>
                                 </div>
                             </div>
 
                             <button
-                                className="w-[80%] mx-auto bg-[#50A2FF99] text-black font-medium py-2 px-4 rounded-lg transition-colors flex gap-1 items-center justify-center cursor-pointer text-[11px]"
+                                className="w-[80%] mx-auto bg-[#50A2FF99] text-black font-medium py-2 px-4 rounded-lg  flex gap-1 items-center justify-center cursor-pointer text-[11px] transform transition-transform duration-300 hover:scale-103"
                                 onClick={() => router.push('/dashboard')}
                             >
                                 <Search size={13} />
@@ -178,27 +178,31 @@ function AfterLogin() {
                             </p>
                         </div>
                         <div className="grid grid-cols-2 md:grid-cols-2 gap-4 poppins">
-                            <div className="text-center [background:linear-gradient(0deg,rgba(176,201,230,0.3),rgba(176,201,230,0.3)),linear-gradient(0deg,rgba(237,230,246,0.2),rgba(237,230,246,0.2))] py-4 rounded-[20px]">
+                            <div className="text-center [background:linear-gradient(0deg,rgba(176,201,230,0.3),rgba(176,201,230,0.3)),linear-gradient(0deg,rgba(237,230,246,0.2),rgba(237,230,246,0.2))] py-4 rounded-[20px] shadow-[1.5px_2px_2px_0px]  cursor-pointer 
+                     transform transition-transform duration-300 hover:scale-105">
                                 <p className="md:text-[26px] text-[20px] font-semibold text-[#1E1E1E] ">
                                     400+
                                 </p>
                                 <p className="md:text-[26px] text-[20px] font-semibold text-[#1E1E1E]">Professionals</p>
                             </div>
-                            <div className="text-center [background:linear-gradient(0deg,rgba(176,201,230,0.3),rgba(176,201,230,0.3)),linear-gradient(0deg,rgba(237,230,246,0.2),rgba(237,230,246,0.2))] py-4 rounded-[20px]">
+                            <div className="text-center [background:linear-gradient(0deg,rgba(176,201,230,0.3),rgba(176,201,230,0.3)),linear-gradient(0deg,rgba(237,230,246,0.2),rgba(237,230,246,0.2))] py-4 rounded-[20px] shadow-[1.5px_2px_2px_0px]  cursor-pointer 
+                     transform transition-transform duration-300 hover:scale-105">
                                 <p className="md:text-[26px] text-[20px] font-semibold text-[#1E1E1E] ">
                                     100+
                                 </p>
                                 <p className="md:text-[26px] text-[20px] font-semibold text-[#1E1E1E]">
                                     Companies</p>
                             </div>
-                            <div className="text-center [background:linear-gradient(0deg,rgba(176,201,230,0.3),rgba(176,201,230,0.3)),linear-gradient(0deg,rgba(237,230,246,0.2),rgba(237,230,246,0.2))] py-4 rounded-[20px]">
+                            <div className="text-center [background:linear-gradient(0deg,rgba(176,201,230,0.3),rgba(176,201,230,0.3)),linear-gradient(0deg,rgba(237,230,246,0.2),rgba(237,230,246,0.2))] py-4 rounded-[20px] shadow-[1.5px_2px_2px_0px]  cursor-pointer 
+                     transform transition-transform duration-300 hover:scale-105">
                                 <p className="md:text-[26px] text-[20px] font-semibold text-[#1E1E1E] ">
                                     50+
                                 </p>
                                 <p className="md:text-[26px] text-[20px] font-semibold text-[#1E1E1E]">
                                     Industries</p>
                             </div>
-                            <div className="text-center [background:linear-gradient(0deg,rgba(176,201,230,0.3),rgba(176,201,230,0.3)),linear-gradient(0deg,rgba(237,230,246,0.2),rgba(237,230,246,0.2))] py-4 rounded-[20px]">
+                            <div className="text-center [background:linear-gradient(0deg,rgba(176,201,230,0.3),rgba(176,201,230,0.3)),linear-gradient(0deg,rgba(237,230,246,0.2),rgba(237,230,246,0.2))] py-4 rounded-[20px] shadow-[1.5px_2px_2px_0px]  cursor-pointer 
+                     transform transition-transform duration-300 hover:scale-105">
                                 <p className="md:text-[26px] text-[20px] font-semibold text-[#1E1E1E] ">
                                     10+
                                 </p>
