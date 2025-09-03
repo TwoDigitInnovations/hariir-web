@@ -255,6 +255,104 @@ const CompanyProfileGenerator = ({ profile }) => {
           </div>
 
 
+
+
+
+          {/* Page 2: Mission & Vision */}
+          <div style={{
+            width: "800px",
+            height: "1120px",
+            background: "white",
+            padding: "40px 40px",
+            boxSizing: "border-box",
+            display: "flex",
+            flexDirection: "column",
+            pageBreakAfter: "always"
+          }}>
+            {/* Header */}
+            <div style={{
+              textAlign: "center",
+              marginBottom: "60px",
+              borderBottom: "3px solid #2563eb",
+              paddingBottom: "30px"
+            }}>
+              <h1 style={{
+                fontSize: "2.5rem",
+                fontWeight: "bold",
+                color: "#1e40af",
+                margin: "0",
+                textTransform: "uppercase",
+                letterSpacing: "2px"
+              }}>
+                Our Vision & Mission
+              </h1>
+            </div>
+
+            {/* Mission Statement */}
+            <div style={{ marginBottom: "40px" }}>
+              <div style={{
+                background: "#f8fafc",
+                border: "2px solid #e2e8f0",
+                borderLeft: "8px solid #3b82f6",
+                padding: "20px",
+                borderRadius: "8px"
+              }}>
+                <h2 style={{
+                  fontSize: "2rem",
+                  fontWeight: "bold",
+                  color: "#1e40af",
+                  marginBottom: "15px",
+                  textAlign: "center",
+                  textTransform: "uppercase"
+                }}>
+                  Our Mission
+                </h2>
+                <p style={{
+                  fontSize: "1.1rem",
+                  lineHeight: "1.8",
+                  color: "#374151",
+                  margin: "0",
+                  textAlign: "center",
+                  fontStyle: "italic"
+                }}>
+                  {companyData?.missionStatement?.slice(0, 750) + "..."}
+                </p>
+              </div>
+            </div>
+
+            {/* Vision Statement */}
+            <div style={{ marginBottom: "30px" }}>
+              <div style={{
+                background: "#eff6ff",
+                border: "2px solid #bfdbfe",
+                borderLeft: "8px solid #2563eb",
+                padding: "20px",
+                borderRadius: "8px"
+              }}>
+                <h2 style={{
+                  fontSize: "2rem",
+                  fontWeight: "bold",
+                  color: "#1e40af",
+                  marginBottom: "15px",
+                  textAlign: "center",
+                  textTransform: "uppercase"
+                }}>
+                  Our Vision
+                </h2>
+                <p style={{
+                  fontSize: "1.1rem",
+                  lineHeight: "1.8",
+                  color: "#374151",
+                  margin: "0",
+                  textAlign: "center",
+                  fontStyle: "italic"
+                }}>
+                  {companyData?.visionStatement?.slice(0, 750) + "..."}
+                </p>
+              </div>
+            </div>
+
+          </div>
           <div style={{
             width: "800px",
             height: "1120px",
@@ -373,104 +471,6 @@ const CompanyProfileGenerator = ({ profile }) => {
 
 
           </div>
-
-
-          {/* Page 2: Mission & Vision */}
-          <div style={{
-            width: "800px",
-            height: "1120px",
-            background: "white",
-            padding: "40px 40px",
-            boxSizing: "border-box",
-            display: "flex",
-            flexDirection: "column",
-            pageBreakAfter: "always"
-          }}>
-            {/* Header */}
-            <div style={{
-              textAlign: "center",
-              marginBottom: "60px",
-              borderBottom: "3px solid #2563eb",
-              paddingBottom: "30px"
-            }}>
-              <h1 style={{
-                fontSize: "2.5rem",
-                fontWeight: "bold",
-                color: "#1e40af",
-                margin: "0",
-                textTransform: "uppercase",
-                letterSpacing: "2px"
-              }}>
-                Our Vision & Mission
-              </h1>
-            </div>
-
-            {/* Mission Statement */}
-            <div style={{ marginBottom: "40px" }}>
-              <div style={{
-                background: "#f8fafc",
-                border: "2px solid #e2e8f0",
-                borderLeft: "8px solid #3b82f6",
-                padding: "20px",
-                borderRadius: "8px"
-              }}>
-                <h2 style={{
-                  fontSize: "2rem",
-                  fontWeight: "bold",
-                  color: "#1e40af",
-                  marginBottom: "15px",
-                  textAlign: "center",
-                  textTransform: "uppercase"
-                }}>
-                  Our Mission
-                </h2>
-                <p style={{
-                  fontSize: "1.1rem",
-                  lineHeight: "1.8",
-                  color: "#374151",
-                  margin: "0",
-                  textAlign: "center",
-                  fontStyle: "italic"
-                }}>
-                  {companyData?.missionStatement?.slice(0, 750) + "..."}
-                </p>
-              </div>
-            </div>
-
-            {/* Vision Statement */}
-            <div style={{ marginBottom: "30px" }}>
-              <div style={{
-                background: "#eff6ff",
-                border: "2px solid #bfdbfe",
-                borderLeft: "8px solid #2563eb",
-                padding: "20px",
-                borderRadius: "8px"
-              }}>
-                <h2 style={{
-                  fontSize: "2rem",
-                  fontWeight: "bold",
-                  color: "#1e40af",
-                  marginBottom: "15px",
-                  textAlign: "center",
-                  textTransform: "uppercase"
-                }}>
-                  Our Vision
-                </h2>
-                <p style={{
-                  fontSize: "1.1rem",
-                  lineHeight: "1.8",
-                  color: "#374151",
-                  margin: "0",
-                  textAlign: "center",
-                  fontStyle: "italic"
-                }}>
-                  {companyData?.visionStatement?.slice(0, 750) + "..."}
-                </p>
-              </div>
-            </div>
-
-          </div>
-
           {/* Page 3:  */}
           <div style={{
             width: "800px",
