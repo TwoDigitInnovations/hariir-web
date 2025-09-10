@@ -6,6 +6,7 @@ import {
   Users,
   Briefcase,
   ArrowLeft,
+  X
 } from "lucide-react";
 import { Api } from "@/services/service";
 import ProfessionalCard from "../components/ProfessionalCard";
@@ -13,6 +14,7 @@ import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import countryList from "react-select-country-list";
 import { userContext } from "./_app";
+
 
 const FindProfessional = (props) => {
   const [profilesData, setProfileData] = useState([]);
@@ -29,14 +31,15 @@ const FindProfessional = (props) => {
   }, []);
 
   useEffect(() => {
-    if (token) {
+    if (token && user?._id) {
+      console.log("", user._id);
       getAllProfessional();
     }
-  }, [token]);
+  }, [token, user?._id]);
+
 
   const getAllProfessional = () => {
     props.loader(true);
-
     Api(
       "get",
       "auth/getAllProfileBaseOnRole?role=professional",
@@ -45,11 +48,13 @@ const FindProfessional = (props) => {
     ).then(
       (res) => {
         props.loader(false);
+        console.log("getAllProfessional", user._id);
         setProfileData(
           (res.data || []).filter(
-            (item) => item.role === "professional" && item._id !== user?._id
+            (item) => item.role === "professional" && item._id !== (user?._id || "")
           )
         );
+
       },
       (err) => {
         props.loader(false);
@@ -59,13 +64,20 @@ const FindProfessional = (props) => {
   };
 
   const getProfileOnSearch = () => {
+    // Case 1: Agar searchQuery aur location dono empty hain
     if (!searchQuery && !selectedLocation) {
-      getAllProfessional();
-      return;
+      if (token && user?._id) {
+        console.log("Current user id:", user._id);
+        getAllProfessional();
+      }
+      return; // yaha return karna zaroori hai
     }
+
+    // Case 2: Agar searchQuery ya location me kuch value hai
     const data = {
       selectedLocation,
     };
+
     props.loader(true);
     Api(
       "post",
@@ -75,9 +87,12 @@ const FindProfessional = (props) => {
     ).then(
       (res) => {
         props.loader(false);
+        console.log("getProfileOnSearch User Id:", user?._id);
+
         setProfileData(
           (res.data || []).filter(
-            (item) => item.role === "professional" && item._id !== user?._id
+            (item) =>
+              item.role === "professional" && item._id !== (user?._id || "")
           )
         );
       },
@@ -87,6 +102,7 @@ const FindProfessional = (props) => {
       }
     );
   };
+
 
   useEffect(() => {
     const delayDebounce = setTimeout(() => {
@@ -103,9 +119,10 @@ const FindProfessional = (props) => {
         <div className="mb-8">
           <div
             className="flex items-center mb-8 "
-            onClick={() => window.history.back()}
           >
-            <button className="flex items-center text-gray-600 hover:text-gray-900">
+            <button className="flex items-center text-gray-600 hover:text-gray-900"
+              onClick={() => window.history.back()}
+            >
               <ArrowLeft className="w-5 h-5 mr-2" />
               Back to Home
             </button>
@@ -134,22 +151,37 @@ const FindProfessional = (props) => {
                 <h2 className="text-lg font-semibold text-gray-900">Filters</h2>
               </div>
 
-              {/* Search */}
+
               <div className="mb-6">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Search
                 </label>
                 <div className="relative">
+                  {/* Search Icon */}
                   <Search className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+
+                  {/* Input */}
                   <input
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Search by name, skills"
-                    className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none text-black text-sm"
+                    className="w-full pl-10 pr-8 py-2 border border-gray-300 rounded-md focus:outline-none text-black text-sm"
                   />
+
+                  {/* Clear Icon (X) */}
+                  {searchQuery && (
+                    <button
+                      type="button"
+                      onClick={() => setSearchQuery("")}
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  )}
                 </div>
               </div>
+
 
               {/* Location */}
               <div className="mb-6">

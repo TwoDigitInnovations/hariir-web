@@ -12,11 +12,9 @@ import {
   Calendar,
   FileText,
   Briefcase,
-  User,
   Plus,
   Trash2,
-  Save,
-  CheckCircle,
+  ArrowLeft,
 } from "lucide-react";
 import Select from "react-select";
 import countryList from "react-select-country-list";
@@ -352,6 +350,16 @@ function CompanyProfileForm(props) {
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4">
       <div className="max-w-4xl mx-auto">
+        <div
+          className="flex items-center mb-8 "
+        >
+          <button className="flex items-center text-gray-600 hover:text-gray-900"
+            onClick={() => window.history.back()}
+          >
+            <ArrowLeft className="w-5 h-5 mr-2" />
+            Back to Home
+          </button>
+        </div>
         <div className="text-center mb-8">
           <h1 className="md:text-3xl text-xl font-bold text-gray-900 mb-2">
             Set Up Your Company Profile
@@ -450,11 +458,10 @@ function CompanyProfileForm(props) {
                   value={formik.values.companyName}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  className={`w-full px-3 py-2 text-black border rounded-md shadow-sm focus:outline-none focus:border-blue-500 ${
-                    formik.touched.companyName && formik.errors.companyName
+                  className={`w-full px-3 py-2 text-black border rounded-md shadow-sm focus:outline-none focus:border-blue-500 ${formik.touched.companyName && formik.errors.companyName
                       ? "border-red-300"
                       : "border-gray-300"
-                  }`}
+                    }`}
                 />
                 {formik.touched.companyName && formik.errors.companyName && (
                   <p className="mt-1 text-sm text-red-600">
@@ -472,12 +479,11 @@ function CompanyProfileForm(props) {
                   value={formik.values.industrySector}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  className={`w-full px-3 py-2 border text-black rounded-md shadow-sm focus:outline-none focus:border-blue-500 ${
-                    formik.touched.industrySector &&
-                    formik.errors.industrySector
+                  className={`w-full px-3 py-2 border text-black rounded-md shadow-sm focus:outline-none focus:border-blue-500 ${formik.touched.industrySector &&
+                      formik.errors.industrySector
                       ? "border-red-300"
                       : "border-gray-300"
-                  }`}
+                    }`}
                 >
                   <option value="">Select industry</option>
                   {industryOptions.map((option) => (
@@ -503,11 +509,10 @@ function CompanyProfileForm(props) {
                   value={formik.values.location}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  className={`w-full px-3 py-2 text-black border rounded-md shadow-sm focus:outline-none focus:border-blue-500 ${
-                    formik.touched.location && formik.errors.location
+                  className={`w-full px-3 py-2 text-black border rounded-md shadow-sm focus:outline-none focus:border-blue-500 ${formik.touched.location && formik.errors.location
                       ? "border-red-300"
                       : "border-gray-300"
-                  }`}
+                    }`}
                 >
                   <option value="">Select country</option>
 
@@ -537,11 +542,10 @@ function CompanyProfileForm(props) {
                     value={formik.values.website}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    className={`w-full pl-10 pr-3 py-2 text-black border rounded-md shadow-sm focus:outline-none focus:border-blue-500 ${
-                      formik.touched.website && formik.errors.website
+                    className={`w-full pl-10 pr-3 py-2 text-black border rounded-md shadow-sm focus:outline-none focus:border-blue-500 ${formik.touched.website && formik.errors.website
                         ? "border-red-300"
                         : "border-gray-300"
-                    }`}
+                      }`}
                   />
                 </div>
                 {formik.touched.website && formik.errors.website && (
@@ -564,11 +568,10 @@ function CompanyProfileForm(props) {
                     value={formik.values.email}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    className={`w-full pl-10 pr-3 py-2 border text-black rounded-md shadow-sm focus:outline-none focus:border-blue-500 ${
-                      formik.touched.email && formik.errors.email
+                    className={`w-full pl-10 pr-3 py-2 border text-black rounded-md shadow-sm focus:outline-none focus:border-blue-500 ${formik.touched.email && formik.errors.email
                         ? "border-red-300"
                         : "border-gray-300"
-                    }`}
+                      }`}
                   />
                 </div>
                 {formik.touched.email && formik.errors.email && (
@@ -591,11 +594,10 @@ function CompanyProfileForm(props) {
                     value={formik.values.phone}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    className={`w-full pl-10 pr-3 py-2 border rounded-md text-black shadow-sm focus:outline-none focus:border-blue-500 ${
-                      formik.touched.phone && formik.errors.phone
+                    className={`w-full pl-10 pr-3 py-2 border rounded-md text-black shadow-sm focus:outline-none focus:border-blue-500 ${formik.touched.phone && formik.errors.phone
                         ? "border-red-300"
                         : "border-gray-300"
-                    }`}
+                      }`}
                   />
                 </div>
                 {formik.touched.phone && formik.errors.phone && (
@@ -614,11 +616,10 @@ function CompanyProfileForm(props) {
                   value={formik.values.companySize}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  className={`w-full px-3 py-2 border rounded-md text-black shadow-sm focus:outline-none focus:border-blue-500 ${
-                    formik.touched.companySize && formik.errors.companySize
+                  className={`w-full px-3 py-2 border rounded-md text-black shadow-sm focus:outline-none focus:border-blue-500 ${formik.touched.companySize && formik.errors.companySize
                       ? "border-red-300"
                       : "border-gray-300"
-                  }`}
+                    }`}
                 >
                   <option value="">Select company size</option>
                   {companySizeOptions.map((option) => (
@@ -645,11 +646,10 @@ function CompanyProfileForm(props) {
                   value={formik.values.foundedYear}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  className={`w-full px-3 py-2 border text-black rounded-md shadow-sm focus:outline-none focus:border-blue-500 ${
-                    formik.touched.foundedYear && formik.errors.foundedYear
+                  className={`w-full px-3 py-2 border text-black rounded-md shadow-sm focus:outline-none focus:border-blue-500 ${formik.touched.foundedYear && formik.errors.foundedYear
                       ? "border-red-300"
                       : "border-gray-300"
-                  }`}
+                    }`}
                 />
                 {formik.touched.foundedYear && formik.errors.foundedYear && (
                   <p className="mt-1 text-sm text-red-600">
@@ -670,12 +670,11 @@ function CompanyProfileForm(props) {
                 value={formik.values.companyDescription}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                className={`w-full px-3 py-2 border rounded-md text-black shadow-sm focus:outline-none focus:border-blue-500 resize-none ${
-                  formik.touched.companyDescription &&
-                  formik.errors.companyDescription
+                className={`w-full px-3 py-2 border rounded-md text-black shadow-sm focus:outline-none focus:border-blue-500 resize-none ${formik.touched.companyDescription &&
+                    formik.errors.companyDescription
                     ? "border-red-300"
                     : "border-gray-300"
-                }`}
+                  }`}
               />
               {formik.touched.companyDescription &&
                 formik.errors.companyDescription && (
@@ -707,11 +706,10 @@ function CompanyProfileForm(props) {
                   value={formik.values.aboutUs}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  className={`w-full px-3 py-2 border text-black rounded-md shadow-sm focus:outline-none focus:border-blue-500 resize-none ${
-                    formik.touched.aboutUs && formik.errors.aboutUs
+                  className={`w-full px-3 py-2 border text-black rounded-md shadow-sm focus:outline-none focus:border-blue-500 resize-none ${formik.touched.aboutUs && formik.errors.aboutUs
                       ? "border-red-300"
                       : "border-gray-300"
-                  }`}
+                    }`}
                 />
                 {formik.touched.aboutUs && formik.errors.aboutUs && (
                   <p className="mt-1 text-sm text-red-600">
@@ -731,12 +729,11 @@ function CompanyProfileForm(props) {
                   value={formik.values.missionStatement}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  className={`w-full px-3 py-2 border rounded-md text-black shadow-sm focus:outline-none focus:border-blue-500 resize-none ${
-                    formik.touched.missionStatement &&
-                    formik.errors.missionStatement
+                  className={`w-full px-3 py-2 border rounded-md text-black shadow-sm focus:outline-none focus:border-blue-500 resize-none ${formik.touched.missionStatement &&
+                      formik.errors.missionStatement
                       ? "border-red-300"
                       : "border-gray-300"
-                  }`}
+                    }`}
                 />
                 {formik.touched.missionStatement &&
                   formik.errors.missionStatement && (
@@ -757,12 +754,11 @@ function CompanyProfileForm(props) {
                   value={formik.values.visionStatement}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  className={`w-full px-3 py-2 border rounded-md text-black shadow-sm focus:outline-none focus:border-blue-500 resize-none ${
-                    formik.touched.visionStatement &&
-                    formik.errors.visionStatement
+                  className={`w-full px-3 py-2 border rounded-md text-black shadow-sm focus:outline-none focus:border-blue-500 resize-none ${formik.touched.visionStatement &&
+                      formik.errors.visionStatement
                       ? "border-red-300"
                       : "border-gray-300"
-                  }`}
+                    }`}
                 />
                 {formik.touched.visionStatement &&
                   formik.errors.visionStatement && (

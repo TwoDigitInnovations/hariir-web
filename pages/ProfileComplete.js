@@ -2,7 +2,7 @@ import React, { useState, useMemo, useContext, useEffect } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
-import { User, Upload, MapPin, Mail, Phone, Linkedin } from "lucide-react";
+import { User, Upload, MapPin, Mail, Phone, Linkedin, ArrowLeft } from "lucide-react";
 import dynamic from "next/dynamic";
 import Select from "react-select";
 import countryList from "react-select-country-list";
@@ -12,6 +12,50 @@ import { useRouter } from "next/router";
 import { userContext } from "./_app";
 
 const JoditEditor = dynamic(() => import("jodit-react"), { ssr: false });
+
+const config = {
+  height: 400,
+  toolbarAdaptive: false,
+  readonly: false,
+  uploader: { insertImageAsBase64URI: true },
+
+  clipboard: {
+    matchVisual: true,
+    defaultActionOnPaste: "insert_as_html",
+    denyPasteFromWord: false,
+    cleanPaste: false,
+  },
+
+  buttons: [
+    "bold",
+    "italic",
+    "underline",
+    "ul",
+    "ol",
+    "|",
+    "font",
+    "fontsize",
+    "paragraph",
+    "|",
+    "link",
+    "table",
+    "image",
+    "hr",
+    "|",
+    "source",
+    "fullsize",
+  ],
+
+  enter: "P",
+  defaultLineHeight: "1.6",
+  defaultFontSizePoints: "14",
+  defaultFont: "Arial",
+
+  style: {
+    font: "14px Arial, sans-serif",
+    lineHeight: "1.6",
+  },
+};
 
 const validationSchema = Yup.object({
   fullName: Yup.string()
@@ -112,10 +156,10 @@ export default function ProfileForm(props) {
     if (data.profileImage) {
       setProfileImage(data.profileImage);
     }
-     if (data.coverImage) {
+    if (data.coverImage) {
       setCoverImage(data.coverImage);
     }
-    
+
   };
 
   const submit = (values, resetForm) => {
@@ -128,7 +172,7 @@ export default function ProfileForm(props) {
       userId: userId,
       email: values.email.toLowerCase(),
       profileImage: profileImage,
-      coverImage:coverImage
+      coverImage: coverImage
     };
 
     Api("post", "auth/updateProfile", data, router).then(
@@ -240,6 +284,17 @@ export default function ProfileForm(props) {
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4">
       <div className="max-w-4xl mx-auto">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div
+            className="flex items-center h-16 md:mt-0 mt-4"
+            onClick={() => window.history.back()}
+          >
+            <button className="flex items-center text-gray-600 hover:text-gray-900">
+              <ArrowLeft className="w-5 h-5 mr-2" />
+              Back to Browse
+            </button>
+          </div>
+        </div>
         <div className="text-center mb-8">
           <h1 className="text-xl font-semibold text-gray-900 mb-2">
             Complete your profile to start building your network and showcase
@@ -340,11 +395,10 @@ export default function ProfileForm(props) {
                   value={formik.values.fullName}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none text-black focus:border-blue-500 ${
-                    formik.errors.fullName
-                      ? "border-red-300 focus:ring-red-500 focus:border-red-500"
-                      : "border-gray-300"
-                  }`}
+                  className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none text-black focus:border-blue-500 ${formik.errors.fullName
+                    ? "border-red-300 focus:ring-red-500 focus:border-red-500"
+                    : "border-gray-300"
+                    }`}
                 />
                 {formik.errors.fullName && (
                   <p className="mt-1 text-sm text-red-600">
@@ -364,11 +418,10 @@ export default function ProfileForm(props) {
                   value={formik.values.professionalTitle}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  className={`w-full px-3 py-2 border text-black rounded-md shadow-sm focus:outline-none  focus:border-blue-500 ${
-                    formik.errors.professionalTitle
-                      ? "border-red-300 focus:ring-red-500 focus:border-red-500"
-                      : "border-gray-300"
-                  }`}
+                  className={`w-full px-3 py-2 border text-black rounded-md shadow-sm focus:outline-none  focus:border-blue-500 ${formik.errors.professionalTitle
+                    ? "border-red-300 focus:ring-red-500 focus:border-red-500"
+                    : "border-gray-300"
+                    }`}
                 />
                 {formik.errors.professionalTitle && (
                   <p className="mt-1 text-sm text-red-600">
@@ -417,11 +470,10 @@ export default function ProfileForm(props) {
                     value={formik.values.email}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    className={`w-full pl-10 pr-3 py-2 border rounded-md shadow-sm focus:outline-none text-black focus:border-blue-500 ${
-                      formik.errors.email
-                        ? "border-red-300 focus:ring-red-500 focus:border-red-500"
-                        : "border-gray-300"
-                    }`}
+                    className={`w-full pl-10 pr-3 py-2 border rounded-md shadow-sm focus:outline-none text-black focus:border-blue-500 ${formik.errors.email
+                      ? "border-red-300 focus:ring-red-500 focus:border-red-500"
+                      : "border-gray-300"
+                      }`}
                   />
                 </div>
                 {formik.errors.email && (
@@ -444,11 +496,10 @@ export default function ProfileForm(props) {
                     value={formik.values.phone}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    className={`w-full pl-10 pr-3 py-2 border rounded-md shadow-sm focus:outline-none text-black focus:border-blue-500 ${
-                      formik.errors.phone
-                        ? "border-red-300 focus:ring-red-500 focus:border-red-500"
-                        : "border-gray-300"
-                    }`}
+                    className={`w-full pl-10 pr-3 py-2 border rounded-md shadow-sm focus:outline-none text-black focus:border-blue-500 ${formik.errors.phone
+                      ? "border-red-300 focus:ring-red-500 focus:border-red-500"
+                      : "border-gray-300"
+                      }`}
                   />
                 </div>
                 {formik.errors.phone && (
@@ -472,11 +523,10 @@ export default function ProfileForm(props) {
                     value={formik.values.linkedinUrl}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    className={`w-full pl-10 pr-3 py-2 border rounded-md shadow-sm focus:outline-none text-black focus:border-blue-500 ${
-                      formik.errors.linkedinUrl
-                        ? "border-red-300 focus:ring-red-500 focus:border-red-500"
-                        : "border-gray-300"
-                    }`}
+                    className={`w-full pl-10 pr-3 py-2 border rounded-md shadow-sm focus:outline-none text-black focus:border-blue-500 ${formik.errors.linkedinUrl
+                      ? "border-red-300 focus:ring-red-500 focus:border-red-500"
+                      : "border-gray-300"
+                      }`}
                   />
                 </div>
                 {formik.errors.linkedinUrl && (
@@ -494,41 +544,16 @@ export default function ProfileForm(props) {
             </h3>
             <div className="text-black">
               <JoditEditor
-                className={`w-full px-3 py-2 border border-t-0 rounded-b-md shadow-sm focus:outline-none text-black focus:border-blue-500 resize-none ${
-                  formik.errors.bio
-                    ? "border-red-300 focus:ring-red-500 focus:border-red-500"
-                    : "border-gray-300"
-                }`}
+                className={`w-full px-3 py-2 border border-t-0 rounded-b-md shadow-sm focus:outline-none text-black focus:border-blue-500 resize-none ${formik.errors.bio
+                  ? "border-red-300 focus:ring-red-500 focus:border-red-500"
+                  : "border-gray-300"
+                  }`}
                 value={formik.values.bio}
                 onChange={(newContent) => {
                   formik.setFieldValue("bio", newContent);
                 }}
                 onBlur={() => formik.setFieldTouched("bio", true)}
-                config={{
-                  height: 400,
-                  toolbarAdaptive: false,
-                  clipboard: {
-                    cleanPaste: false, // allow pasted HTML
-                  },
-                  askBeforePasteHTML: false, // don't show paste confirmation
-                  askBeforePasteFromWord: false,
-                  defaultActionOnPaste: "insert_clear_html", // or try 'insert_as_html' if styles are not retained
-                  buttons: [
-                    "bold",
-                    "italic",
-                    "underline",
-                    "ul",
-                    "ol",
-                    "font",
-                    "fontsize",
-                    "paragraph",
-                    "link",
-                    "table",
-                    "image",
-                    "hr",
-                    "source",
-                  ],
-                }}
+                config={config}
               />
             </div>
             <p className="mt-2 text-xs text-gray-500">

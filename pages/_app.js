@@ -31,7 +31,7 @@ export default function App({ Component, pageProps }) {
       setUser(JSON.parse(user));
     }
   };
-
+  
   return (
   
       <userContext.Provider value={[user, setUser]}>

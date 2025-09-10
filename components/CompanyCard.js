@@ -36,7 +36,7 @@ const CompanyCard = ({ company }) => {
           <img
             src={company.coverImage}
             alt="CoverPage"
-            className="w-full md:h-24 md:object-cover object-contain"
+            className="md:w-[300px] w-full md:h-24 h-28 object-cover "
           />
         ) : (
           <div className="w-full h-24 bg-gradient-to-r from-blue-50 to-blue-100 " />

@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import { FaUser } from "react-icons/fa";
 import { HiOfficeBuilding } from "react-icons/hi";
 import { Api } from "@/services/service";
-import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { useRouter } from "next/router";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const SignupSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
@@ -26,18 +26,18 @@ const initialValue = {
 
 const SingUp = ({ isOpen, onClose, loader, onSignInClick }) => {
   const [accountType, setAccountType] = useState("professional");
+  const [showPassword, setShowPassword] = useState(false); // toggle password
   const router = useRouter();
+
   const { values, handleSubmit, handleChange, handleBlur, errors, touched } =
     useFormik({
       initialValues: initialValue,
       validationSchema: SignupSchema,
       onSubmit: (value, { resetForm }) => {
-        console.log(value);
         submit(value, resetForm);
       },
     });
 
-  // Now you can safely return null conditionally
   if (!isOpen) return null;
 
   const submit = (value, resetForm) => {
@@ -49,23 +49,24 @@ const SingUp = ({ isOpen, onClose, loader, onSignInClick }) => {
     };
     Api("post", "auth/register", data, router).then(
       (res) => {
-        console.log("res================>", res);
         loader(false);
-        toast.success("Register successfully");
-        // router.push("/signIn");
-        resetForm();
-        toast.error(res?.data?.message);
+        if (res?.data?.success) {
+          toast.success("Register successfully");
+          resetForm();
+        } else {
+          toast.error(res?.data?.message || "Something went wrong");
+        }
       },
       (err) => {
         loader(false);
         console.log(err);
-        toast.error(err?.message);
+        toast.error(err?.message || "Error occurred");
       }
     );
   };
 
   return (
-    <div className=" md:m-0 p-3 fixed inset-0 bg-black/80 bg-opacity-40 flex items-center justify-center z-50">
+    <div className="md:m-0 p-3 fixed inset-0 bg-black/80 bg-opacity-40 flex items-center justify-center z-50">
       <div className="bg-white w-full max-w-md rounded-lg shadow-lg p-6">
         <div className="relative">
           <h2 className="text-xl text-black text-center font-semibold mb-2">
@@ -112,36 +113,47 @@ const SingUp = ({ isOpen, onClose, loader, onSignInClick }) => {
           </div>
         </div>
 
+        {/* Email Input */}
         <input
           type="email"
           name="email"
           placeholder="Enter your email"
           className={`w-full border text-black border-gray-300 rounded px-3 py-2 mb-3 text-[13px] focus:outline-none bg-blue-50 ${
-            errors.email ? "border-red-400" : ""
+            errors.email && touched.email ? "border-red-400" : ""
           }`}
           onChange={handleChange}
           onBlur={handleBlur}
           value={values.email}
         />
-        {errors.email && (
+        {errors.email && touched.email && (
           <div className="text-red-400 text-xs mb-2">{errors.email}</div>
         )}
 
-        <input
-          type="password"
-          name="password"
-          placeholder="Enter your password"
-          className={`w-full border text-black border-gray-300 rounded px-3 py-2 mb-4 text-[13px] focus:outline-none bg-blue-50 ${
-            errors.password ? "border-red-400" : ""
-          }`}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          value={values.password}
-        />
-        {errors.password && (
+        {/* Password Input with Eye Toggle */}
+        <div className="relative mb-4">
+          <input
+            type={showPassword ? "text" : "password"}
+            name="password"
+            placeholder="Enter your password"
+            className={`w-full border text-black border-gray-300 rounded px-3 py-2 text-[13px] focus:outline-none bg-blue-50 ${
+              errors.password && touched.password ? "border-red-400" : ""
+            }`}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            value={values.password}
+          />
+          <span
+            className="absolute right-3 top-2.5 text-gray-500 cursor-pointer"
+            onClick={() => setShowPassword(!showPassword)}
+          >
+            {showPassword ? <FaEyeSlash /> : <FaEye />}
+          </span>
+        </div>
+        {errors.password && touched.password && (
           <div className="text-red-400 text-xs mb-2">{errors.password}</div>
         )}
 
+        {/* Submit Button */}
         <button
           onClick={handleSubmit}
           className="w-full bg-blue-400 hover:bg-blue-600 text-white py-2 rounded text-sm font-medium"

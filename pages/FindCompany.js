@@ -6,6 +6,8 @@ import {
   Filter,
   Building,
   Briefcase,
+  ArrowLeft,
+  X
 } from "lucide-react";
 import CompanyCard from "../components/CompanyCard";
 import { useRouter } from "next/router";
@@ -54,11 +56,14 @@ const FindCompany = (props) => {
   };
 
   const getProfileOnSearch = () => {
-    if (!searchQuery && !selectedLocation) {
-      getAllCompany();
-      return;
-    }
 
+    if (!searchQuery && !selectedLocation) {
+      if (token && user?._id) {
+        console.log("Current user id:", user._id);
+        getAllCompany();
+      }
+      return; // yaha return karna zaroori hai
+    }
     const data = {
       selectedLocation,
     };
@@ -95,10 +100,21 @@ const FindCompany = (props) => {
   }, [searchQuery, selectedLocation]);
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen bg-gray-50 md:p-6 p-2">
       <div className="max-w-7xl mx-auto md:px-10 px-4">
         {/* Header */}
-        <div className="mb-8">
+
+        <div className="mb-8 md:mt-0 mt-8">
+          <div
+            className="flex items-center mb-8 "
+          >
+            <button className="flex items-center text-gray-600 hover:text-gray-900"
+              onClick={() => window.history.back()}
+            >
+              <ArrowLeft className="w-5 h-5 mr-2" />
+              Back to Home
+            </button>
+          </div>
           <div className="flex items-center gap-3 mb-2 mt-8 md:mt-0">
             <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
               <Building2 className="w-5 h-5 text-green-600" />
@@ -125,18 +141,26 @@ const FindCompany = (props) => {
                   Search
                 </label>
                 <div className="relative">
-                  <Search className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                  {/* Search Icon */}
+                  <Search className="w-4 h-4 absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400" />
                   <input
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Search by Company name "
-                    className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none text-black  text-sm"
+                    placeholder="Search by Company name"
+                    className="w-full pl-7 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none text-black text-sm"
                   />
+                  {searchQuery && (
+                    <button
+                      onClick={() => setSearchQuery("")}
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  )}
                 </div>
               </div>
 
-              {/* Location */}
               <div className="pb-5 mt-5 border-b-[1.5px] border-b-gray-300">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   <MapPin className="w-4 h-4 inline mr-1" />

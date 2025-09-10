@@ -150,7 +150,7 @@ export default function ProfileCompletion(props) {
       <div className=" ">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div
-            className="flex items-center h-16 md:mt-0 mt-8"
+            className="flex items-center h-16 md:mt-0 mt-4"
             onClick={() => window.history.back()}
           >
             <button className="flex items-center text-gray-600 hover:text-gray-900">
@@ -537,7 +537,7 @@ export default function ProfileCompletion(props) {
                                     <button
                                       className={`text-[16px] font-semibold ${education.status === "Pending"
                                         ? "text-yellow-500"
-                                        : ""
+                                        : "text-black"
                                         }`}
                                     >
                                       {education.status === "Requested"

@@ -35,13 +35,13 @@ const ProfileCard = ({ profile }) => {
   }, []);
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 max-w-sm mx-auto shadow-sm hover:shadow-lg transition-shadow duration-300 min-w-[280px]">
-      <div>
+    <div className="bg-white rounded-lg border border-gray-200  mx-auto shadow-sm hover:shadow-lg transition-shadow duration-300 md:w-[280px] w-[340px]">
+      <div className="mx-auto">
         {profile.coverImage ? (
           <img
             src={profile.coverImage}
             alt="CoverPage"
-            className="w-[280px] md:h-24 md:object-cover object-contain"
+            className="md:w-[280px] w-full md:h-24 h-28 object-cover "
           />
         ) : (
           <div className="w-full h-24 bg-gradient-to-r from-blue-50 to-blue-100 " />
