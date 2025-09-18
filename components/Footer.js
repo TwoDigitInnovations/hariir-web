@@ -1,7 +1,9 @@
 
 import { FaSearchLocation } from "react-icons/fa";
+import { useRouter } from "next/router";
 
 const HeroSection = () => {
+    const router = useRouter()
     return (
         <div className=" text-center pt-2  md:bg-center bg-right-bottom bg-cover bg-no-repeat rounded-t-2xl"
             style={{
@@ -24,6 +26,7 @@ const HeroSection = () => {
                         style={{
                             boxShadow: "-10px -10px 30px 4px rgba(0,0,0,0.1), 10px 10px 30px 4px rgba(45,78,255,0.15)"
                         }}
+                        onClick={() => router.push(`/dashboard?country=Kenya`)}
                     >
                         <FaSearchLocation className="" />
                         Nairobi, Kenya
@@ -34,6 +37,7 @@ const HeroSection = () => {
                         style={{
                             boxShadow: "-10px -10px 30px 4px rgba(0,0,0,0.1), 10px 10px 30px 4px rgba(45,78,255,0.15)"
                         }}
+                        onClick={() => router.push(`/dashboard?country=Ethiopia`)}
                     >
                         <FaSearchLocation className="" />
                         Addis Ababa, Ethiopia
@@ -45,6 +49,7 @@ const HeroSection = () => {
                         style={{
                             boxShadow: "-10px -10px 30px 4px rgba(0,0,0,0.1), 10px 10px 30px 4px rgba(45,78,255,0.15)"
                         }}
+                        onClick={() => router.push(`/dashboard?country=Uganda`)}
                     >
                         <FaSearchLocation className="" />
                         Kampala, Uganda
@@ -55,6 +60,7 @@ const HeroSection = () => {
                         style={{
                             boxShadow: "-10px -10px 30px 4px rgba(0,0,0,0.1), 10px 10px 30px 4px rgba(45,78,255,0.15)"
                         }}
+                        onClick={() => router.push(`/dashboard?country=Rwanda`)}
                     >
                         <FaSearchLocation className="" />
                         Kigali, Rwanda
@@ -66,6 +72,7 @@ const HeroSection = () => {
                         style={{
                             boxShadow: "-10px -10px 30px 4px rgba(0,0,0,0.1), 10px 10px 30px 4px rgba(45,78,255,0.15)"
                         }}
+                         onClick={() => router.push(`/dashboard?country=Tanzania`)}
                     >
                         <FaSearchLocation className="" />
                         Dar es Salaam, Tanzania

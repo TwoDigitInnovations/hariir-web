@@ -104,7 +104,7 @@ function BeforeLogin() {
 
                             </div>
 
-                            
+
                             <button
                                 className={`w-[150px] md:w-[120px] px-7 py-2 rounded-[12px] font-medium flex items-center justify-center gap-2 shadow-[1.5px_2px_2px_0px] text-[16px] cursor-pointer transform transition-transform duration-300 hover:scale-105 ${searchTerm.trim()
                                     ? "bg-[#FDC700] text-black"

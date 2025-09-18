@@ -1,7 +1,8 @@
 
-
+import { useRouter } from "next/router";
 
 const Network = () => {
+    const router = useRouter();
     return (
         <div className="text-center pt-6 bg-cover bg-right-bottom md:bg-center bg-no-repeat min-h-[400px]"
             style={{
@@ -20,13 +21,15 @@ const Network = () => {
                 </p>
                 <div className="flex justify-center gap-4 md:mb-10 mb-6">
                     <button className="bg-[#FDC700] text-black px-4 py-2 rounded-[8px] w-[128px] shadow-[1.5px_2px_2px_0px] text-[14px] cursor-pointer 
-                     transform transition-transform duration-300 hover:scale-105">
+                     transform transition-transform duration-300 hover:scale-105"
+                        onClick={() => router.push("/dashboard")}
+                    >
                         Browse
                     </button>
-                    <button className="cursor-pointer w-[128px] text-[14px] border-2 border-[#FDC700] text-black px-4 py-2 rounded-[8px] 
+                    {/* <button className="cursor-pointer w-[128px] text-[14px] border-2 border-[#FDC700] text-black px-4 py-2 rounded-[8px] 
                      transform transition-transform duration-300 hover:scale-105">
                         Learn More
-                    </button>
+                    </button> */}
                 </div>
 
             </div>

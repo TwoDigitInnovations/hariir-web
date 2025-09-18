@@ -46,7 +46,7 @@ export default function Home(props) {
           backgroundColor: "#FFFFFF66"
         }}
       >
-        <div className="py-18 px-4 flex flex-col justify-center items-center  "
+        <div className="py-20 px-4 flex flex-col justify-center items-center  "
         >
           <h2 className="text-black text-2xl text-center font-bold mb-3">
             Built for East African Professionals
@@ -60,7 +60,7 @@ export default function Home(props) {
             {features.map((feature, i) => (
               <div
                 key={i}
-                className="bg-white rounded-2xl shadow-md p-8 py-8 flex flex-col justify-center items-center w-[350px]"
+                className="bg-white rounded-2xl shadow-md p-8 py-12 flex flex-col justify-center items-center w-[350px]"
               >
                 <div className=" text-center">
                   {feature.icon}
@@ -71,13 +71,13 @@ export default function Home(props) {
                 <p className="text-gray-600 text-[12px] w-full text-center ">
                   {feature.description}
                 </p>
-                <Link
+                {/* <Link
                   href=""
                   className="text-blue-400 mt-3 flex items-center text-[12px] hover:underline"
                 >
                   View More
                   <ChevronRight size={14} />
-                </Link>
+                </Link> */}
               </div>
             ))}
           </div>
