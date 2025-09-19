@@ -48,12 +48,13 @@ const ProfileCard = ({ profile }) => {
         )}
 
         <div className="flex justify-center -mt-12 relative z-10">
-          <div className="w-32 h-32 rounded-full border-4 border-white shadow-md overflow-hidden bg-gray-200">
+          <div className="w-32 h-32 rounded-full border-2 border-white shadow-md overflow-hidden bg-gray-200">
             <img
-              src={profile.profileImage || "/profile.png"}
+              src={profile.isPublic && profile.profileImage ? profile.profileImage : "/profile.png"}
               className="w-full h-full object-cover"
               alt="Profile"
             />
+
           </div>
         </div>
 
@@ -84,7 +85,7 @@ const ProfileCard = ({ profile }) => {
                 <div className="flex items-center space-x-4">
                   <div className="w-20 h-20 rounded-full border-4 border-white shadow-md overflow-hidden bg-gray-200">
                     <img
-                      src={profileData.profileImage || "/profile.png"}
+                      src={profile.isPublic && profile.profileImage ? profile.profileImage : "/profile.png"}
                       className="w-full h-full object-cover"
                       alt="Profile"
                     />
@@ -287,7 +288,7 @@ const ProfileCard = ({ profile }) => {
                           </a>
                         </div>
                       </div>
-                      
+
                     </div>
                   </div>
                 </div>

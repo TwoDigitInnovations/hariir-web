@@ -266,7 +266,7 @@ export default function ProfileCompletion(props) {
                             <img
                               src={profileData.coverImage}
                               alt="CoverPage"
-                              className="w-full md:h-44 md:object-cover object-contain"
+                              className="w-full md:h-44 h-40 object-cover "
                             />
                           ) : (
                             <div className="w-full h-40 bg-gradient-to-r from-gray-200 to-blue-50 " />

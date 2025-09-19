@@ -14,7 +14,7 @@ import { userContext } from "./_app";
 const JoditEditor = dynamic(() => import("jodit-react"), { ssr: false });
 
 const config = {
-  height: 400,
+  height: 300,
   toolbarAdaptive: false,
   readonly: false,
   uploader: { insertImageAsBase64URI: true },
@@ -85,6 +85,7 @@ export default function ProfileForm(props) {
   const [coverImage, setCoverImage] = useState(null);
   const router = useRouter();
   const [user] = useContext(userContext);
+  const [isPublic, setIsPublic] = useState(false);
 
   const countryOptions = useMemo(() => countryList().getData(), []);
 
@@ -153,11 +154,14 @@ export default function ProfileForm(props) {
       bio: data.bio || "",
     });
 
-    if (data.profileImage) {
-      setProfileImage(data.profileImage);
+    if (data?.profileImage) {
+      setProfileImage(data?.profileImage);
     }
-    if (data.coverImage) {
+    if (data?.coverImage) {
       setCoverImage(data.coverImage);
+    }
+    if (data?.isPublic) {
+      setIsPublic(data?.isPublic)
     }
 
   };
@@ -170,6 +174,7 @@ export default function ProfileForm(props) {
     const data = {
       ...values,
       userId: userId,
+      isPublic: isPublic,
       email: values.email.toLowerCase(),
       profileImage: profileImage,
       coverImage: coverImage
@@ -319,7 +324,7 @@ export default function ProfileForm(props) {
                 <label className="block text-sm font-medium text-gray-700 mb-3">
                   Cover Photo
                 </label>
-                <div className="w-full h-40 rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 flex items-center justify-center overflow-hidden relative">
+                <div className="w-full h-44 rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 flex items-center justify-center overflow-hidden relative">
                   {coverImage ? (
                     <img
                       src={coverImage}
@@ -353,6 +358,7 @@ export default function ProfileForm(props) {
                   Profile Picture
                 </label>
                 <div className="flex items-center gap-4">
+                  {/* Image preview */}
                   <div className="w-20 h-20 rounded-full border-2 border-dashed border-gray-300 flex items-center justify-center bg-gray-50 overflow-hidden">
                     {profileImage ? (
                       <img
@@ -361,12 +367,13 @@ export default function ProfileForm(props) {
                         className="w-full h-full object-cover rounded-full"
                       />
                     ) : (
-                      <User className="w-8 h-8 text-gray-400" />
+                      <span className="text-gray-400 text-sm">No Photo</span>
                     )}
                   </div>
+
+                  {/* Upload + Toggle */}
                   <div>
                     <label className="inline-flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 cursor-pointer">
-                      <Upload className="w-4 h-4" />
                       Upload Photo
                       <input
                         type="file"
@@ -378,6 +385,22 @@ export default function ProfileForm(props) {
                     <p className="text-xs text-gray-500 mt-1">
                       JPG, PNG up to 1MB. Square photos work best.
                     </p>
+
+                    {/* Toggle switch for public/private */}
+                    <div className="mt-3 flex items-center gap-2">
+                      <span className="text-[13px] text-gray-700">Make profile photo public</span>
+                      <button
+                        type="button"
+                        onClick={() => setIsPublic(!isPublic)}
+                        className={`relative inline-flex h-5 w-10 items-center rounded-full transition-colors ${isPublic ? "bg-blue-600" : "bg-gray-300"
+                          }`}
+                      >
+                        <span
+                          className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${isPublic ? "translate-x-6" : "translate-x-1"
+                            }`}
+                        />
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>

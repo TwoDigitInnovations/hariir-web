@@ -15,6 +15,26 @@ import { useState, useEffect } from "react";
 const CompanyCard = ({ company }) => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [country, setCountry] = useState("");
+  const [showFullMission, setShowFullMission] = useState(false)
+  const [showFullVision, setShowFullVision] = useState(false)
+  const [expanded, setExpanded] = useState(false);
+  const [showDescription, setShowDescription] = useState({}); // har project ke liye flag
+
+  const toggleDescription = (index) => {
+    setShowDescription((prev) => ({
+      ...prev,
+      [index]: !prev[index], // sirf us project ka toggle
+    }));
+  };
+
+  function truncateWords(text, limit) {
+    if (!text) return "";
+
+    const words = text.split(" ");
+    if (words.length <= limit) return text;
+
+    return words.slice(0, limit).join(" ") + "...";
+  }
 
   const toggleProfile = () => {
     setIsProfileOpen(!isProfileOpen);
@@ -154,10 +174,22 @@ const CompanyCard = ({ company }) => {
 
                   {/* About Us */}
                   <div>
-                    <h2 className="text-xl font-semibold text-gray-800 mb-4">
-                      About Us
-                    </h2>
-                    <p className="text-gray-600 mb-1">{company.aboutUs}</p>
+                    <h2 className="text-xl font-semibold text-gray-800 mb-4">About Us</h2>
+
+                    <p className="text-gray-600 text-[15px] mb-2 inline-block">
+                      {expanded ? company?.aboutUs : truncateWords(company?.aboutUs, 30)}
+                      {" "}
+                      {company?.aboutUs?.split(" ").length > 30 && (
+                        <button
+                          onClick={() => setExpanded(!expanded)}
+                          className="text-blue-600 font-medium hover:underline text-[14px]"
+                        >
+                          {expanded ? "Show Less" : "Show More"}
+                        </button>
+                      )}
+                    </p>
+
+
                   </div>
 
                   {/* Mission & Vision */}
@@ -167,19 +199,40 @@ const CompanyCard = ({ company }) => {
                     </h2>
 
                     <div className="mb-4">
-                      <h3 className="text-sm font-bold text-gray-800 mb-2">
+                      <h3 className="text-[15px] font-bold text-gray-800 mb-2">
                         Our Mission
                       </h3>
-                      <p className="text-gray-700">
-                        {company.missionStatement}
+                      <p className="text-gray-700 text-[15px]">
+                        {showFullMission ? company.missionStatement : truncateWords(company.missionStatement, 30)}
+                        {" "}
+                        {company?.missionStatement?.split(" ").length > 30 && (
+                          <button
+                            onClick={() => setShowFullMission(!showFullMission)}
+                            className="text-blue-600 font-medium hover:underline text-[14px]"
+                          >
+                            {showFullMission ? "Show Less" : "Show More"}
+                          </button>
+                        )}
                       </p>
                     </div>
 
                     <div>
-                      <h3 className="text-sm font-bold text-gray-800 mb-2">
+                      <h3 className="text-[15px] font-bold text-gray-800 mb-2">
                         Our Vision
                       </h3>
-                      <p className="text-gray-700">{company.visionStatement}</p>
+                      <p className="text-gray-700 text-[15px]">
+
+                        {showFullVision ? company.visionStatement : truncateWords(company.visionStatement, 35)}
+                        {" "}
+                        {company?.visionStatement?.split(" ").length > 35 && (
+                          <button
+                            onClick={() => setShowFullVision(!showFullVision)}
+                            className="text-blue-600 font-medium hover:underline text-[14px]"
+                          >
+                            {showFullVision ? "Show Less" : "Show More"}
+                          </button>
+                        )}
+                      </p>
                     </div>
                   </div>
 
@@ -188,9 +241,9 @@ const CompanyCard = ({ company }) => {
                     <h2 className="text-xl font-semibold text-gray-800 mb-4">
                       Past Experience
                     </h2>
-                    {company.projects.map((project, key) => (
+                    {company.projects.map((project, index) => (
                       <div
-                        key={key}
+                        key={index}
                         className="bg-gray-50 rounded-lg p-4 border-l-4 border-blue-400 mb-4"
                       >
                         <h3 className="font-semibold text-gray-800 mb-2">
@@ -200,7 +253,20 @@ const CompanyCard = ({ company }) => {
                           <span className="font-medium">Client:</span>{" "}
                           {project.client}
                         </p>
-                        <p className="text-gray-700">{project.description}</p>
+                        <p className="text-gray-700 text-[15px]">
+                          {showDescription[index]
+                            ? project?.description
+                            : truncateWords(project?.description, 35)}
+                        </p>
+
+                        {project.description.split(" ").length > 35 && (
+                          <button
+                            onClick={() => toggleDescription(index)}
+                            className="text-blue-600 text-[14px] font-medium hover:underline mt-2 block"
+                          >
+                            {showDescription[index] ? "Show Less" : "Show More"}
+                          </button>
+                        )}
                       </div>
                     ))}
                   </div>

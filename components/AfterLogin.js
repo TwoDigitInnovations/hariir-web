@@ -112,9 +112,9 @@ function AfterLogin() {
                         </div>
 
                     </div>
-                    <div className="bg-white rounded-[20px] transform transition-transform duration-300 hover:scale-105 cursor-pointer "
+                    <div className="bg-white rounded-[20px] transform transition-transform duration-300 hover:scale-105 "
                     >
-                        <div className="py-6 text-center md:bg-center bg-right-bottom bg-cover bg-no-repeat rounded-t-2xl transform transition-transform duration-300 hover:scale-105"
+                        <div className="py-6 text-center md:bg-center bg-right-bottom bg-cover bg-no-repeat rounded-t-2xl transform transition-transform duration-300"
                             style={{
                                 backgroundImage: 'url("./image-2.png")',
                             }}
