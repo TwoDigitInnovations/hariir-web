@@ -21,6 +21,7 @@ function EducationEditor({ open, close, loader, profileData, getProfile }) {
           institution: "",
           year: "",
           description: "",
+          levelOfEducation: "",
           status: "Pending"
         },
       ]);
@@ -41,7 +42,8 @@ function EducationEditor({ open, close, loader, profileData, getProfile }) {
         institution: "",
         year: "",
         description: "",
-        status: "Pending"
+        status: "Pending",
+        levelOfEducation: ""
       },
     ]);
   };
@@ -128,7 +130,7 @@ function EducationEditor({ open, close, loader, profileData, getProfile }) {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Degree <span className="text-red-400">*</span>
+                      Qualification <span className="text-red-400">*</span>
                     </label>
                     <input
                       type="text"
@@ -153,21 +155,40 @@ function EducationEditor({ open, close, loader, profileData, getProfile }) {
                     />
                   </div>
                 </div>
-
-                <div className="mb-4">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Year <span className="text-red-400">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    value={edu.year}
-                    onChange={(e) => handleChange(index, "year", e.target.value)}
-                    disabled={isApproved}
-                    placeholder="e.g. 2020"
-                    className="border border-gray-300 rounded-lg px-4 py-3 w-full md:w-1/2 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
-                  />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 ">
+                  <div className="mb-4">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Year <span className="text-red-400">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      value={edu.year}
+                      onChange={(e) => handleChange(index, "year", e.target.value)}
+                      disabled={isApproved}
+                      placeholder="e.g. 2020"
+                      className="border border-gray-300 rounded-lg px-4 py-3 w-full  text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Level of Education
+                    </label>
+                    <select
+                      value={edu.levelOfEducation}
+                      onChange={(e) => handleChange(index, "levelOfEducation", e.target.value)}
+                      disabled={isApproved}
+                      className="border border-gray-300 rounded-lg px-4 py-3 w-full  text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
+                    >
+                      <option value="">Select Level of Education</option>
+                      <option value="highschool">High School</option>
+                      <option value="diploma">Diploma</option>
+                      <option value="bachelor">Bachelor’s Degree</option>
+                      <option value="master">Master’s Degree</option>
+                      <option value="phd">PhD</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
                 </div>
-
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Description
@@ -181,6 +202,8 @@ function EducationEditor({ open, close, loader, profileData, getProfile }) {
                     className="border border-gray-300 rounded-lg px-4 py-3 w-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent resize-none"
                   />
                 </div>
+
+
               </div>
             );
           })}

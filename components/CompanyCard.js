@@ -11,10 +11,12 @@ import {
 import countries from "i18n-iso-countries";
 import enLocale from "i18n-iso-countries/langs/en.json";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 
 const CompanyCard = ({ company }) => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [country, setCountry] = useState("");
+  const router = useRouter()
   const [showFullMission, setShowFullMission] = useState(false)
   const [showFullVision, setShowFullVision] = useState(false)
   const [expanded, setExpanded] = useState(false);
@@ -36,8 +38,8 @@ const CompanyCard = ({ company }) => {
     return words.slice(0, limit).join(" ") + "...";
   }
 
-  const toggleProfile = () => {
-    setIsProfileOpen(!isProfileOpen);
+  const toggleProfile = (id) => {
+    router.push(`/Company/${id}`)
   };
 
   useEffect(() => {
@@ -82,7 +84,7 @@ const CompanyCard = ({ company }) => {
 
           <button
             className="w-full border-2 border-blue-600 hover:bg-blue-50 text-blue-600 py-2.5 px-4 rounded-full font-medium transition-all duration-200 flex items-center justify-center gap-2"
-            onClick={toggleProfile}
+            onClick={() => toggleProfile(company?._id)}
           >
             View Profile
             <ExternalLink className="w-4 h-4" />

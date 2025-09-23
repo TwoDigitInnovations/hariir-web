@@ -71,7 +71,7 @@ export const Navbar = ({ onSignInClick, onSingUpClick }) => {
   return (
     <>
       <nav className="flex justify-center md:h-18 bg-white drop-shadow-2xl w-full z-50 md:p-0 p-1.5 ">
-        <div className={`max-w-7xl flex items-center w-full px-4 ${isLoggedIn ? "justify-center md:gap-[22rem] gap-[6rem]" : "justify-between"
+        <div className={`max-w-7xl flex items-center w-full px-4 ${isLoggedIn ? "justify-center md:gap-[25rem] gap-[6rem]" : "justify-between"
           }`}>
           <div
             className="flex items-center cursor-pointer"
@@ -125,13 +125,7 @@ export const Navbar = ({ onSignInClick, onSingUpClick }) => {
 
                     Browse
                   </a>
-                  <a
-                    href="#"
-                    className="flex items-center text-gray-700 gap-4 hover:text-blue-400"
-                  >
-
-                    Messages
-                  </a>
+                  
                 </div>
               </div>
               <div className="flex items-center space-x-4">

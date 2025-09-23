@@ -16,14 +16,17 @@ import { useState, useEffect } from "react";
 import countries from "i18n-iso-countries";
 import { FaLinkedinIn } from "react-icons/fa6";
 import { userContext } from "@/pages/_app";
+import { useRouter } from "next/router";
 
 const ProfileCard = ({ profile }) => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [country, setCountry] = useState("");
   const [user, setuser] = useContext(userContext)
   const profileData = profile;
-  const toggleProfile = () => {
-    setIsProfileOpen(!isProfileOpen);
+  const router = useRouter();
+
+  const toggleProfile = (id) => {
+    router.push(`/Professional/${id}`)
   };
 
   useEffect(() => {
@@ -68,7 +71,7 @@ const ProfileCard = ({ profile }) => {
 
           <button
             className="w-full border-2 border-blue-600 hover:bg-blue-50 text-blue-600 py-2.5 px-4 rounded-full font-medium transition-all duration-200 flex items-center justify-center gap-2"
-            onClick={toggleProfile}
+            onClick={() => toggleProfile(profile?._id)}
           >
             View Profile
             <ExternalLink className="w-4 h-4" />
