@@ -1,4 +1,5 @@
 
+import Image from "next/image";
 import { useRouter } from "next/router";
 
 const Network = () => {
@@ -11,11 +12,17 @@ const Network = () => {
             }}
         >
             <div className="md:py-8 py-10 flex flex-col justify-center items-center">
-                <img src="/image-1.png" className="h-16 mb-4" />
+                <Image
+                    src="/image-1.png"
+                    alt="Example"
+                    width={64} // h-16 = 64px
+                    height={64}
+                    className="mb-4"
+                />
                 <h1 className="text-3xl text-black font-bold mb-3">
                     Ready to advance your career?
                 </h1>
-                <p className="text-gray-600 mb-6 text-[14px]">
+                <p className="text-gray-600 mb-6 text-[14px] ">
                     Join thousands of professionals and companies already building their
                     network on Hariir.
                 </p>

@@ -121,10 +121,13 @@ const Resume = ({ profile }) => {
   return (
     <div className="">
       <div className="relative inline-block text-center">
-        <img
+
+        <Image
           src="/resume2.jpg"
           alt="Resume Preview"
-          className="md:w-[320px] w-44 h-auto mx-auto mb-2 rounded-md shadow-md"
+          width={320} // md:w-[320px]
+          height={200} // approximate height, adjust as needed
+          className="rounded-md shadow-md mx-auto mb-2"
         />
 
         <button

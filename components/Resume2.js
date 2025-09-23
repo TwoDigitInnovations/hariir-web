@@ -1,10 +1,11 @@
 import React, { useRef, useState } from "react";
 import { Download } from "lucide-react";
+import Image from "next/image";
 
 const Resume = ({ profile }) => {
   const resumeRef = useRef(null);
 
- const downloadResume = async () => {
+  const downloadResume = async () => {
     const input = resumeRef.current;
     if (!input) return;
 
@@ -34,7 +35,7 @@ const Resume = ({ profile }) => {
     let heightLeft = imgHeight;
     let position = 0;
 
-    
+
     pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
     heightLeft -= pdfHeight;
 
@@ -60,10 +61,13 @@ const Resume = ({ profile }) => {
   return (
     <div className="">
       <div className="relative inline-block text-center">
-        <img
+
+        <Image
           src="/resume3.jpg"
           alt="Resume Preview"
-          className="md:w-[320px] w-44 h-auto mx-auto mb-2 rounded-md shadow-md"
+          width={320} // md:w-[320px]
+          height={200} // approximate height, adjust as needed
+          className="rounded-md shadow-md mx-auto mb-2"
         />
 
         <button
@@ -439,8 +443,8 @@ const Resume = ({ profile }) => {
             </div>
           )}
 
-        
-           {currentProfile?.certifications && currentProfile?.certifications?.length > 0 && (
+
+          {currentProfile?.certifications && currentProfile?.certifications?.length > 0 && (
             <div style={{ marginBottom: "25px" }}>
               <h3
                 style={{

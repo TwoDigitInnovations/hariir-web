@@ -2,6 +2,8 @@
 import { Users, Building2, Search, MapPin, User, Eye, UserRound } from "lucide-react";
 import HeroSection from "./Footer";
 import { useRouter } from "next/router";
+import Image from "next/image";
+
 function AfterLogin() {
     const router = useRouter()
     return (<>
@@ -164,7 +166,7 @@ function AfterLogin() {
 
             <div className="grid md:grid-cols-2 gap-8 pt-14 ">
                 <div>
-                    <img src="./image2.png" />
+                    <Image src="/image2.png" alt="Growing Network Across East Africa" width={700} height={700} />
                 </div>
                 <div className="relative flex flex-col justify-center items-center">
                     <div className=" text-center">

@@ -29,6 +29,7 @@ const CompanyProfile = ({ companyData: initialCompanyData, loader }) => {
     const [showFullVision, setShowFullVision] = useState(false);
     const [companyData, setCompanyData] = useState(initialCompanyData || {});
     const [loading, setLoading] = useState(false);
+    const [showDescription, setShowDescription] = useState({}); // har project ke liye flag
 
     const router = useRouter();
     const [user] = useContext(userContext);
@@ -81,6 +82,21 @@ const CompanyProfile = ({ companyData: initialCompanyData, loader }) => {
         }));
     };
 
+    function truncateWords(text, limit) {
+        if (!text) return "";
+
+        const words = text.split(" ");
+        if (words.length <= limit) return text;
+
+        return words.slice(0, limit).join(" ") + "...";
+    }
+
+    const toggleDescription = (index) => {
+        setShowDescription((prev) => ({
+            ...prev,
+            [index]: !prev[index], // sirf us project ka toggle
+        }));
+    };
     // Show loading state
     if (loading) {
         return (
@@ -100,23 +116,23 @@ const CompanyProfile = ({ companyData: initialCompanyData, loader }) => {
                 <meta name="keywords" content={`${companyData.companyName}, ${companyData.industrySector}, company profile, ${companyData.services?.join(', ') || ''}`} />
             </Head>
 
-            <article className="max-w-6xl mx-auto bg-white  overflow-hidden">
-
-                <header className="bg-white border-b-2 border-b-gray-200 relative">
-                    <div className="max-w-6xl mx-auto ps-4">
-                        <div
-                            className="flex items-center h-16 md:mt-0 mt-4"
-                            onClick={() => window.history.back()}
+            <article className="max-w-6xl mx-auto bg-white rounded-lg shadow-sm overflow-hidden">
+                <div className="max-w-6xl mx-auto ps-4">
+                    <div
+                        className="flex items-center h-16 md:mt-0 mt-4"
+                        onClick={() => window.history.back()}
+                    >
+                        <button
+                            className="flex items-center text-gray-600 hover:text-gray-900 transition-colors"
+                            aria-label="Go back to browse page"
                         >
-                            <button
-                                className="flex items-center text-gray-600 hover:text-gray-900 transition-colors"
-                                aria-label="Go back to browse page"
-                            >
-                                <ArrowLeft className="w-5 h-5 mr-2" />
-                                Back to Browse
-                            </button>
-                        </div>
+                            <ArrowLeft className="w-5 h-5 mr-2" />
+                            Back to Browse
+                        </button>
                     </div>
+                </div>
+                <header className="bg-white border-b-2 border-b-gray-200 relative">
+
                     {companyData.coverImage ? (
                         <div className="relative w-full h-34 md:h-44">
                             <Image
@@ -228,7 +244,7 @@ const CompanyProfile = ({ companyData: initialCompanyData, loader }) => {
                 </header>
 
 
-                <div className="md:p-8 p-4 shadow-lg">
+                <div className="md:p-8 p-4 ">
                     {/* About Section */}
                     {companyData.aboutUs && (
                         <section className="mb-8">
@@ -440,10 +456,25 @@ const CompanyProfile = ({ companyData: initialCompanyData, loader }) => {
                                             {project.client}
                                         </p>
                                     )}
-                                    {project.description && (
+                                    {/* {project.description && (
                                         <p className="text-gray-600 text-[14px] leading-relaxed">
                                             {project.description}
                                         </p>
+
+                                    )} */}
+                                    <p className="text-gray-600 text-[14px]">
+                                        {showDescription[index]
+                                            ? project?.description
+                                            : truncateWords(project?.description, 50)}
+                                    </p>
+
+                                    {project.description.split(" ").length > 50 && (
+                                        <button
+                                            onClick={() => toggleDescription(index)}
+                                            className="text-blue-600 text-[14px] font-medium hover:underline mt-2 block"
+                                        >
+                                            {showDescription[index] ? "Show Less" : "Show More"}
+                                        </button>
                                     )}
                                 </div>
                             ))}

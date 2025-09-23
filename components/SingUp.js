@@ -50,7 +50,7 @@ const SingUp = ({ isOpen, onClose, loader, onSignInClick }) => {
     Api("post", "auth/register", data, router).then(
       (res) => {
         loader(false);
-        if (res?.data?.success) {
+        if (res?.user) {
           toast.success("Register successfully");
           resetForm();
         } else {
@@ -89,11 +89,10 @@ const SingUp = ({ isOpen, onClose, loader, onSignInClick }) => {
           {/* Professional Option */}
           <div
             onClick={() => setAccountType("professional")}
-            className={`flex flex-col items-center p-4 border rounded-lg w-1/2 cursor-pointer ${
-              accountType === "professional"
+            className={`flex flex-col items-center p-4 border rounded-lg w-1/2 cursor-pointer ${accountType === "professional"
                 ? "border-blue-400"
                 : "border-gray-300"
-            }`}
+              }`}
           >
             <FaUser className="text-2xl text-blue-400 mb-2" />
             <p className="font-medium text-sm text-black">Professional</p>
@@ -103,9 +102,8 @@ const SingUp = ({ isOpen, onClose, loader, onSignInClick }) => {
           {/* Company Option */}
           <div
             onClick={() => setAccountType("company")}
-            className={`flex flex-col items-center p-4 border rounded-lg w-1/2 cursor-pointer ${
-              accountType === "company" ? "border-blue-400" : "border-gray-300"
-            }`}
+            className={`flex flex-col items-center p-4 border rounded-lg w-1/2 cursor-pointer ${accountType === "company" ? "border-blue-400" : "border-gray-300"
+              }`}
           >
             <HiOfficeBuilding className="text-2xl text-blue-400 mb-2" />
             <p className="font-medium text-sm text-black">Company</p>
@@ -118,9 +116,8 @@ const SingUp = ({ isOpen, onClose, loader, onSignInClick }) => {
           type="email"
           name="email"
           placeholder="Enter your email"
-          className={`w-full border text-black border-gray-300 rounded px-3 py-2 mb-3 text-[13px] focus:outline-none bg-blue-50 ${
-            errors.email && touched.email ? "border-red-400" : ""
-          }`}
+          className={`w-full border text-black border-gray-300 rounded px-3 py-2 mb-3 text-[13px] focus:outline-none bg-blue-50 ${errors.email && touched.email ? "border-red-400" : ""
+            }`}
           onChange={handleChange}
           onBlur={handleBlur}
           value={values.email}
@@ -135,9 +132,8 @@ const SingUp = ({ isOpen, onClose, loader, onSignInClick }) => {
             type={showPassword ? "text" : "password"}
             name="password"
             placeholder="Enter your password"
-            className={`w-full border text-black border-gray-300 rounded px-3 py-2 text-[13px] focus:outline-none bg-blue-50 ${
-              errors.password && touched.password ? "border-red-400" : ""
-            }`}
+            className={`w-full border text-black border-gray-300 rounded px-3 py-2 text-[13px] focus:outline-none bg-blue-50 ${errors.password && touched.password ? "border-red-400" : ""
+              }`}
             onChange={handleChange}
             onBlur={handleBlur}
             value={values.password}

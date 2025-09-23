@@ -13,6 +13,7 @@ import { AiOutlineHome } from "react-icons/ai";
 import { useRouter } from "next/router";
 import Swal from "sweetalert2";
 import { UserRound, LogOut } from "lucide-react";
+import Image from "next/image";
 
 export const Navbar = ({ onSignInClick, onSingUpClick }) => {
   const [user, setUser] = useContext(userContext);
@@ -125,7 +126,7 @@ export const Navbar = ({ onSignInClick, onSingUpClick }) => {
 
                     Browse
                   </a>
-                  
+
                 </div>
               </div>
               <div className="flex items-center space-x-4">
@@ -134,17 +135,20 @@ export const Navbar = ({ onSignInClick, onSingUpClick }) => {
                     className="flex cursor-pointer items-center  text-black rounded-full md:px-4 ps-3 pr-3 md:py-2 py-3"
                     onClick={() => setShowDropdown((prev) => !prev)}
                   >
-                    <div className=" rounded-full w-10 h-10 flex border-[2px] border-gray-200 items-center justify-center font-bold mr-2 overflow-hidden">
-                      <img
+                    <div className="relative rounded-full w-10 h-10 flex border-[2px] border-gray-200 items-center justify-center font-bold mr-2 overflow-hidden">
+                      <Image
                         src={
                           user.role === "professional"
                             ? user.profileImage || "/profile.png"
                             : user.companyLogo || "/profile.png"
                         }
-                        alt="User Avatar"
-                        className="w-full h-full object-cover"
+                        alt="Profile photo"
+                        fill
+                        sizes="40px" // 👈 sizes add karo (yaha div ka fixed size 40px hai w-10 h-10)
+                        className="object-contain"
                       />
                     </div>
+
 
                     <span className="hidden md:block ms-2 font-medium">
                       {user?.fullName || user?.email}

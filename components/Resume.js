@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import { Download } from "lucide-react";
+import Image from "next/image";
 
 const Resume = ({ profile }) => {
   const resumeRef = useRef(null);
@@ -62,12 +63,13 @@ const Resume = ({ profile }) => {
   return (
     <div className="">
       <div className="relative inline-block text-center">
-        <img
+        <Image
           src="/resume1.png"
           alt="Resume Preview"
-          className="md:w-[320px] w-48 h-auto mx-auto mb-2 rounded-md shadow-md"
+          width={320} // md:w-[320px]
+          height={200} // approximate height, adjust as needed
+          className="rounded-md shadow-md mx-auto mb-2"
         />
-
         <button
           className="flex items-center justify-center text-gray-600 hover:text-gray-900 px-3 py-2 rounded-lg hover:bg-gray-50 mx-auto"
           onClick={downloadResume}
@@ -251,7 +253,7 @@ const Resume = ({ profile }) => {
           )}
 
           {/* Certifications Section */}
-          
+
           {profile?.certifications && profile?.certifications?.length > 0 && (
             <div style={{ marginBottom: "25px" }}>
               <h3

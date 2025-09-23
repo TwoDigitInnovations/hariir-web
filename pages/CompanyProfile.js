@@ -23,6 +23,7 @@ import { toast } from "react-toastify";
 import Compressor from "compressorjs";
 import { useRouter } from "next/router";
 import { userContext } from "./_app";
+import Image from "next/image";
 
 const validationSchema = Yup.object({
   companyName: Yup.string()
@@ -386,12 +387,13 @@ function CompanyProfileForm(props) {
               <label className="block text-sm font-medium text-gray-700 mb-3">
                 Cover Photo
               </label>
-              <div className="w-full h-40 rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 flex items-center justify-center overflow-hidden relative">
+              <div className="realtive w-full h-40 rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 flex items-center justify-center overflow-hidden relative">
                 {coverImage ? (
-                  <img
+                  <Image
                     src={coverImage}
-                    alt="Cover"
-                    className="w-full h-full object-cover"
+                    alt="Cover image"
+                    fill
+                    className=" object-cover"
                   />
                 ) : (
                   <span className="text-gray-400 text-sm">
@@ -418,12 +420,13 @@ function CompanyProfileForm(props) {
                 Company Logo
               </label>
               <div className="flex items-center gap-4">
-                <div className="w-20 h-20 rounded-lg border-2 border-dashed border-gray-300 flex items-center justify-center bg-gray-50 overflow-hidden">
+                <div className="realtive w-20 h-20 rounded-lg border-2 border-dashed border-gray-300 flex items-center justify-center bg-gray-50 overflow-hidden">
                   {companyLogo ? (
-                    <img
+                    <Image
                       src={companyLogo}
                       alt="Company Logo"
-                      className="w-full h-full object-cover rounded-lg"
+                      fill
+                      className="object-cover rounded-lg"
                     />
                   ) : (
                     <Building2 className="w-8 h-8 text-gray-400" />

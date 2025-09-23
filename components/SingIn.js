@@ -86,7 +86,7 @@ const JoinNowModal = ({
   }, []);
 
   if (!isOpen) return null;
-  if (token) return null;
+  // if (token) return null;
 
   return (
     <div className="fixed md:p-0 p-3 inset-0 bg-black/80 bg-opacity-50 flex items-center justify-center z-50">

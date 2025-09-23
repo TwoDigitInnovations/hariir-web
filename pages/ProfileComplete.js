@@ -10,6 +10,7 @@ import Compressor from "compressorjs";
 import { ApiFormData, Api } from "@/services/service";
 import { useRouter } from "next/router";
 import { userContext } from "./_app";
+import Image from "next/image";
 
 const JoditEditor = dynamic(() => import("jodit-react"), { ssr: false });
 
@@ -324,12 +325,13 @@ export default function ProfileForm(props) {
                 <label className="block text-sm font-medium text-gray-700 mb-3">
                   Cover Photo
                 </label>
-                <div className="w-full h-44 rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 flex items-center justify-center overflow-hidden relative">
+                <div className="realtive w-full h-44 rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 flex items-center justify-center overflow-hidden relative">
                   {coverImage ? (
-                    <img
+                    <Image
+                    fill
                       src={coverImage}
                       alt="Cover"
-                      className="w-full h-full object-cover"
+                      className=" object-cover"
                     />
                   ) : (
                     <span className="text-gray-400 text-sm">
@@ -361,10 +363,11 @@ export default function ProfileForm(props) {
                   {/* Image preview */}
                   <div className="w-20 h-20 rounded-full border-2 border-dashed border-gray-300 flex items-center justify-center bg-gray-50 overflow-hidden">
                     {profileImage ? (
-                      <img
+                      <Image
                         src={profileImage}
                         alt="Profile"
-                        className="w-full h-full object-cover rounded-full"
+                        fill
+                        className="object-cover rounded-full"
                       />
                     ) : (
                       <span className="text-gray-400 text-sm">No Photo</span>

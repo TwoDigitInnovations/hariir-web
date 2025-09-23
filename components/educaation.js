@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import { userContext } from "@/pages/_app";
 import { RiVerifiedBadgeLine } from "react-icons/ri";
+import Image from "next/image";
 
 function EducationEditor({ open, close, loader, profileData, getProfile }) {
   const [educations, setEducations] = useState([]);
@@ -116,7 +117,7 @@ function EducationEditor({ open, close, loader, profileData, getProfile }) {
                     {edu.status === "Approved" ? (
                       <RiVerifiedBadgeLine className="text-green-600 text-2xl inline ml-2" />
                     ) : edu.status === "Rejected" ? (
-                      <img src="/reject.png" className="w-6 h-6 inline ml-2" />
+                      <Image src="/reject.png" className="w-6 h-6 inline ml-2" alt="rejeted" width={24} height={24} />
                     ) : null}
                   </h3>
                   <div

@@ -7,6 +7,7 @@ import { userContext } from "@/pages/_app";
 import { RiVerifiedBadgeLine } from "react-icons/ri";
 import Swal from "sweetalert2";
 import Compressor from "compressorjs";
+import Image from "next/image";
 
 
 function CertificationComponent({ loader, profileData, getProfile }) {
@@ -216,7 +217,13 @@ function CertificationComponent({ loader, profileData, getProfile }) {
                                             {certification.status === "Approved" ? (
                                                 <RiVerifiedBadgeLine className="text-green-600 text-2xl" />
                                             ) : certification.status === "Rejected" ? (
-                                                <img src="/reject.png" className="w-6 h-6" alt="Rejected" />
+                                                <Image
+                                                    src="/reject.png"
+                                                    alt="Rejected"
+                                                    width={24}   // w-6 = 24px
+                                                    height={24}  // h-6 = 24px
+                                                    className="w-6 h-6"
+                                                />
                                             ) : null}
                                         </h3>
                                         <div className="flex items-center">
@@ -254,7 +261,7 @@ function CertificationComponent({ loader, profileData, getProfile }) {
                                                     className="text-blue-600 flex items-center gap-2 hover:text-blue-800 p-1"
                                                     title="View Certificate"
                                                 >
-                                                  Document <Eye size={18} />
+                                                    Document <Eye size={18} />
                                                 </button>
                                             )}
                                         </div>
@@ -316,7 +323,13 @@ function CertificationComponent({ loader, profileData, getProfile }) {
                                                 {cert.status === "Approved" ? (
                                                     <RiVerifiedBadgeLine className="text-green-600 text-2xl inline ml-2" />
                                                 ) : cert.status === "Rejected" ? (
-                                                    <img src="/reject.png" className="w-6 h-6 inline ml-2" alt="Rejected" />
+                                                    <Image
+                                                        src="/reject.png"
+                                                        alt="Rejected"
+                                                        width={24}   // w-6 = 24px
+                                                        height={24}  // h-6 = 24px
+                                                        className="w-6 h-6 inline ml-2"
+                                                    />
                                                 ) : null}
                                             </h3>
                                             <div

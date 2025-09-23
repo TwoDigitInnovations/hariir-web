@@ -29,6 +29,7 @@ import Swal from "sweetalert2";
 import AllCV from "@/components/AllCV";
 import calculateProfileCompletion from "@/components/ProfileComplete";
 import CertificationComponent from "@/components/Certificate";
+import Image from "next/image";
 
 export default function ProfileCompletion(props) {
   const router = useRouter();
@@ -161,7 +162,7 @@ export default function ProfileCompletion(props) {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <div className="max-w-7xl mx-auto  sm:px-6 lg:px-8 py-4">
         {!profileData?.fullName && !profileData?.companyName && (
           <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
             <div className="flex md:flex-row flex-col items-center justify-between">
@@ -263,23 +264,27 @@ export default function ProfileCompletion(props) {
                         {/* Cover Section */}
                         <div className=" w-full">
                           {profileData.coverImage ? (
-                            <img
-                              src={profileData.coverImage}
-                              alt="CoverPage"
-                              className="w-full md:h-44 h-40 object-cover "
-                            />
+                            <div className="relative w-full md:h-44 h-40">
+                              <Image
+                                src={profileData.coverImage}
+                                alt="CoverPage"
+                                fill
+                                className="object-cover"
+                              />
+                            </div>
                           ) : (
                             <div className="w-full h-40 bg-gradient-to-r from-gray-200 to-blue-50 " />
                           )}
 
                           <div className="ms-6 md:-mt-20 -mt-12 flex md:justify-start justify-center">
                             <div className="md:w-40 md:h-40 w-24 h-24 bg-blue-400 rounded-full border-4 border-white shadow-md overflow-hidden">
-                              <img
+                              <Image
+                                fill
                                 src={
                                   profileData.profileImage || "/profile.png"
                                 }
                                 alt="Company Logo"
-                                className="w-full h-full object-cover"
+                                className="object-cover"
                               />
                             </div>
                           </div>
@@ -422,7 +427,9 @@ export default function ProfileCompletion(props) {
                                           <RiVerifiedBadgeLine className="text-green-600 text-2xl" />
                                         ) : experience.status ===
                                           "Rejected" ? (
-                                          <img
+                                          <Image
+                                            width={24}
+                                            height={24}
                                             src="/reject.png"
                                             className="w-6 h-6"
                                           />
@@ -527,7 +534,9 @@ export default function ProfileCompletion(props) {
                                     {education.status === "Approved" ? (
                                       <RiVerifiedBadgeLine className="text-green-600 text-2xl" />
                                     ) : education.status === "Rejected" ? (
-                                      <img
+                                      <Image
+                                        width={24}
+                                        height={24}
                                         src="/reject.png"
                                         className="w-6 h-6"
                                       />
@@ -740,7 +749,7 @@ export default function ProfileCompletion(props) {
             </div>
           </div>
 
-         
+
           <div className="lg:col-span-1">
             {profileData?.phone && (
               <div className="bg-white rounded-lg shadow-sm p-6 mb-6 ">

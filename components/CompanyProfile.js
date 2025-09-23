@@ -19,6 +19,7 @@ import { userContext } from "@/pages/_app";
 import { Api } from "@/services/service";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
+import Image from "next/image";
 
 countries.registerLocale(enLocale);
 
@@ -34,6 +35,8 @@ const CompanyProfile = ({ companyData, getProfile, loader }) => {
   const [services, setServices] = useState([]);
   const [specializations, setSpecializations] = useState([]);
   const [user] = useContext(userContext);
+  const [showDescription, setShowDescription] = useState({}); // har project ke liye flag
+
   const profileData = companyData;
 
   useEffect(() => {
@@ -159,16 +162,33 @@ const CompanyProfile = ({ companyData, getProfile, loader }) => {
       }
     );
   };
+
+  function truncateWords(text, limit) {
+    if (!text) return "";
+
+    const words = text.split(" ");
+    if (words.length <= limit) return text;
+
+    return words.slice(0, limit).join(" ") + "...";
+  }
+  const toggleDescription = (index) => {
+    setShowDescription((prev) => ({
+      ...prev,
+      [index]: !prev[index], // sirf us project ka toggle
+    }));
+  };
+
   return (
     <div className="max-w-4xl mx-auto bg-white shadow-lg overflow-hidden">
       {/* Header Section */}
       <div className="bg-gradient-to-r bg-white text-white border-b-2 border-b-gray-200 ">
         {companyData.coverImage ? (
-          <div>
-            <img
+          <div className="relative w-full md:h-44 h-auto">
+            <Image
               src={companyData.coverImage}
               alt="CoverPage"
-              className="w-full md:h-44 md:object-cover object-contain"
+              fill
+              className="md:object-cover object-contain"
             />
           </div>
         ) : (
@@ -176,11 +196,12 @@ const CompanyProfile = ({ companyData, getProfile, loader }) => {
         )}
 
         <div className="md:-mt-20  flex md:flex-row flex-col justify-start pb-4 items-center md:ms-8 gap-6 -mt-12">
-          <div className="md:w-40 md:h-40 w-24 h-24 bg-blue-400 rounded-full border-2 border-gray-300 flex items-center justify-center ">
-            <img
+          <div className="md:w-40 relative md:h-40 w-24 h-24 bg-blue-400 rounded-full border-2 border-gray-300 flex items-center justify-center ">
+            <Image
               src={companyData.companyLogo || "/profile.png"}
               className="w-full h-full object-cover rounded-full"
               alt="companyLogo"
+              fill
             />
           </div>
         </div>
@@ -377,7 +398,7 @@ const CompanyProfile = ({ companyData, getProfile, loader }) => {
           </div>
 
           {!companyData?.specializations ||
-          companyData.specializations.length === 0 ? (
+            companyData.specializations.length === 0 ? (
             <div className="text-center py-12 border-2 border-dashed border-gray-200 rounded-lg">
               <p className="text-gray-400 mb-2">No specializations added yet</p>
               <p className="text-gray-400 mb-4">
@@ -530,7 +551,7 @@ const CompanyProfile = ({ companyData, getProfile, loader }) => {
               <div className="bg-blue-50 p-4 rounded-lg">
                 <p className="text-gray-700 text-[16px] leading-relaxed">
                   {showFullMission ||
-                  companyData.missionStatement?.length <= 250
+                    companyData.missionStatement?.length <= 250
                     ? companyData.missionStatement
                     : companyData.missionStatement?.slice(0, 250) + "..."}
                   {companyData.missionStatement?.length > 250 && (
@@ -638,9 +659,20 @@ const CompanyProfile = ({ companyData, getProfile, loader }) => {
                 <p className="text-green-600 text-[14px] leading-relaxed mb-2">
                   {project.client}
                 </p>
-                <p className="text-gray-600 text-[14px] leading-relaxed">
-                  {project.description}
+                <p className="text-gray-600 text-[14px]">
+                  {showDescription[index]
+                    ? project?.description
+                    : truncateWords(project?.description, 50)}
                 </p>
+
+                {project.description.split(" ").length > 50 && (
+                  <button
+                    onClick={() => toggleDescription(index)}
+                    className="text-blue-600 text-[14px] font-medium hover:underline mt-2 block"
+                  >
+                    {showDescription[index] ? "Show Less" : "Show More"}
+                  </button>
+                )}
               </div>
             ))
           ) : (
