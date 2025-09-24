@@ -214,10 +214,7 @@ export default function ProfileForm(props) {
 
     const fileSizeInMb = file.size / (1024 * 1024);
     if (fileSizeInMb > 1) {
-      props.toaster({
-        type: "error",
-        message: "Too large file. Please upload a smaller image",
-      });
+      toast.error("Too large file. Please upload a image under in 1 MB")
       return;
     }
 
@@ -254,10 +251,7 @@ export default function ProfileForm(props) {
 
     const fileSizeInMb = file.size / (1024 * 1024);
     if (fileSizeInMb > 1) {
-      props.toaster({
-        type: "error",
-        message: "Too large file. Please upload a smaller image",
-      });
+      toast.error("Too large file. Please upload a image under in 1 MB")
       return;
     }
 
@@ -288,9 +282,9 @@ export default function ProfileForm(props) {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4">
-      <div className="max-w-4xl mx-auto">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50 py-2 px-4">
+      <div className="max-w-5xl mx-auto">
+        <div className=" mx-auto px-4 sm:px-6 lg:px-8">
           <div
             className="flex items-center h-16 md:mt-0 mt-4"
             onClick={() => window.history.back()}
@@ -325,10 +319,10 @@ export default function ProfileForm(props) {
                 <label className="block text-sm font-medium text-gray-700 mb-3">
                   Cover Photo
                 </label>
-                <div className="realtive w-full h-44 rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 flex items-center justify-center overflow-hidden relative">
+                <div className=" w-full h-44 rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 flex items-center justify-center overflow-hidden relative">
                   {coverImage ? (
                     <Image
-                    fill
+                      fill
                       src={coverImage}
                       alt="Cover"
                       className=" object-cover"
@@ -361,7 +355,7 @@ export default function ProfileForm(props) {
                 </label>
                 <div className="flex items-center gap-4">
                   {/* Image preview */}
-                  <div className="w-20 h-20 rounded-full border-2 border-dashed border-gray-300 flex items-center justify-center bg-gray-50 overflow-hidden">
+                  <div className="relative w-20 h-20 rounded-full border-2 border-dashed border-gray-300 flex items-center justify-center bg-gray-50 overflow-hidden">
                     {profileImage ? (
                       <Image
                         src={profileImage}

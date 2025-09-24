@@ -15,7 +15,7 @@ const Resume = ({ profile }) => {
     const jsPDF = (await import("jspdf")).default;
 
     const canvas = await html2canvas(input, {
-      scale: 2, // better quality
+      scale: 2,
       useCORS: true,
       allowTaint: true,
       backgroundColor: "#ffffff",
@@ -27,8 +27,8 @@ const Resume = ({ profile }) => {
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = pdf.internal.pageSize.getHeight();
 
-    const topMargin = 10; // top margin
-    const bottomMargin = 10; // bottom margin
+    const topMargin = 10;
+    const bottomMargin = 13;
     const usableHeight = pdfHeight - topMargin - bottomMargin;
 
     const imgWidth = pdfWidth;
@@ -41,7 +41,10 @@ const Resume = ({ profile }) => {
       const pageHeightInCanvas = (usableHeight * canvas.width) / imgWidth; // convert mm to canvas px
       const canvasPage = document.createElement("canvas");
       canvasPage.width = canvas.width;
-      canvasPage.height = Math.min(pageHeightInCanvas, canvas.height - pageCanvasY);
+      canvasPage.height = Math.min(
+        pageHeightInCanvas,
+        canvas.height - pageCanvasY
+      );
 
       const ctx = canvasPage.getContext("2d");
       ctx.drawImage(
@@ -58,6 +61,13 @@ const Resume = ({ profile }) => {
 
       const pageImgData = canvasPage.toDataURL("image/png");
 
+      pdf.setFillColor("#1e3a8a");
+      pdf.rect(0, 0, 559 * (pdfWidth / canvas.width), pdfHeight, "F");
+
+      pdf.setFillColor("#f8f9fa");
+      pdf.rect(559 * (pdfWidth / canvas.width), 0, pdfWidth, pdfHeight, "F");
+
+      // ✅ अब resume content add करो
       pdf.addImage(
         pageImgData,
         "PNG",
@@ -75,6 +85,7 @@ const Resume = ({ profile }) => {
 
     pdf.save(`Resume-${profile?.fullName?.replace(/\s+/g, "_")}.pdf`);
   };
+
 
 
   return (
@@ -119,7 +130,7 @@ const Resume = ({ profile }) => {
             width: "280px",
             background: "#1e3a8a",
             color: "white",
-            padding: "40px 30px",
+            padding: "20px 30px",
             display: "flex",
             flexDirection: "column",
             minHeight: "100%", // Ensures full height coverage
@@ -269,38 +280,6 @@ const Resume = ({ profile }) => {
             </div>
           )}
 
-          {/* Certifications Section */}
-
-          {profile?.certifications && profile?.certifications?.length > 0 && (
-            <div style={{ marginBottom: "25px" }}>
-              <h3
-                style={{
-                  fontSize: "1.1rem",
-                  fontWeight: "bold",
-                  textTransform: "uppercase",
-                  letterSpacing: "1px",
-                  borderBottom: "2px solid white",
-                  paddingBottom: "8px",
-                  marginBottom: "20px",
-                  margin: "0 0 20px 0",
-                }}
-              >
-                CERTIFICATIONS
-              </h3>
-              <div style={{ fontSize: "0.85rem", lineHeight: "1.6" }}>
-                {profile?.certifications?.map((cert, idx) => (
-                  <div key={idx} style={{ marginBottom: "12px" }}>
-                    <p><strong>Name:</strong> {cert.certificateName}</p>
-                    <p><strong>Issuer:</strong> {cert.issuerName}</p>
-                    <p><strong>Issue Date:</strong> {cert.issueDate}</p>
-                    <p><strong>Certificate No:</strong> {cert.certificateNumber}</p>
-                    {/* Image (attachmentUrl) skip kar diya */}
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
 
           {/* Blue background extension to fill remaining space */}
           <div
@@ -317,7 +296,7 @@ const Resume = ({ profile }) => {
           style={{
             flex: 1,
             background: "#f8f9fa",
-            padding: "40px 40px",
+            padding: "20px 20px",
             display: "flex",
             flexDirection: "column",
             minHeight: "100%",
@@ -556,6 +535,53 @@ const Resume = ({ profile }) => {
               ))}
             </div>
           )}
+
+          {profile?.certifications && profile?.certifications.length > 0 && (
+            <div style={{ marginBottom: "25px" }}>
+              <h3
+                style={{
+                  fontSize: "1.1rem",
+                  fontWeight: "bold",
+                  color: "#374151",
+                  textTransform: "uppercase",
+                  letterSpacing: "1px",
+                  borderBottom: "2px solid #06b6d4",
+                  paddingBottom: "8px",
+                  margin: "0 0 20px 0",
+                }}
+              >
+                Certifications
+              </h3>
+
+              {profile.certifications.map((cert, idx) => (
+                <div
+                  key={idx}
+                  style={{
+                    marginBottom: "15px",
+                    padding: "10px 12px",
+                    border: "1px solid #e5e7eb",
+                    borderRadius: "6px",
+                    backgroundColor: "#f9fafb",
+                    pageBreakInside: "avoid",
+                  }}
+                >
+                  <p style={{ margin: "4px 0", fontSize: "0.85rem", color: "#374151", }}>
+                    <strong style={{ color: "#374151", fontSize: "0.95rem" }}>Name:</strong> {cert.certificateName}
+                  </p>
+                  <p style={{ margin: "4px 0", fontSize: "0.85rem", color: "#374151", }}>
+                    <strong style={{ color: "#374151", fontSize: "0.95rem" }}>Issuer:</strong> {cert.issuerName}
+                  </p>
+                  <p style={{ margin: "4px 0", fontSize: "0.85rem", color: "#374151", }}>
+                    <strong style={{ color: "#374151", fontSize: "0.95rem" }}>Issue Date:</strong> {cert.issueDate}
+                  </p>
+                  <p style={{ margin: "4px 0", fontSize: "0.85rem", color: "#374151", }}>
+                    <strong style={{ color: "#374151", fontSize: "0.95rem" }}>Certificate No:</strong> {cert.certificateNumber}
+                  </p>
+                </div>
+              ))}
+            </div>
+          )}
+
         </div>
       </div>
     </div>

@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import { Download } from "lucide-react";
 import Image from "next/image";
+
 const Resume = ({ profile }) => {
   const resumeRef = useRef(null);
 
@@ -14,92 +15,78 @@ const Resume = ({ profile }) => {
     const jsPDF = (await import("jspdf")).default;
 
     const canvas = await html2canvas(input, {
-      scale: 1,
+      scale: 2,
       useCORS: true,
       allowTaint: true,
       backgroundColor: "#ffffff",
-      height: input.scrollHeight,
-      width: input.scrollWidth,
     });
 
-    const imgData = canvas.toDataURL("image/png", 1.0);
+    const imgData = canvas.toDataURL("image/png");
     const pdf = new jsPDF("p", "mm", "a4");
 
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = pdf.internal.pageSize.getHeight();
 
+    const topMargin = 10;
+    const bottomMargin = 13;
+    const usableHeight = pdfHeight - topMargin - bottomMargin;
+
     const imgWidth = pdfWidth;
     const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
     let heightLeft = imgHeight;
-    let position = 0;
+    let pageCanvasY = 0; // track y position on canvas
 
-    const topMargin = 10; // Top margin for subsequent pages
-    const bottomMargin = 10; // Bottom margin for first page
-
-    // First Page
-    pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
-    heightLeft -= pdfHeight;
-
-    // Add additional pages ONLY IF content is overflowing
     while (heightLeft > 0) {
-      position -= pdfHeight;
-      pdf.addPage();
+      const pageHeightInCanvas = (usableHeight * canvas.width) / imgWidth; // convert mm to canvas px
+      const canvasPage = document.createElement("canvas");
+      canvasPage.width = canvas.width;
+      canvasPage.height = Math.min(
+        pageHeightInCanvas,
+        canvas.height - pageCanvasY
+      );
+
+      const ctx = canvasPage.getContext("2d");
+      ctx.drawImage(
+        canvas,
+        0,
+        pageCanvasY,
+        canvas.width,
+        canvasPage.height,
+        0,
+        0,
+        canvas.width,
+        canvasPage.height
+      );
+
+      const pageImgData = canvasPage.toDataURL("image/png");
+
+      pdf.setFillColor("#2c3e50");
+      pdf.rect(0, 0, 559 * (pdfWidth / canvas.width), pdfHeight, "F");
+
+      pdf.setFillColor("#ecf0f1");
+      pdf.rect(559 * (pdfWidth / canvas.width), 0, pdfWidth, pdfHeight, "F");
+
+      // ✅ अब resume content add करो
       pdf.addImage(
-        imgData,
+        pageImgData,
         "PNG",
         0,
-        position + topMargin,
+        topMargin,
         imgWidth,
-        imgHeight
+        (canvasPage.height * imgWidth) / canvas.width
       );
-      heightLeft -= pdfHeight;
+
+      heightLeft -= usableHeight;
+      pageCanvasY += canvasPage.height;
+
+      if (heightLeft > 0) pdf.addPage();
     }
 
     pdf.save(`Resume-${profile?.fullName?.replace(/\s+/g, "_")}.pdf`);
   };
 
-  const currentProfile = profile || {
-    fullName: "John Doe",
-    professionalTitle: "Software Developer",
-    phone: "+1 234 567 8900",
-    email: "john.doe@email.com",
-    location: "New York, USA",
-    profileImage: "https://via.placeholder.com/140",
-    bio: "Experienced software developer with 5+ years of experience in web development.",
-    skills: ["JavaScript", "React", "Node.js", "Python", "SQL"],
-    languages: [
-      { language: "English", level: "Native" },
-      { language: "Spanish", level: "Intermediate" },
-    ],
-    education: [
-      {
-        institution: "University of Technology",
-        degree: "Bachelor of Computer Science",
-        year: "2018-2022",
-        description: "Specialized in Software Engineering",
-      },
-    ],
-    experience: [
-      {
-        company: "Tech Solutions Inc.",
-        jobTitle: "Senior Developer",
-        duration: "2022-Present",
-        description:
-          "Led development of web applications using React and Node.js. Managed a team of 3 developers.",
-      },
-    ],
-    referees: [
-      {
-        fullName: "Jane Smith",
-        title: "Technical Manager",
-        organization: "Tech Solutions Inc.",
-        email: "jane.smith@techsolutions.com",
-        contact: "+1 234 567 8901",
-      },
-    ],
-  };
-
+  const currentProfile = profile
 
   const contentHeight =
     140 +
@@ -148,7 +135,7 @@ const Resume = ({ profile }) => {
           top: "-9999px",
           left: "-9999px",
           width: "800px",
-          height: `${totalHeight}px`,
+          minHeight: "1130px",
           background: "white",
           color: "black",
           fontFamily: "Arial, sans-serif",
@@ -159,10 +146,10 @@ const Resume = ({ profile }) => {
         <div
           style={{
             background: "#548DA5",
-            height: "140px",
+            height: "120px",
             width: "100%",
             display: "flex",
-            alignItems: "center",
+            alignItems: "start",
             justifyContent: "space-between",
             padding: "0 20px",
             position: "relative",
@@ -213,7 +200,7 @@ const Resume = ({ profile }) => {
           style={{
             display: "flex",
             flexDirection: "row",
-            height: `${totalHeight - 140}px`,
+            minHeight: "100%",
             position: "relative",
           }}
         >
@@ -226,8 +213,7 @@ const Resume = ({ profile }) => {
               padding: "0",
               display: "flex",
               flexDirection: "column",
-              height: "100%",
-              minHeight: `${totalHeight - 140}px`,
+              minHeight: "100%",
             }}
           >
             <div style={{ padding: "20px", flex: 1 }}>
@@ -346,8 +332,7 @@ const Resume = ({ profile }) => {
               padding: "20px",
               display: "flex",
               flexDirection: "column",
-              height: "100%",
-              minHeight: `${totalHeight - 140}px`,
+              minHeight: "100%",
             }}
           >
             {/* Summary Section */}
@@ -551,33 +536,48 @@ const Resume = ({ profile }) => {
               ))}
             </div>
 
-            {currentProfile?.certifications && currentProfile?.certifications?.length > 0 && (
+            {currentProfile?.certifications && currentProfile?.certifications.length > 0 && (
               <div style={{ marginBottom: "25px" }}>
                 <h3
                   style={{
                     fontSize: "1.1rem",
                     fontWeight: "bold",
+                    color: "#374151",
                     textTransform: "uppercase",
+                    borderBottom: "2px solid #2c3e50",
                     letterSpacing: "1px",
-                    borderBottom: "2px solid white",
                     paddingBottom: "8px",
-                    marginBottom: "20px",
                     margin: "0 0 20px 0",
                   }}
                 >
-                  CERTIFICATIONS
+                  Certifications
                 </h3>
-                <div style={{ fontSize: "0.85rem", lineHeight: "1.2" }}>
-                  {currentProfile?.certifications?.map((cert, idx) => (
-                    <div key={idx} style={{ marginBottom: "12px", padding:"10px" }}>
-                      <p><strong>Name:</strong> {cert.certificateName}</p>
-                      <p><strong>Issuer:</strong> {cert.issuerName}</p>
-                      <p><strong>Issue Date:</strong> {cert.issueDate}</p>
-                      <p><strong>Certificate No:</strong> {cert.certificateNumber}</p>
-                      {/* Image (attachmentUrl) skip kar diya */}
-                    </div>
-                  ))}
-                </div>
+
+                {currentProfile?.certifications.map((cert, idx) => (
+                  <div
+                    key={idx}
+                    style={{
+                      marginBottom: "15px",
+                      padding: "10px 12px",
+                      border: "1px solid #e5e7eb",
+                      borderRadius: "6px",
+                      pageBreakInside: "avoid",
+                    }}
+                  >
+                    <p style={{ margin: "4px 0", fontSize: "0.85rem", color: "#374151", }}>
+                      <strong style={{ color: "#374151", fontSize: "0.95rem" }}>Name:</strong> {cert.certificateName}
+                    </p>
+                    <p style={{ margin: "4px 0", fontSize: "0.85rem", color: "#374151", }}>
+                      <strong style={{ color: "#374151", fontSize: "0.95rem" }}>Issuer:</strong> {cert.issuerName}
+                    </p>
+                    <p style={{ margin: "4px 0", fontSize: "0.85rem", color: "#374151", }}>
+                      <strong style={{ color: "#374151", fontSize: "0.95rem" }}>Issue Date:</strong> {cert.issueDate}
+                    </p>
+                    <p style={{ margin: "4px 0", fontSize: "0.85rem", color: "#374151", }}>
+                      <strong style={{ color: "#374151", fontSize: "0.95rem" }}>Certificate No:</strong> {cert.certificateNumber}
+                    </p>
+                  </div>
+                ))}
               </div>
             )}
             {currentProfile?.referees && currentProfile.referees.length > 0 && (

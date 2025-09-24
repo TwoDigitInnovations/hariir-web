@@ -15,42 +15,72 @@ const Resume = ({ profile }) => {
     const jsPDF = (await import("jspdf")).default;
 
     const canvas = await html2canvas(input, {
-      scale: 1,
+      scale: 2,
       useCORS: true,
       allowTaint: true,
       backgroundColor: "#ffffff",
-      height: input.scrollHeight,
-      width: input.scrollWidth,
     });
 
-    const imgData = canvas.toDataURL("image/png", 1.0);
+    const imgData = canvas.toDataURL("image/png");
     const pdf = new jsPDF("p", "mm", "a4");
 
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = pdf.internal.pageSize.getHeight();
 
+    const topMargin = 10;
+    const bottomMargin = 13;
+    const usableHeight = pdfHeight - topMargin - bottomMargin;
+
     const imgWidth = pdfWidth;
     const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
     let heightLeft = imgHeight;
-    let position = 0;
-
-
-    pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
-    heightLeft -= pdfHeight;
+    let pageCanvasY = 0; // track y position on canvas
 
     while (heightLeft > 0) {
-      position = heightLeft - imgHeight;
-      pdf.addPage();
+      const pageHeightInCanvas = (usableHeight * canvas.width) / imgWidth; // convert mm to canvas px
+      const canvasPage = document.createElement("canvas");
+      canvasPage.width = canvas.width;
+      canvasPage.height = Math.min(
+        pageHeightInCanvas,
+        canvas.height - pageCanvasY
+      );
+
+      const ctx = canvasPage.getContext("2d");
+      ctx.drawImage(
+        canvas,
+        0,
+        pageCanvasY,
+        canvas.width,
+        canvasPage.height,
+        0,
+        0,
+        canvas.width,
+        canvasPage.height
+      );
+
+      const pageImgData = canvasPage.toDataURL("image/png");
+
+      pdf.setFillColor("#002966");
+      pdf.rect(0, 0, 559 * (pdfWidth / canvas.width), pdfHeight, "F");
+
+      pdf.setFillColor("#fff");
+      pdf.rect(559 * (pdfWidth / canvas.width), 0, pdfWidth, pdfHeight, "F");
+
+      // ✅ अब resume content add करो
       pdf.addImage(
-        imgData,
+        pageImgData,
         "PNG",
         0,
-        position,
+        topMargin,
         imgWidth,
-        imgHeight
+        (canvasPage.height * imgWidth) / canvas.width
       );
-      heightLeft -= pdfHeight;
+
+      heightLeft -= usableHeight;
+      pageCanvasY += canvasPage.height;
+
+      if (heightLeft > 0) pdf.addPage();
     }
 
     pdf.save(`Resume-${profile?.fullName?.replace(/\s+/g, "_")}.pdf`);
@@ -99,7 +129,7 @@ const Resume = ({ profile }) => {
         {/* Left Sidebar - Blue - Full Height */}
         <div
           style={{
-            width: "300px",
+            width: "280px",
             background: "#002966",
             color: "white",
             padding: "0",
@@ -113,7 +143,7 @@ const Resume = ({ profile }) => {
           <div
             style={{
               background: "#002966",
-              padding: "40px 30px 60px 30px",
+              padding: "20px 32px 20px 20px",
               position: "relative",
             }}
           >
@@ -271,7 +301,7 @@ const Resume = ({ profile }) => {
           style={{
             flex: 1,
             background: "white",
-            padding: "40px 40px",
+            padding: "20px 20px",
             display: "flex",
             flexDirection: "column",
             minHeight: "100%",
@@ -383,6 +413,7 @@ const Resume = ({ profile }) => {
                   fontWeight: "bold",
                   color: "#1e3a8a",
                   margin: "0 0 15px 0",
+                  pageBreakInside: "avoid"
                 }}
               >
                 Education
@@ -444,71 +475,108 @@ const Resume = ({ profile }) => {
           )}
 
 
-          {currentProfile?.certifications && currentProfile?.certifications?.length > 0 && (
+          {currentProfile?.certifications && currentProfile?.certifications.length > 0 && (
             <div style={{ marginBottom: "25px" }}>
               <h3
                 style={{
                   fontSize: "1.1rem",
                   fontWeight: "bold",
+                  color: "#374151",
                   textTransform: "uppercase",
                   letterSpacing: "1px",
-                  borderBottom: "2px solid white",
                   paddingBottom: "8px",
-                  marginBottom: "20px",
                   margin: "0 0 20px 0",
                 }}
               >
-                CERTIFICATIONS
+                Certifications
               </h3>
-              <div style={{ fontSize: "0.85rem", lineHeight: "1.6" }}>
-                {currentProfile?.certifications?.map((cert, idx) => (
-                  <div key={idx} style={{ marginBottom: "12px" }}>
-                    <p><strong>Name:</strong> {cert.certificateName}</p>
-                    <p><strong>Issuer:</strong> {cert.issuerName}</p>
-                    <p><strong>Issue Date:</strong> {cert.issueDate}</p>
-                    <p><strong>Certificate No:</strong> {cert.certificateNumber}</p>
-                    {/* Image (attachmentUrl) skip kar diya */}
-                  </div>
-                ))}
-              </div>
+
+              {currentProfile?.certifications.map((cert, idx) => (
+                <div
+                  key={idx}
+                  style={{
+                    marginBottom: "15px",
+                    padding: "10px 12px",
+                    border: "1px solid #e5e7eb",
+                    borderRadius: "6px",
+                    backgroundColor: "#f9fafb",
+                    pageBreakInside: "avoid",
+                  }}
+                >
+                  <p style={{ margin: "4px 0", fontSize: "0.85rem", color: "#374151", }}>
+                    <strong style={{ color: "#374151", fontSize: "0.95rem" }}>Name:</strong> {cert.certificateName}
+                  </p>
+                  <p style={{ margin: "4px 0", fontSize: "0.85rem", color: "#374151", }}>
+                    <strong style={{ color: "#374151", fontSize: "0.95rem" }}>Issuer:</strong> {cert.issuerName}
+                  </p>
+                  <p style={{ margin: "4px 0", fontSize: "0.85rem", color: "#374151", }}>
+                    <strong style={{ color: "#374151", fontSize: "0.95rem" }}>Issue Date:</strong> {cert.issueDate}
+                  </p>
+                  <p style={{ margin: "4px 0", fontSize: "0.85rem", color: "#374151", }}>
+                    <strong style={{ color: "#374151", fontSize: "0.95rem" }}>Certificate No:</strong> {cert.certificateNumber}
+                  </p>
+                </div>
+              ))}
             </div>
           )}
-
-          {/* Projects Section */}
-          {currentProfile.projects && currentProfile.projects.length > 0 && (
+          {currentProfile?.referees && currentProfile.referees.length > 0 && (
             <div style={{ marginBottom: "25px" }}>
               <h3
                 style={{
                   fontSize: "1.2rem",
                   fontWeight: "bold",
-                  color: "#1e3a8a",
-                  margin: "0 0 15px 0",
+                  color: "#2c3e50",
+                  margin: "0 0 20px 0",
+                  textTransform: "uppercase",
+                  letterSpacing: "1px",
+                  borderBottom: "2px solid #2c3e50",
+                  paddingBottom: "5px",
                 }}
               >
-                Projects
+                REFERENCES
               </h3>
-              {currentProfile.projects.map((project, idx) => (
-                <div key={idx} style={{ marginBottom: "15px", pageBreakInside: "avoid" }}>
-                  <h4
-                    style={{
-                      fontSize: "1rem",
-                      fontWeight: "bold",
-                      margin: "0 0 5px 0",
-                      color: "#374151",
-                    }}
-                  >
-                    {project.title}
-                  </h4>
+              {currentProfile.referees.map((ref, idx) => (
+                <div key={idx} style={{ marginBottom: "20px" }}>
                   <div
                     style={{
-                      fontSize: "0.85rem",
-                      lineHeight: "1.5",
-                      margin: "0",
-                      color: "#374151",
-                      whiteSpace: "pre-wrap",
+                      display: "flex",
+                      alignItems: "center",
+                      marginBottom: "3px",
                     }}
                   >
-                    {project.description}
+                    <span style={{ fontSize: "1.2rem", marginRight: "8px" }}>
+                      •
+                    </span>
+                    <h4
+                      style={{
+                        fontSize: "1rem",
+                        fontWeight: "bold",
+                        margin: "0",
+                        color: "#2c3e50",
+                      }}
+                    >
+                      {ref.fullName}
+                    </h4>
+                  </div>
+                  <div style={{ marginLeft: "20px" }}>
+                    <p
+                      style={{
+                        fontSize: "0.9rem",
+                        color: "#7f8c8d",
+                        margin: "0 0 5px 0",
+                      }}
+                    >
+                      {ref.title} - {ref.organization}
+                    </p>
+                    <p
+                      style={{
+                        fontSize: "0.85rem",
+                        color: "#7f8c8d",
+                        margin: "0",
+                      }}
+                    >
+                      {ref.email} | {ref.contact}
+                    </p>
                   </div>
                 </div>
               ))}
