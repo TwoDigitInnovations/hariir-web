@@ -15,50 +15,67 @@ const Resume = ({ profile }) => {
     const jsPDF = (await import("jspdf")).default;
 
     const canvas = await html2canvas(input, {
-      scale: 1,
+      scale: 2, // better quality
       useCORS: true,
       allowTaint: true,
       backgroundColor: "#ffffff",
-      height: input.scrollHeight,
-      width: input.scrollWidth,
     });
 
-    const imgData = canvas.toDataURL("image/png", 1.0);
+    const imgData = canvas.toDataURL("image/png");
     const pdf = new jsPDF("p", "mm", "a4");
 
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = pdf.internal.pageSize.getHeight();
 
+    const topMargin = 10; // top margin
+    const bottomMargin = 10; // bottom margin
+    const usableHeight = pdfHeight - topMargin - bottomMargin;
+
     const imgWidth = pdfWidth;
     const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
     let heightLeft = imgHeight;
-    let position = 0;
+    let pageCanvasY = 0; // track y position on canvas
 
-    const topMargin = 10; // Top margin for subsequent pages
-    const bottomMargin = 10; // Bottom margin for first page
-
-    // First Page
-    pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
-    heightLeft -= pdfHeight;
-
-    // Add additional pages ONLY IF content is overflowing
     while (heightLeft > 0) {
-      position -= pdfHeight;
-      pdf.addPage();
+      const pageHeightInCanvas = (usableHeight * canvas.width) / imgWidth; // convert mm to canvas px
+      const canvasPage = document.createElement("canvas");
+      canvasPage.width = canvas.width;
+      canvasPage.height = Math.min(pageHeightInCanvas, canvas.height - pageCanvasY);
+
+      const ctx = canvasPage.getContext("2d");
+      ctx.drawImage(
+        canvas,
+        0,
+        pageCanvasY,
+        canvas.width,
+        canvasPage.height,
+        0,
+        0,
+        canvas.width,
+        canvasPage.height
+      );
+
+      const pageImgData = canvasPage.toDataURL("image/png");
+
       pdf.addImage(
-        imgData,
+        pageImgData,
         "PNG",
         0,
-        position + topMargin,
+        topMargin,
         imgWidth,
-        imgHeight
+        (canvasPage.height * imgWidth) / canvas.width
       );
-      heightLeft -= pdfHeight;
+
+      heightLeft -= usableHeight;
+      pageCanvasY += canvasPage.height;
+
+      if (heightLeft > 0) pdf.addPage();
     }
 
     pdf.save(`Resume-${profile?.fullName?.replace(/\s+/g, "_")}.pdf`);
   };
+
 
   return (
     <div className="">

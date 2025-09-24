@@ -277,7 +277,7 @@ export default function ProfileCompletion(props) {
                           )}
 
                           <div className="ms-6 md:-mt-20 -mt-12 flex md:justify-start justify-center">
-                            <div className="md:w-40 md:h-40 w-24 h-24 bg-blue-400 rounded-full border-4 border-white shadow-md overflow-hidden">
+                            <div className="md:w-40 relative md:h-40 w-24 h-24 bg-blue-400 rounded-full border-4 border-white shadow-md overflow-hidden">
                               <Image
                                 fill
                                 src={

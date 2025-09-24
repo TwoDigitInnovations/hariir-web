@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { Download } from "lucide-react";
-
+import Image from "next/image";
 const Resume = ({ profile }) => {
   const resumeRef = useRef(null);
 
@@ -567,9 +567,9 @@ const Resume = ({ profile }) => {
                 >
                   CERTIFICATIONS
                 </h3>
-                <div style={{ fontSize: "0.85rem", lineHeight: "1.6" }}>
+                <div style={{ fontSize: "0.85rem", lineHeight: "1.2" }}>
                   {currentProfile?.certifications?.map((cert, idx) => (
-                    <div key={idx} style={{ marginBottom: "12px" }}>
+                    <div key={idx} style={{ marginBottom: "12px", padding:"10px" }}>
                       <p><strong>Name:</strong> {cert.certificateName}</p>
                       <p><strong>Issuer:</strong> {cert.issuerName}</p>
                       <p><strong>Issue Date:</strong> {cert.issueDate}</p>

@@ -1,6 +1,6 @@
 import React from "react";
 import { X } from "lucide-react";
-
+import Image from "next/image";
 import Resume from "./Resume";
 import Resume2 from "./Resume2";
 import Resume3 from "./Resume3";

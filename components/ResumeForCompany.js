@@ -3,7 +3,7 @@ import { Download } from "lucide-react";
 
 const CompanyProfileGenerator = ({ profile }) => {
   const profileRef = useRef(null);
-  
+
   const downloadProfile = async () => {
     const input = profileRef.current;
     if (!input) return;
@@ -18,43 +18,60 @@ const CompanyProfileGenerator = ({ profile }) => {
       useCORS: true,
       allowTaint: true,
       backgroundColor: "#ffffff",
-      height: input.scrollHeight,
-      width: input.scrollWidth,
-      scrollX: 0,
-      scrollY: 0,
     });
 
-    const imgData = canvas.toDataURL("image/png", 1.0);
+    const imgData = canvas.toDataURL("image/png");
     const pdf = new jsPDF("p", "mm", "a4");
 
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = pdf.internal.pageSize.getHeight();
-    
-    // Margins in mm
-    const topMargin = 10;
-    const bottomMargin = 10;
+
+    const topMargin = 10; // top margin in mm
+    const bottomMargin = 10; // bottom margin in mm
     const usableHeight = pdfHeight - topMargin - bottomMargin;
-    
+
     const imgWidth = pdfWidth;
     const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
     let heightLeft = imgHeight;
     let position = topMargin;
 
-    // First page
-    pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-    heightLeft -= usableHeight;
+    let pageCanvasY = 0; // track the y position on canvas
 
-    // Additional pages
     while (heightLeft > 0) {
-      position = -(imgHeight - heightLeft) + topMargin;
-      pdf.addPage();
-      pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+      // slice canvas for current page
+      const pageHeightInCanvas = (usableHeight * canvas.width) / imgWidth; // convert mm to canvas px
+      const canvasPage = document.createElement("canvas");
+      canvasPage.width = canvas.width;
+      canvasPage.height = Math.min(pageHeightInCanvas, canvas.height - pageCanvasY);
+
+      const ctx = canvasPage.getContext("2d");
+      ctx.drawImage(
+        canvas,
+        0,
+        pageCanvasY,
+        canvas.width,
+        canvasPage.height,
+        0,
+        0,
+        canvas.width,
+        canvasPage.height
+      );
+
+      const pageImgData = canvasPage.toDataURL("image/png");
+
+      pdf.addImage(pageImgData, "PNG", 0, topMargin, imgWidth, (canvasPage.height * imgWidth) / canvas.width);
+
       heightLeft -= usableHeight;
+      pageCanvasY += canvasPage.height;
+
+
+      if (heightLeft > 0) pdf.addPage();
     }
 
     pdf.save(`${companyData?.companyName?.replace(/\s+/g, "_")}_Profile.pdf`);
   };
+
 
   const companyData = profile;
 
@@ -67,7 +84,7 @@ const CompanyProfileGenerator = ({ profile }) => {
             className="flex items-center gap-2 text-black px-6 py-3 rounded-lg transition-colors mx-auto hover:bg-gray-100"
           >
             <Download className="w-5 h-5" />
-             PDF
+            PDF
           </button>
         </div>
 
@@ -98,8 +115,8 @@ const CompanyProfileGenerator = ({ profile }) => {
             paddingBottom: "30px",
             minHeight: "120px"
           }}>
-            <div style={{ 
-              flex: "1", 
+            <div style={{
+              flex: "1",
               marginRight: "30px",
               maxWidth: "500px"
             }}>
@@ -150,7 +167,7 @@ const CompanyProfileGenerator = ({ profile }) => {
 
           {/* About Section */}
           {companyData?.aboutUs && (
-            <div style={{ 
+            <div style={{
               marginBottom: "40px",
               pageBreakInside: "avoid"
             }}>
@@ -198,10 +215,10 @@ const CompanyProfileGenerator = ({ profile }) => {
               }}>
                 Company Information
               </h3>
-              <div style={{ 
-                fontSize: "14px", 
-                lineHeight: "1.8", 
-                color: "#374151" 
+              <div style={{
+                fontSize: "14px",
+                lineHeight: "1.8",
+                color: "#374151"
               }}>
                 {companyData.foundedYear && (
                   <div style={{ marginBottom: "8px" }}>
@@ -236,10 +253,10 @@ const CompanyProfileGenerator = ({ profile }) => {
               }}>
                 Contact Details
               </h3>
-              <div style={{ 
-                fontSize: "14px", 
-                lineHeight: "1.8", 
-                color: "#374151" 
+              <div style={{
+                fontSize: "14px",
+                lineHeight: "1.8",
+                color: "#374151"
               }}>
                 {companyData.email && (
                   <div style={{ marginBottom: "8px" }}>
@@ -262,7 +279,7 @@ const CompanyProfileGenerator = ({ profile }) => {
 
           {/* Services Section */}
           {companyData?.services?.length > 0 && (
-            <div style={{ 
+            <div style={{
               marginBottom: "50px",
               pageBreakInside: "avoid"
             }}>
@@ -278,9 +295,9 @@ const CompanyProfileGenerator = ({ profile }) => {
               }}>
                 Our Services
               </h3>
-              <div style={{ 
-                display: "flex", 
-                gap: "12px", 
+              <div style={{
+                display: "flex",
+                gap: "12px",
                 flexWrap: "wrap",
                 alignItems: "flex-start"
               }}>
@@ -307,7 +324,7 @@ const CompanyProfileGenerator = ({ profile }) => {
 
           {/* Mission Statement */}
           {companyData?.missionStatement && (
-            <div style={{ 
+            <div style={{
               marginBottom: "50px",
               // pageBreakInside: "avoid"
             }}>
@@ -346,7 +363,7 @@ const CompanyProfileGenerator = ({ profile }) => {
 
           {/* Vision Statement */}
           {companyData?.visionStatement && (
-            <div style={{ 
+            <div style={{
               marginBottom: "50px",
               pageBreakInside: "avoid"
             }}>
