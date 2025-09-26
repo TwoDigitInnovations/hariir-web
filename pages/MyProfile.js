@@ -82,15 +82,14 @@ export default function ProfileCompletion(props) {
         const data = {
           userId: user._id,
           experienceId: expid,
-          status: "Requested",
         };
 
         props.loader(true);
-        Api("post", "auth/ExperienceVerification", data, router).then(
+        Api("post", "auth/requestVerification", data, router).then(
           (res) => {
             props.loader(false);
             if (res.status) {
-              toast.success(res.message);
+              toast.success(res.message || res?.data?.message);
               getProfile();
             } else {
               toast.error(res.message);
@@ -423,9 +422,9 @@ export default function ProfileCompletion(props) {
                                     <div className="flex justify-between">
                                       <h3 className="text-[16px] font-semibold text-gray-800 flex items-center gap-2 mb-1">
                                         {experience.jobTitle}
-                                        {experience.status === "Approved" ? (
+                                        {experience.ForAdminStatus === "Approved" ? (
                                           <RiVerifiedBadgeLine className="text-green-600 text-2xl" />
-                                        ) : experience.status ===
+                                        ) : experience.ForAdminStatus ===
                                           "Rejected" ? (
                                           <Image
                                             width={24}
@@ -437,28 +436,25 @@ export default function ProfileCompletion(props) {
                                       </h3>
                                       <div className="flex gap-4">
                                         <button
-                                          className={`text-[16px] text-gray-800 font-semibold ${experience.status === "Pending" &&
-                                            "text-yellow-500"
-                                            }`}
+                                          className="text-[16px] font-semibold text-gray-800"
                                         >
-                                          {experience.status === "Requested"
-                                            && "Verification Requested"
-                                          }
+                                          {experience.ForOrganizationStatus === "Requested" && "Verification Requested"}
+                                          {experience.ForOrganizationStatus === "Rejected" && "Organization Rejected"}
+                                          {experience.ForOrganizationStatus === "Approved" && "Organization Approved"}
+                                          {experience.ForAdminStatus === "Requested" && "Verification Requested for Admin"}
                                         </button>
-                                        {experience.status !== "Requested" &&
-                                          experience.status !==
-                                          "Approved" && (
+
+                                        {!["Requested", "Approved"].includes(experience.ForOrganizationStatus) &&
+                                          !["Requested", "Approved"].includes(experience.ForAdminStatus) && (
                                             <button
-                                              onClick={() =>
-                                                handleVerifyRequest(
-                                                  experience._id
-                                                )
-                                              }
+                                              onClick={() => handleVerifyRequest(experience._id)}
                                               className="mt-1 px-4 py-1.5 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm cursor-pointer"
                                             >
                                               Verify
                                             </button>
                                           )}
+
+
                                       </div>
                                     </div>
                                     <p className="text-blue-600 text-[16px] font-medium">

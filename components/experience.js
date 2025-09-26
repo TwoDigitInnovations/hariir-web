@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { userContext } from "@/pages/_app";
 import { RiVerifiedBadgeLine } from "react-icons/ri";
 import Image from "next/image";
+
 export default function ExperienceEditor({
   open,
   close,
@@ -14,6 +15,7 @@ export default function ExperienceEditor({
   getProfile,
 }) {
   const [experiences, setExperiences] = useState([]);
+  const [companies, setCompanies] = useState([]); // 🔹 listed companies
   const router = useRouter();
   const [user] = useContext(userContext);
 
@@ -28,11 +30,21 @@ export default function ExperienceEditor({
           location: "",
           duration: "",
           description: "",
-          status: "Pending",
         },
       ]);
     }
   }, [profileData]);
+
+
+  useEffect(() => {
+    Api("get", "auth/getAllProfileBaseOnRole/?role=company", {}, router).then((res) => {
+      if (res.status) {
+        console.log(res?.data);
+        console.log(res?.data?.data);
+        setCompanies(res.data || []);
+      }
+    });
+  }, []);
 
   const handleChange = (index, field, value) => {
     const updated = [...experiences];
@@ -49,7 +61,6 @@ export default function ExperienceEditor({
         location: "",
         duration: "",
         description: "",
-        status: "Pending",
       },
     ]);
   };
@@ -102,7 +113,6 @@ export default function ExperienceEditor({
           />
         </div>
 
-
         <div className="flex-1 overflow-y-auto p-6">
           <div className="flex justify-between items-center mb-6">
             <p className="text-lg font-medium text-gray-800">Work Experience</p>
@@ -115,7 +125,7 @@ export default function ExperienceEditor({
           </div>
 
           {experiences.map((exp, index) => {
-            const isApproved = exp.status === "Approved";
+            const isApproved = exp.ForAdminStatus === "Approved";
 
             return (
               <div
@@ -125,10 +135,16 @@ export default function ExperienceEditor({
                 <div className="flex justify-between items-center mb-4">
                   <h3 className="text-lg font-medium text-gray-800">
                     Experience {index + 1}
-                    {exp.status === "Approved" ? (
+                    {exp.ForAdminStatus === "Approved" ? (
                       <RiVerifiedBadgeLine className="text-green-600 text-2xl inline ml-2" />
-                    ) : exp.status === "Rejected" ? (
-                      <Image src="/reject.png" className="w-6 h-6 inline ml-2" alt="rejeted" width={24} height={24} />
+                    ) : exp.ForAdminStatus === "Rejected" ? (
+                      <Image
+                        src="/reject.png"
+                        className="w-6 h-6 inline ml-2"
+                        alt="rejeted"
+                        width={24}
+                        height={24}
+                      />
                     ) : null}
                   </h3>
                   <div
@@ -155,20 +171,47 @@ export default function ExperienceEditor({
                       className="border border-gray-300 rounded-lg px-4 py-3 w-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
                     />
                   </div>
+
+                  {/* 🔹 Company dropdown + custom input */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Company <span className="text-red-400">*</span>
                     </label>
-                    <input
-                      type="text"
-                      value={exp.company}
-                      onChange={(e) =>
-                        handleChange(index, "company", e.target.value)
-                      }
+                    <select
+                      value={companies.includes(exp.company) ? exp.company : ""}
+                      onChange={(e) => {
+                        const selected = e.target.value;
+                        if (selected === "custom") {
+                          handleChange(index, "company", "");
+                        } else {
+                          handleChange(index, "company", selected);
+                        }
+                      }}
                       disabled={isApproved}
-                      placeholder="e.g. Tech Corp"
-                      className="border border-gray-300 rounded-lg px-4 py-3 w-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
-                    />
+                      className="border border-gray-300 rounded-lg px-4 py-3 w-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent mb-2"
+                    >
+                      <option value="">Select Company</option>
+                      {companies.map((c, i) => (
+                        <option key={i} value={c.companyName}>
+                          {c.companyName}
+                        </option>
+                      ))}
+                      <option value="custom">Other (Enter manually)</option>
+                    </select>
+
+                    {/* Agar custom ho toh textbox open */}
+                    {(!companies.includes(exp.company) || exp.company === "") && (
+                      <input
+                        type="text"
+                        value={exp.company}
+                        onChange={(e) =>
+                          handleChange(index, "company", e.target.value)
+                        }
+                        disabled={isApproved}
+                        placeholder="Enter company name"
+                        className="border border-gray-300 rounded-lg px-4 py-3 w-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
+                      />
+                    )}
                   </div>
                 </div>
 
@@ -224,7 +267,6 @@ export default function ExperienceEditor({
             );
           })}
         </div>
-
 
         <div className="flex justify-end items-center p-6 border-t border-gray-200 bg-gray-50">
           <div className="flex gap-3">

@@ -12,7 +12,7 @@ import { IoSearchSharp } from "react-icons/io5";
 import { AiOutlineHome } from "react-icons/ai";
 import { useRouter } from "next/router";
 import Swal from "sweetalert2";
-import { UserRound, LogOut } from "lucide-react";
+import { UserRound, LogOut, LayoutDashboard } from "lucide-react";
 import Image from "next/image";
 
 export const Navbar = ({ onSignInClick, onSingUpClick }) => {
@@ -162,17 +162,30 @@ export const Navbar = ({ onSignInClick, onSingUpClick }) => {
                           setShowDropdown(false);
                           router.push("/MyProfile");
                         }}
-                        className="w-full flex gap-4 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        className="w-full flex gap-4 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
                       >
                         <UserRound className="w-4 h-4" />
                         My Profile
                       </button>
+                      {user?.role ==="company" && (
+                          <button
+                            onClick={() => {
+                              setShowDropdown(false);
+                              router.push("/VerificationDashboard");
+                            }}
+                            className="w-full flex gap-4 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
+                          >
+                            <LayoutDashboard className="w-4 h-4" />
+                            My Dashboard
+                          </button>
+                      )}
+                       
                       <button
                         onClick={() => {
                           setShowDropdown(false);
                           handleLogout(); // custom signout logic
                         }}
-                        className="w-full flex gap-4 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        className="w-full flex gap-4 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
                       >
                         <LogOut className="w-4 h-4" />
                         Sign Out
