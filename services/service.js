@@ -1,10 +1,10 @@
 import axios from "axios";
 import { useRouter } from "next/router";
 
-// export const ConstantsUrl = "http://localhost:3003/api/";
-export const ConstantsUrl = "https://api.guuldoon.com/api/";
+export const ConstantsUrl = "http://localhost:3003/api/";
+// export const ConstantsUrl = "https://api.guuldoon.com/api/";
 
-function Api(method, url, data, router) {
+function Api(method, url, data, router, params) {
   return new Promise(function (resolve, reject) {
     let token = "";
     if (typeof window !== "undefined") {
@@ -16,28 +16,30 @@ function Api(method, url, data, router) {
       url: ConstantsUrl + url,
       data,
       headers: { Authorization: `jwt ${token}` },
+      params,
     }).then(
       (res) => {
         resolve(res.data);
       },
       (err) => {
-        console.error("API Error:", err);
 
-        const status = err?.response?.status;
-
-        if (status === 401 || status === 403) {
-          if (typeof window !== "undefined") {
-            localStorage.removeItem("token");
-            localStorage.removeItem("userDetail");
-          }
-
-          if (router) {
-            router.push("/");
-          }
-        }
-
-        // Reject with detailed error
         if (err.response) {
+          const status = err.response.status;
+          const message = err.response?.data?.message || "";
+          if (
+            (status === 401 || status === 403) &&
+            typeof window !== "undefined"
+          ) {
+            if (
+              message.toLowerCase().includes("jwt expired") ||
+              message.toLowerCase().includes("unauthorized")
+            ) {
+              localStorage.removeItem("token");
+              localStorage.removeItem("userDetail");
+              // router?.push("/signIn");
+            }
+          }
+
           reject(err.response.data);
         } else {
           reject(err);
@@ -46,6 +48,8 @@ function Api(method, url, data, router) {
     );
   });
 }
+
+
 
 function ApiFormData(method, url, data, router) {
   return new Promise(function (resolve, reject) {

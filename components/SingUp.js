@@ -51,7 +51,8 @@ const SingUp = ({ isOpen, onClose, loader, onSignInClick }) => {
       (res) => {
         loader(false);
         if (res?.user) {
-          toast.success("Register successfully");
+          toast.success("Registration successful. Verify your email to continue.");
+
           resetForm();
         } else {
           toast.error(res?.data?.message || "Something went wrong");
@@ -90,8 +91,8 @@ const SingUp = ({ isOpen, onClose, loader, onSignInClick }) => {
           <div
             onClick={() => setAccountType("professional")}
             className={`flex flex-col items-center p-4 border rounded-lg w-1/2 cursor-pointer ${accountType === "professional"
-                ? "border-blue-400"
-                : "border-gray-300"
+              ? "border-blue-400"
+              : "border-gray-300"
               }`}
           >
             <FaUser className="text-2xl text-blue-400 mb-2" />

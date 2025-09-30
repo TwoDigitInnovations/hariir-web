@@ -6,7 +6,7 @@ import Image from "next/image";
 import { userContext } from "../_app";
 import { Api } from "@/services/service";
 import { toast } from "react-toastify";
-
+import { RiVerifiedBadgeLine } from "react-icons/ri";
 export default function ProfessionalDetailsPage(props) {
     const router = useRouter();
     const [user] = useContext(userContext);
@@ -215,9 +215,21 @@ export default function ProfessionalDetailsPage(props) {
                                                             className="border-l-4 border-blue-500 md:pl-6 pl-4 ml-2 mb-6"
                                                             key={`experience-${index}`}
                                                         >
-                                                            <h4 className="text-[16px] font-semibold text-gray-800 mb-1">
+                                                            <h4 className="text-[16px] font-semibold text-gray-800 mb-1 flex items-center gap-2">
                                                                 {experience.jobTitle}
+                                                                {experience.ForAdminStatus === "Approved" ? (
+                                                                    <RiVerifiedBadgeLine className="text-green-600 text-2xl" />
+                                                                ) : experience.ForAdminStatus === "Rejected" ? (
+                                                                    <Image
+                                                                        width={24}
+                                                                        height={24}
+                                                                        src="/reject.png"
+                                                                        alt="Rejected"
+                                                                        className="w-6 h-6"
+                                                                    />
+                                                                ) : null}
                                                             </h4>
+
                                                             <p className="text-blue-600 text-[16px] font-medium">
                                                                 {experience.company}
                                                             </p>
@@ -267,8 +279,20 @@ export default function ProfessionalDetailsPage(props) {
                                                     >
                                                         <div className="flex justify-between items-start">
                                                             <div className="flex-1">
-                                                                <h4 className="text-[16px] font-semibold text-gray-800 flex items-center gap-2 mb-1">
-                                                                    {education.degree || "N/A"}
+                                                                <h4 className="text-[16px] font-semibold text-gray-800 mb-1 flex items-center gap-2">
+                                                                    {education?.degree
+                                                                    }
+                                                                    {education.status === "Approved" ? (
+                                                                        <RiVerifiedBadgeLine className="text-green-600 text-2xl" />
+                                                                    ) : education.status === "Rejected" ? (
+                                                                        <Image
+                                                                            width={24}
+                                                                            height={24}
+                                                                            src="/reject.png"
+                                                                            alt="Rejected"
+                                                                            className="w-6 h-6"
+                                                                        />
+                                                                    ) : null}
                                                                 </h4>
                                                                 <p className="text-blue-600 text-[16px] font-medium">
                                                                     {education.institution || "N/A"}
@@ -309,6 +333,78 @@ export default function ProfessionalDetailsPage(props) {
                                                         >
                                                             {lang.language} ({lang.level})
                                                         </span>
+                                                    ))}
+                                                </div>
+                                            </section>
+                                        )}
+
+                                        {profileData?.certifications?.length > 0 && (
+                                            <section className="mb-8">
+                                                <div className="flex items-center justify-between mb-4">
+                                                    <h3 className="text-[18px] font-semibold text-gray-800 flex items-center gap-2">
+                                                        <Users size={24} aria-hidden="true" />
+                                                        Certifications
+                                                    </h3>
+                                                </div>
+
+                                                <div className="grid gap-4">
+                                                    {profileData?.certifications?.map((certification, index) => (
+                                                        <div
+                                                            key={`certification-${index}`}
+                                                            className="p-4 border rounded-xl shadow-sm bg-white hover:shadow-md transition"
+                                                        >
+                                                            <div className="flex items-center justify-between mb-2">
+                                                                <h4 className="text-[16px] font-semibold text-gray-800 flex items-center gap-2">
+                                                                    {certification?.certificateName || "N/A"}
+                                                                    {certification.status === "Approved" ? (
+                                                                        <RiVerifiedBadgeLine className="text-green-600 text-xl" />
+                                                                    ) : certification.status === "Rejected" ? (
+                                                                        <Image
+                                                                            width={20}
+                                                                            height={20}
+                                                                            src="/reject.png"
+                                                                            alt="Rejected"
+                                                                            className="w-5 h-5"
+                                                                        />
+                                                                    ) : certification.status === "Pending" ? (
+                                                                        <Image
+                                                                            width={20}
+                                                                            height={20}
+                                                                            src="/pending.png"
+                                                                            alt="Pending"
+                                                                            className="w-5 h-5 animate-pulse"
+                                                                        />
+                                                                    ) : null}
+                                                                </h4>
+
+                                                                {/* Badge for status */}
+                                                                <span
+                                                                    className={`px-3 py-1 text-xs font-medium rounded-full ${certification.status === "Approved"
+                                                                            ? "bg-green-100 text-green-700"
+                                                                            : certification.status === "Rejected"
+                                                                                ? "bg-red-100 text-red-700"
+                                                                                : "bg-yellow-100 text-yellow-700"
+                                                                        }`}
+                                                                >
+                                                                    {certification.status || "Pending"}
+                                                                </span>
+                                                            </div>
+
+                                                            <div className="text-sm text-gray-600 space-y-1">
+                                                                <p>
+                                                                    <span className="font-medium">Issuer:</span>{" "}
+                                                                    {certification?.issuerName || "N/A"}
+                                                                </p>
+                                                                <p>
+                                                                    <span className="font-medium">Issue Date:</span>{" "}
+                                                                    {certification?.issueDate || "N/A"}
+                                                                </p>
+                                                                <p>
+                                                                    <span className="font-medium">Certificate No.:</span>{" "}
+                                                                    {certification?.certificateNumber || "N/A"}
+                                                                </p>
+                                                            </div>
+                                                        </div>
                                                     ))}
                                                 </div>
                                             </section>
