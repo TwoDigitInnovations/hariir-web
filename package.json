@@ -16,6 +16,7 @@
     "@radix-ui/react-accordion": "^1.2.11",
     "axios": "^1.10.0",
     "compressorjs": "^1.2.1",
+    "date-fns": "^4.1.0",
     "formik": "^2.4.6",
     "html2canvas": "^1.4.1",
     "i18n-iso-countries": "^7.14.0",

@@ -7,6 +7,8 @@ import { userContext } from "../_app";
 import { Api } from "@/services/service";
 import { toast } from "react-toastify";
 import { RiVerifiedBadgeLine } from "react-icons/ri";
+import { format } from "date-fns"; 
+
 export default function ProfessionalDetailsPage(props) {
     const router = useRouter();
     const [user] = useContext(userContext);
@@ -20,7 +22,42 @@ export default function ProfessionalDetailsPage(props) {
             getProfileById(profileId);
         }
     }, [profileId]);
+    const [expandedIndex, setExpandedIndex] = useState(null);
 
+    const sortedExperience = [...(profileData?.experience || [])].sort((a, b) => {
+        if (a.isCurrentlyWorking && !b.isCurrentlyWorking) return -1;
+        if (!a.isCurrentlyWorking && b.isCurrentlyWorking) return 1;
+
+        const endA = a.endDate ? new Date(a.endDate) : new Date();
+        const endB = b.endDate ? new Date(b.endDate) : new Date();
+        return endB - endA; // latest first
+    });
+
+    const formatDuration = (start, end, isCurrent) => {
+        if (!start) return "N/A";
+        const startDate = new Date(start);
+        const endDate = isCurrent ? new Date() : end ? new Date(end) : null;
+
+        const startStr = format(startDate, "MMM yyyy");
+        const endStr = isCurrent ? "Present" : endDate ? format(endDate, "MMM yyyy") : "N/A";
+
+        // Auto-calc years & months
+        let durationText = "";
+        if (endDate) {
+            const years = endDate.getFullYear() - startDate.getFullYear();
+            const months =
+                endDate.getMonth() -
+                startDate.getMonth() +
+                (years * 12);
+            const totalYears = Math.floor(months / 12);
+            const totalMonths = months % 12;
+
+            if (totalYears > 0) durationText += `${totalYears} yr${totalYears > 1 ? "s" : ""} `;
+            if (totalMonths > 0) durationText += `${totalMonths} mo${totalMonths > 1 ? "s" : ""}`;
+        }
+
+        return `${startStr} – ${endStr}${durationText ? ` • ${durationText.trim()}` : ""}`;
+    };
     const getProfileById = async (id) => {
         try {
             props.loader?.(true);
@@ -205,50 +242,56 @@ export default function ProfessionalDetailsPage(props) {
                                                 </h3>
                                             </div>
 
-                                            {profileData?.experience?.length > 0 ? (
-                                                profileData.experience.map((experience, index) => {
+                                            {sortedExperience.length > 0 ? (
+                                                sortedExperience.map((experience, index) => {
                                                     const isLong = experience?.description?.length > 200;
                                                     const shortDesc = experience?.description?.slice(0, 200);
+                                                    const isExpanded = expandedIndex === index;
 
                                                     return (
                                                         <div
-                                                            className="border-l-4 border-blue-500 md:pl-6 pl-4 ml-2 mb-6"
                                                             key={`experience-${index}`}
+                                                            className="border-l-4 border-blue-500 md:pl-6 pl-4 ml-2 mb-6 bg-white p-4 rounded-lg shadow-sm"
                                                         >
-                                                            <h4 className="text-[16px] font-semibold text-gray-800 mb-1 flex items-center gap-2">
-                                                                {experience.jobTitle}
-                                                                {experience.ForAdminStatus === "Approved" ? (
-                                                                    <RiVerifiedBadgeLine className="text-green-600 text-2xl" />
-                                                                ) : experience.ForAdminStatus === "Rejected" ? (
-                                                                    <Image
-                                                                        width={24}
-                                                                        height={24}
-                                                                        src="/reject.png"
-                                                                        alt="Rejected"
-                                                                        className="w-6 h-6"
-                                                                    />
-                                                                ) : null}
-                                                            </h4>
+                                                            <div className="flex items-center justify-between">
+                                                                <h4 className="text-[16px] font-semibold text-gray-800 flex items-center gap-2">
+                                                                    {experience.jobTitle}
+                                                                    {experience.ForAdminStatus === "Approved" ? (
+                                                                        <RiVerifiedBadgeLine className="text-green-600 text-xl" />
+                                                                    ) : experience.ForAdminStatus === "Rejected" ? (
+                                                                        <Image
+                                                                            width={20}
+                                                                            height={20}
+                                                                            src="/reject.png"
+                                                                            alt="Rejected"
+                                                                            className="w-5 h-5"
+                                                                        />
+                                                                    ) : null}
+                                                                </h4>
 
-                                                            <p className="text-blue-600 text-[16px] font-medium">
-                                                                {experience.company}
-                                                            </p>
+                                                            </div>
+
+                                                            <p className="text-blue-600 text-[16px] font-medium">{experience.company}</p>
                                                             <p className="text-gray-500 text-[14px] mb-2">
-                                                                {experience.location} - {experience.duration}
+                                                                {experience.location} •{" "}
+                                                                {formatDuration(experience.startDate, experience.endDate, experience.isCurrentlyWorking)}
                                                             </p>
+
                                                             {experience.description && (
                                                                 <div className="text-gray-600 text-[14px]">
-                                                                    <div dangerouslySetInnerHTML={{
-                                                                        __html: showFull || !isLong
-                                                                            ? experience.description
-                                                                            : shortDesc + "..."
-                                                                    }} />
+                                                                    <div
+                                                                        dangerouslySetInnerHTML={{
+                                                                            __html: isExpanded || !isLong ? experience.description : shortDesc + "...",
+                                                                        }}
+                                                                    />
                                                                     {isLong && (
                                                                         <button
                                                                             className="text-blue-600 text-sm ml-1 hover:underline"
-                                                                            onClick={() => setShowFull(!showFull)}
+                                                                            onClick={() =>
+                                                                                setExpandedIndex(isExpanded ? null : index)
+                                                                            }
                                                                         >
-                                                                            {showFull ? "Show less" : "Show more"}
+                                                                            {isExpanded ? "Show less" : "Show more"}
                                                                         </button>
                                                                     )}
                                                                 </div>
@@ -257,9 +300,7 @@ export default function ProfessionalDetailsPage(props) {
                                                     );
                                                 })
                                             ) : (
-                                                <p className="text-gray-500 text-sm">
-                                                    No experience listed yet.
-                                                </p>
+                                                <p className="text-gray-500 text-sm">No experience listed yet.</p>
                                             )}
                                         </section>
 
@@ -380,10 +421,10 @@ export default function ProfessionalDetailsPage(props) {
                                                                 {/* Badge for status */}
                                                                 <span
                                                                     className={`px-3 py-1 text-xs font-medium rounded-full ${certification.status === "Approved"
-                                                                            ? "bg-green-100 text-green-700"
-                                                                            : certification.status === "Rejected"
-                                                                                ? "bg-red-100 text-red-700"
-                                                                                : "bg-yellow-100 text-yellow-700"
+                                                                        ? "bg-green-100 text-green-700"
+                                                                        : certification.status === "Rejected"
+                                                                            ? "bg-red-100 text-red-700"
+                                                                            : "bg-yellow-100 text-yellow-700"
                                                                         }`}
                                                                 >
                                                                     {certification.status || "Pending"}
