@@ -30,6 +30,9 @@ import AllCV from "@/components/AllCV";
 import calculateProfileCompletion from "@/components/ProfileComplete";
 import CertificationComponent from "@/components/Certificate";
 import Image from "next/image";
+import { format } from "date-fns";
+
+
 
 export default function ProfileCompletion(props) {
   const router = useRouter();
@@ -40,6 +43,8 @@ export default function ProfileCompletion(props) {
   const [educationOpen, setEducationOpen] = useState(false);
   const [refereeOpen, setRefereeOpen] = useState(false);
   const [languageOpen, setLanguageOpen] = useState(false);
+  const [expandedIndex, setExpandedIndex] = useState(null);
+
   const [token, setToken] = useState(null);
   const [showFull, setShowFull] = useState(false);
   const [allCVOpen, setAllCVOpen] = useState(false);
@@ -144,6 +149,37 @@ export default function ProfileCompletion(props) {
 
   const completion = calculateProfileCompletion(profileData);
 
+  const sortedExperience = [...(profileData?.experience || [])].sort((a, b) => {
+    if (a.isCurrentlyWorking && !b.isCurrentlyWorking) return -1;
+    if (!a.isCurrentlyWorking && b.isCurrentlyWorking) return 1;
+
+    const endA = a.endDate ? new Date(a.endDate) : new Date();
+    const endB = b.endDate ? new Date(b.endDate) : new Date();
+    return endB - endA;
+  });
+
+  const formatDuration = (start, end, isCurrent) => {
+    if (!start) return "N/A";
+    const startDate = new Date(start);
+    const endDate = isCurrent ? new Date() : end ? new Date(end) : null;
+
+    const startStr = format(startDate, "MMM yyyy");
+    const endStr = isCurrent ? "Present" : endDate ? format(endDate, "MMM yyyy") : "N/A";
+
+    // Calculate years and months
+    let durationText = "";
+    if (endDate) {
+      const years = endDate.getFullYear() - startDate.getFullYear();
+      const months = years * 12 + (endDate.getMonth() - startDate.getMonth());
+      const totalYears = Math.floor(months / 12);
+      const totalMonths = months % 12;
+
+      if (totalYears > 0) durationText += `${totalYears} yr${totalYears > 1 ? "s" : ""} `;
+      if (totalMonths > 0) durationText += `${totalMonths} mo${totalMonths > 1 ? "s" : ""}`;
+    }
+
+    return `${startStr} – ${endStr}${durationText ? ` • ${durationText.trim()}` : ""}`;
+  };
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Header */}
@@ -385,10 +421,10 @@ export default function ProfileCompletion(props) {
                               <Briefcase size={24} />
                               Experience
                             </h2>
-                            <div className="flex gap-4 ">
+                            <div className="flex gap-4">
                               <Edit3
                                 size={20}
-                                className="text-gray-400  hover:bg-gray-200 cursor-pointer"
+                                className="text-gray-400 hover:bg-gray-200 cursor-pointer"
                                 onClick={() => setExperienceOpen(true)}
                               />
                             </div>
@@ -400,23 +436,22 @@ export default function ProfileCompletion(props) {
                                   close={() => setExperienceOpen(false)}
                                   loader={props.loader}
                                   profileData={profileData}
-                                  getProfile={() => getProfile()}
+                                  getProfile={getProfile}
                                 />
                               </div>
                             )}
                           </div>
 
-                          {profileData?.experience?.length > 0 ? (
-                            profileData.experience.map((experience, key) => {
-                              const isLong =
-                                experience?.description?.length > 200;
-                              const shortDesc =
-                                experience?.description?.slice(0, 200);
+                          {sortedExperience.length > 0 ? (
+                            sortedExperience.map((experience, index) => {
+                              const isLong = experience?.description?.length > 200;
+                              const shortDesc = experience?.description?.slice(0, 200);
+                              const isExpanded = expandedIndex === index;
 
                               return (
                                 <div
                                   className="border-l-4 border-blue-500 md:pl-6 pl-4 ml-2"
-                                  key={key}
+                                  key={index}
                                 >
                                   <div className="mb-6">
                                     <div className="flex justify-between">
@@ -424,20 +459,19 @@ export default function ProfileCompletion(props) {
                                         {experience.jobTitle}
                                         {experience.ForAdminStatus === "Approved" ? (
                                           <RiVerifiedBadgeLine className="text-green-600 text-2xl" />
-                                        ) : experience.ForAdminStatus ===
-                                          "Rejected" ? (
+                                        ) : experience.ForAdminStatus === "Rejected" ? (
                                           <Image
                                             width={24}
                                             height={24}
                                             src="/reject.png"
+                                            alt="Rejected"
                                             className="w-6 h-6"
                                           />
                                         ) : null}
                                       </h3>
+
                                       <div className="flex gap-4">
-                                        <button
-                                          className="text-[16px] font-semibold text-gray-800"
-                                        >
+                                        <button className="text-[14px] font-medium text-gray-700">
                                           {experience.ForOrganizationStatus === "Requested" && "Verification Requested"}
                                           {experience.ForOrganizationStatus === "Rejected" && "Organization Rejected"}
                                           {experience.ForOrganizationStatus === "Approved" && "Organization Approved"}
@@ -453,32 +487,33 @@ export default function ProfileCompletion(props) {
                                               Verify
                                             </button>
                                           )}
-
-
                                       </div>
                                     </div>
-                                    <p className="text-blue-600 text-[16px] font-medium">
-                                      {experience.company}
-                                    </p>
+
+                                    <p className="text-blue-600 text-[16px] font-medium">{experience.company}</p>
                                     <p className="text-gray-500 text-[14px] mb-2">
-                                      {experience.location} -{" "}
-                                      {experience.duration}
+                                      {experience.location} •{" "}
+                                      {formatDuration(experience.startDate, experience.endDate, experience.isCurrentlyWorking)}
                                     </p>
-                                    <p className="text-gray-600 text-[14px]">
-                                      {showFull || !isLong
-                                        ? experience.description
-                                        : shortDesc + "..."}
+
+                                    <div className="text-gray-600 text-[14px]">
+                                      <div
+                                        dangerouslySetInnerHTML={{
+                                          __html: isExpanded || !isLong
+                                            ? experience.description
+                                            : shortDesc + "..."
+                                        }}
+                                      />
                                       {isLong && (
                                         <button
-                                          className="text-blue-600 text-sm ml-1"
-                                          onClick={() =>
-                                            setShowFull(!showFull)
-                                          }
+                                          className="text-blue-600 text-sm ml-1 hover:underline"
+                                          onClick={() => setExpandedIndex(isExpanded ? null : index)}
                                         >
-                                          {showFull ? "See less" : "See more"}
+                                          {isExpanded ? "See less" : "See more"}
                                         </button>
                                       )}
-                                    </p>
+                                    </div>
+
                                   </div>
                                 </div>
                               );

@@ -106,6 +106,7 @@ const OrganizationDashboard = (props) => {
     );
 
     const formatDate = (dateString) => {
+        if (!dateString) return '';
         return new Date(dateString).toLocaleDateString('en-IN', {
             year: 'numeric', month: 'short', day: 'numeric'
         });
@@ -265,7 +266,7 @@ const OrganizationDashboard = (props) => {
                             <h3 className="text-xl font-semibold text-gray-900">Verification Details</h3>
                             <button
                                 onClick={() => setShowModal(false)}
-                                className="text-gray-400 hover:text-gray-600 p-1"
+                                className="text-gray-400 hover:text-gray-600 p-1 cursor-pointer transition-colors"
                             >
                                 <XCircle className="h-6 w-6" />
                             </button>
@@ -285,8 +286,8 @@ const OrganizationDashboard = (props) => {
                                 <h4 className="font-semibold text-gray-900 mb-3">Employment Details</h4>
                                 <div className="space-y-2 text-sm text-black">
                                     <p><span className="font-medium text-gray-700">Position:</span> {selectedVerification.experience.jobTitle}</p>
-                                    <p><span className="font-medium text-gray-700">Duration:</span> {formatDate(selectedVerification.experience.startDate)} - {formatDate(selectedVerification.experience.endDate)}</p>
-                                    <p><span className="font-medium text-gray-700">Period:</span> {selectedVerification.experience.duration}</p>
+                                    <p><span className="font-medium text-gray-700">Duration:</span> {formatDate(selectedVerification.experience.startDate)} - {formatDate(selectedVerification.experience.endDate)}   {selectedVerification?.experience?.isCurrentlyWorking ? "Present" : ""}</p>
+                                    <p><span className="font-medium text-gray-700">Employment type:</span> {selectedVerification.experience.employmentType}</p>
                                 </div>
                             </div>
 
@@ -314,7 +315,7 @@ const OrganizationDashboard = (props) => {
                                         onClick={() => {
                                             handleVerification(selectedVerification._id, 'Approved');
                                         }}
-                                        className="flex-1 bg-emerald-600 text-white px-4 py-3 rounded-lg hover:bg-emerald-700 font-medium transition-colors"
+                                        className="flex-1 bg-emerald-600 text-white px-4 py-3 rounded-lg hover:bg-emerald-700 font-medium transition-colors cursor-pointer"
                                     >
                                         Approve
                                     </button>
@@ -322,7 +323,7 @@ const OrganizationDashboard = (props) => {
                                         onClick={() => {
                                             handleVerification(selectedVerification._id, 'Rejected');
                                         }}
-                                        className="flex-1 bg-red-600 text-white px-4 py-3 rounded-lg hover:bg-red-700 font-medium transition-colors"
+                                        className="flex-1 bg-red-600 text-white px-4 py-3 rounded-lg hover:bg-red-700 font-medium transition-colors cursor-pointer"
                                     >
                                         Reject
                                     </button>

@@ -379,9 +379,11 @@ function CertificationComponent({ loader, profileData, getProfile }) {
                                                     value={cert.issueDate}
                                                     onChange={(e) => handleChange(index, "issueDate", e.target.value)}
                                                     disabled={isApproved}
+                                                    max={new Date().toISOString().split("T")[0]} // 👈 future date block
                                                     className="border border-gray-300 rounded-lg px-4 py-3 w-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent disabled:bg-gray-100"
                                                 />
                                             </div>
+
                                             <div>
                                                 <label className="block text-sm font-medium text-gray-700 mb-2">
                                                     Certificate Number
