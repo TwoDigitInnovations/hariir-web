@@ -85,7 +85,7 @@ const Resume = ({ profile }) => {
 
     pdf.save(`Resume-${profile?.fullName?.replace(/\s+/g, "_")}.pdf`);
   };
-
+  
   const currentProfile = profile;
 
   return (

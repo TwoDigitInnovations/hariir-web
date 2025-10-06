@@ -19,6 +19,7 @@
     "date-fns": "^4.1.0",
     "formik": "^2.4.6",
     "html2canvas": "^1.4.1",
+    "html2pdf.js": "^0.12.1",
     "i18n-iso-countries": "^7.14.0",
     "immer": "^10.1.1",
     "jodit-react": "^5.2.19",

@@ -38,11 +38,11 @@ const Layout = ({ children, loader }) => {
 
   // ✅ Protect routes only after token is known
   useEffect(() => {
-    if (!router.isReady || token === undefined) return;
+    if (!router.isReady) return;
 
     const currentPath = router.asPath.split("?")[0];
 
-    if (!token && protectedRoutes.includes(currentPath)) {
+    if (token !== undefined && !token && protectedRoutes.includes(currentPath)) {
       setIsModalOpen(true);
       router.replace("/");
     }
