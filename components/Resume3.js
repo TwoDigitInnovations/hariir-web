@@ -516,8 +516,8 @@ const Resume = ({ profile }) => {
                             margin: "0",
                             color: "#7f8c8d",
                           }}
+                          dangerouslySetInnerHTML={{ __html: exp.description }}
                         >
-                          {exp?.description}
                         </p>
                       </div>
                     </div>

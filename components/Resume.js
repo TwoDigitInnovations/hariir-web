@@ -429,8 +429,8 @@ const Resume = ({ profile }) => {
                       color: "#374151",
                       whiteSpace: "pre-wrap",
                     }}
+                    dangerouslySetInnerHTML={{ __html: exp.description }}
                   >
-                    {exp.description}
                   </div>
                 </div>
               ))}

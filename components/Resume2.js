@@ -396,8 +396,8 @@ const Resume = ({ profile }) => {
                         color: "#374151",
                         whiteSpace: "pre-wrap",
                       }}
+                      dangerouslySetInnerHTML={{ __html: exp.description }}
                     >
-                      {exp.description}
                     </div>
                   </div>
                 ))}
@@ -406,7 +406,7 @@ const Resume = ({ profile }) => {
 
           {/* Education Section */}
           {currentProfile.education && currentProfile.education.length > 0 && (
-            <div style={{ marginBottom: "25px" }}>
+            <div style={{ marginBottom: "25px" }} className="avoid-break">
               <h3
                 style={{
                   fontSize: "1.2rem",
