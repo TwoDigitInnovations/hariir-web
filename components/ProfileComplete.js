@@ -34,12 +34,10 @@ const calculateProfileCompletion = (user) => {
         const value = user[field];
 
         if (Array.isArray(value)) {
-            // Check for non-empty array
             if (value.length > 0) {
                 filledFields += 1;
             }
         } else if (typeof value === "object" && value !== null) {
-            // Check for non-empty object
             if (Object.keys(value).length > 0) {
                 filledFields += 1;
             }

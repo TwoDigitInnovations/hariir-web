@@ -1,4 +1,4 @@
-import { ArrowLeft, User, Edit, Download, Plus, MapPin, Mail, Phone, Briefcase, GraduationCap, Languages, Users, Edit3 } from "lucide-react";
+import { ArrowLeft, User, Calendar, MapPin, Mail, Phone, Briefcase, GraduationCap, Languages, Users, Edit3 } from "lucide-react";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState, useMemo } from "react";
 import Head from "next/head";
@@ -7,7 +7,7 @@ import { userContext } from "../_app";
 import { Api } from "@/services/service";
 import { toast } from "react-toastify";
 import { RiVerifiedBadgeLine } from "react-icons/ri";
-import { format } from "date-fns"; 
+import { format } from "date-fns";
 
 export default function ProfessionalDetailsPage(props) {
     const router = useRouter();
@@ -313,48 +313,70 @@ export default function ProfessionalDetailsPage(props) {
                                                 </h3>
                                             </div>
                                             {profileData?.education?.length > 0 ? (
-                                                profileData.education.map((education, index) => (
-                                                    <div
-                                                        className="bg-gray-50 p-4 rounded-lg mb-4"
-                                                        key={`education-${index}`}
-                                                    >
-                                                        <div className="flex justify-between items-start">
-                                                            <div className="flex-1">
-                                                                <h4 className="text-[16px] font-semibold text-gray-800 mb-1 flex items-center gap-2">
-                                                                    {education?.degree
-                                                                    }
-                                                                    {education.status === "Approved" ? (
-                                                                        <RiVerifiedBadgeLine className="text-green-600 text-2xl" />
-                                                                    ) : education.status === "Rejected" ? (
-                                                                        <Image
-                                                                            width={24}
-                                                                            height={24}
-                                                                            src="/reject.png"
-                                                                            alt="Rejected"
-                                                                            className="w-6 h-6"
-                                                                        />
-                                                                    ) : null}
-                                                                </h4>
-                                                                <p className="text-blue-600 text-[16px] font-medium">
-                                                                    {education.institution || "N/A"}
-                                                                </p>
-                                                                <p className="text-gray-500 text-[14px]">
-                                                                    {education.year || "N/A"}
-                                                                </p>
-                                                                {education.description && (
-                                                                    <p className="text-gray-600 text-[14px] mt-1">
-                                                                        {education.description}
-                                                                    </p>
-                                                                )}
+                                                profileData.education
+                                                    .sort((a, b) => b.startYear - a.startYear) // reverse chronological order
+                                                    .map((education, index) => {
+                                                        const displayEndYear = education.currentlyStudying
+                                                            ? "Present"
+                                                            : education.endYear || "N/A";
+                                                        const displayStartYear = education.startYear || "N/A";
+
+                                                        return (
+                                                            <div
+                                                                className="bg-white shadow-md border border-blue-100 p-4 rounded-lg mb-4 hover:shadow-lg transition-all duration-200"
+                                                                key={`education-${index}`}
+                                                            >
+                                                                <div className="flex justify-between items-start">
+                                                                    <div className="flex-1">
+                                                                        {/* Degree + Status */}
+                                                                        <h4 className="text-[16px] font-semibold text-gray-800 mb-1 flex items-center gap-2">
+                                                                            {education?.degree || "N/A"}
+                                                                            {education.status === "Approved" ? (
+                                                                                <RiVerifiedBadgeLine className="text-green-600 text-xl" />
+                                                                            ) : education.status === "Rejected" ? (
+                                                                                <Image
+                                                                                    width={20}
+                                                                                    height={20}
+                                                                                    src="/reject.png"
+                                                                                    alt="Rejected"
+                                                                                    className="w-5 h-5"
+                                                                                />
+                                                                            ) : null}
+                                                                        </h4>
+
+                                                                        {/* Institution */}
+                                                                        <p className="text-blue-600 text-[15px] font-medium">
+                                                                            {education.institution || "N/A"}
+                                                                        </p>
+
+                                                                        {/* Start - End Year */}
+                                                                        <p className="text-gray-500 text-[14px] flex items-center gap-2">
+                                                                            <Calendar size={14} className="text-blue-500" />
+                                                                            {displayStartYear} - {displayEndYear}
+                                                                            {displayEndYear === "Present" && (
+                                                                                <span className="ml-2 px-2 py-0.5 bg-blue-50 text-blue-600 text-xs font-medium rounded-full">
+                                                                                    Ongoing
+                                                                                </span>
+                                                                            )}
+                                                                        </p>
+
+                                                                        {/* Description */}
+                                                                        {education.description && (
+                                                                            <p className="text-gray-600 text-[14px] mt-2">
+                                                                                {education.description}
+                                                                            </p>
+                                                                        )}
+                                                                    </div>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                    </div>
-                                                ))
+                                                        );
+                                                    })
                                             ) : (
                                                 <p className="text-gray-500 text-sm">
                                                     No education details listed yet.
                                                 </p>
                                             )}
+
                                         </section>
 
                                         {/* Languages Section */}

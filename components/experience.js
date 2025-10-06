@@ -280,7 +280,7 @@ function ExperienceEditor({ open, close, loader, profileData, getProfile }) {
             </div>
           </div>
 
-          <div className="flex justify-between items-center mb-6">
+          <div className="flex md:flex-row flex-col justify-start md:justify-between items-start md:items-center gap-2 md:gap-0 mb-6">
             <p className="text-lg font-medium text-gray-800">
               Work Experience ({experiences.length})
             </p>
@@ -329,17 +329,19 @@ function ExperienceEditor({ open, close, loader, profileData, getProfile }) {
                 {/* Date Range and Duration Display */}
                 {(startDateFormatted || endDateFormatted) && (
                   <div className="mb-4 p-3 bg-blue-50 rounded-lg border border-blue-200">
-                    <div className="flex items-center gap-2 text-sm">
+                    <div className="flex md:flex-row flex-col justify-start items-start md:items-center gap-2 text-sm">
                       <span className="font-medium text-gray-700">Duration:</span>
-                      <span className="text-gray-800">
-                        {startDateFormatted} - {endDateFormatted}
-                      </span>
-                      {duration && (
-                        <>
-                          <span className="text-gray-500">•</span>
-                          <span className="font-semibold text-blue-600">{duration}</span>
-                        </>
-                      )}
+                      <div className="gap-2 flex">
+                        <span className="text-gray-800">
+                          {startDateFormatted} - {endDateFormatted}
+                        </span>
+                        {duration && (
+                          <>
+                            <span className="text-gray-500 ">•</span>
+                            <span className="font-semibold text-blue-600">{duration}</span>
+                          </>
+                        )}
+                      </div>
                     </div>
                   </div>
                 )}
