@@ -43,8 +43,8 @@ const Layout = ({ children, loader }) => {
     const currentPath = router.asPath.split("?")[0];
 
     if (token !== undefined && !token && protectedRoutes.includes(currentPath)) {
-      setIsModalOpen(true);
-      router.replace("/");
+      // setIsModalOpen(true);
+      // router.replace("/");
     }
   }, [token, router.isReady, router.asPath]);
 
